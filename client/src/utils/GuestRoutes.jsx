@@ -3,22 +3,21 @@ import { useNavigate } from "react-router-dom";
 
 export default function GuestRoutes(props) {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isGuest, setIsGuest] = useState(false);
 
   const checkUserToken = () => {
     const token = localStorage.getItem("token");
 
     if (token && token !== "undefined") {
-      setIsLoggedIn(true);
-      return navigate("auth");
+      return navigate("/");
     }
 
-    setIsLoggedIn(false);
+    setIsGuest(true);
   };
 
   useEffect(() => {
     checkUserToken();
   });
 
-  return !isLoggedIn ? props.children : null;
+  return isGuest ? props.children : null;
 }

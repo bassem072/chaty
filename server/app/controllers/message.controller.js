@@ -1,8 +1,8 @@
 import asyncHandler from "express-async-handler";
-import Chat from "../models/chat.model";
-import { ApiError } from "../utils/apiError";
-import Message from "../models/message.model";
-import { ApiFeatures } from "../utils/apiFeatures";
+import Chat from "../models/chat.model.js";
+import { ApiError } from "../utils/apiError.js";
+import Message from "../models/message.model.js";
+import { ApiFeatures } from "../utils/apiFeatures.js";
 
 export const index = asyncHandler(async (req, res, next) => {
   const { chatId } = req.params;

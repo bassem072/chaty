@@ -1,5 +1,5 @@
 import express from "express";
-import morgan from 'morgan';
+import morgan from "morgan";
 import { rateLimit } from "express-rate-limit";
 import url from "url";
 import path from "path";
@@ -16,11 +16,14 @@ dbSetup();
 
 const PORT = process.env.PORT || 5000;
 const app = express();
-app.use(cors());
-app.options("*", cors());
+const corsOptions = {
+  credentials: true, //access-control-allow-credentials:true
+  origin: true, //access-control-allow-origin:true
+};
+app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cookieParser());
 
 app.use(express.json({ limit: "20kb" }));
 
@@ -37,11 +40,14 @@ if (process.env.NODE_ENV === "development") {
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
   message:
     "Too many accounts created from this IP, please try again after an hour",
 });
 
-app.use("/api", limiter);
+app.use("/api/auth", limiter);
+app.disable("etag");
 
 appRoutes(app);
 

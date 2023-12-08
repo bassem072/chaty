@@ -5,7 +5,8 @@ import { ApiError } from "../utils/apiError.js";
 import { userResponse } from "../utils/dto/userResponseDTO.js";
 
 export const show = asyncHandler(async (req, res, next) => {
-  res.status(200).json({ data: userResponse(req.user.id) });
+  console.log("hi", req.cookies.refresh);
+  res.status(200).json({ data: userResponse(req.user) });
 });
 
 export const update = asyncHandler(async (req, res, next) => {
@@ -63,4 +64,20 @@ export const removeProfileImage = asyncHandler(async (req, res, next) => {
   );
 
   res.status(200).json({ data: user });
+});
+
+export const logout = asyncHandler(async (req, res, next) => {
+  const refreshTokenString = req.cookies.refresh;
+
+  if (!refreshTokenString) {
+    return next(new ApiError("Refresh token not found", 401));
+  }
+
+  await RefreshToken.deleteOne({
+    token: refreshTokenString,
+  });
+
+  res.clearCookie("refresh");
+
+  res.status(200).json({ message: "Logged out successfully" });
 });

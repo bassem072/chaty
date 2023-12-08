@@ -1,4 +1,4 @@
-import { body, param } from "express-validator";
+import { body, query } from "express-validator";
 import slugify from "slugify";
 import User from "../../models/user.model.js";
 import { validatorMiddleware } from "../../middlewares/validator.middleware.js";
@@ -34,8 +34,7 @@ export const signUpValidator = [
     .withMessage("Password must be at least 6 characters"),
 
   body("bio")
-    .notEmpty()
-    .withMessage("Bio is required")
+    .optional()
     .isLength({ min: 6 })
     .withMessage("Bio must be at least 6 characters")
     .custom((val, { req }) => {
@@ -83,15 +82,13 @@ export const loginValidator = [
 ];
 
 export const verifyValidator = [
-  param("id")
+  query("id")
     .notEmpty()
     .withMessage("User is required")
     .isMongoId()
     .withMessage("Invalid user id format"),
 
-  param("token")
-    .notEmpty()
-    .withMessage("Token is required"),
+  query("token").notEmpty().withMessage("Token is required"),
 
   validatorMiddleware,
 ];

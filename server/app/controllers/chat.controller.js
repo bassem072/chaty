@@ -1,9 +1,8 @@
 import asyncHandler from "express-async-handler";
-import Chat from "../models/chat.model";
-import { ApiFeatures } from "../utils/apiFeatures";
-import { ApiError } from "../utils/apiError";
-import Message from "../models/message.model";
-import User from "../models/user.model";
+import Chat from "../models/chat.model.js";
+import { ApiFeatures } from "../utils/apiFeatures.js";
+import { ApiError } from "../utils/apiError.js";
+import Message from "../models/message.model.js";
 
 export const index = asyncHandler(async (req, res) => {
   const docsCount = await Chat.countDocuments();

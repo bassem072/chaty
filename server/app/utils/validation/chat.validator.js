@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { body, param } from "express-validator";
-import { validatorMiddleware } from "../../middlewares/validator.middleware";
-import User from "../../models/user.model";
+import { validatorMiddleware } from "../../middlewares/validator.middleware.js";
+import User from "../../models/user.model.js";
 
 export const createChatValidator = [
   body("users")

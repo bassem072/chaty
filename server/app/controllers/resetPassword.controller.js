@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 import { ApiError } from "../utils/apiError.js";
 import Token from "../models/token.model.js";
-import { sendEmail } from "../utils/sendEmail";
+import { sendEmail } from "../utils/sendEmail.js";
 
 export const forgetPassword = asyncHandler(async (req, res, next) => {
   const { email } = req.body;

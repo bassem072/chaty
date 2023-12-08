@@ -1,13 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .input-field {
+    @apply max-w-sm w-full h-14 bg-active my-2.5 rounded-xl grid grid-cols-[15%_85%] px-1.5 text-paragraph;
+  }
+
+  .input {
+    @apply bg-transparent outline-none border-none leading-none text-lg placeholder:text-[#aaa];
+  }
+
+  .input-label {
+    @apply text-center leading-[55px] text-lg;
+  }
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.c:before {
+  content: "";
+  position: absolute;
+  height: 2300px;
+  width: 3000px;
+  top: -10%;
+  right: 48%;
+  transform: translateY(-50%);
+  background-image: linear-gradient(-45deg, rgba(117, 83, 178) 0%, #7553b2 100%);
+  transition: 1.8s ease-in-out;
+  border-radius: 50%;
+  z-index: 6;
+}
+
+.sign-up:before {
+  transform: translate(100%, -50%);
+  right: 52%;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #EEEFF6;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+::-moz-selection { /* Code for Firefox */
+  color: #7553b2;
+}
+input::selection {
+  color: #7553b2;
+}
+
+@media (max-width: 1023px) {
+  .c:before {
+    width: 1500px;
+    height: 1500px;
+    transform: translateX(-50%);
+    left: 30%;
+    bottom: 68%;
+    right: initial;
+    top: initial;
+    transition: 2s ease-in-out;
+  }
+
+  .sign-up:before {
+    transform: translate(-50%, 100%);
+    bottom: 15%;
+    right: initial;
+  }
+}
+
+@media (max-width: 767px) {
+  .c:before {
+    bottom: 72%;
+    left: 50%;
+  }
+
+  .sign-up:before {
+    bottom: 25%;
+    left: 50%;
+  }
+}
+
+.group:hover .group-hover\:block {
+  display: block;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid black;
+  bottom: -5px;
+  left: calc(50% - 5px);
 }

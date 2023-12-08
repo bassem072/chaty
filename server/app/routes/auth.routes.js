@@ -6,8 +6,8 @@ import {
   verifyValidator,
 } from "../utils/validation/auth.validator.js";
 import {
+  failedLogin,
   login,
-  logout,
   refresh,
   register,
   socialLogin,
@@ -47,7 +47,7 @@ authRouter.get(
 );
 authRouter.get(
   "/auth/google/callback",
-  passport.authenticate("google"),
+  passport.authenticate("google", { failureRedirect: "api/login/failed" }),
   socialLogin
 );
 authRouter.get(
@@ -58,14 +58,14 @@ authRouter.get(
 );
 authRouter.get(
   "/auth/facebook/callback",
-  passport.authenticate("facebook"),
+  passport.authenticate("facebook", { failureRedirect: "api/login/failed" }),
   socialLogin
 );
-authRouter.post("/refresh", refresh);
-authRouter.post("/logout", logout);
+authRouter.get("/refresh", refresh);
 authRouter.get("/verifyEmail", verifyValidator, verifyEmail);
 authRouter.post("/forgetPassword", forgetPasswordValidator, forgetPassword);
 authRouter.get("/verifyPasswordLink", verifyLinkValidator, verifyLink);
 authRouter.post("/resetPassword", resetPasswordValidator, resetPassword);
+authRouter.get("/login/failed", failedLogin);
 
 export default authRouter;

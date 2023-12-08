@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-export const sendEmail = (email, verificationLink) => {
+export const sendEmail = async (email, verificationLink) => {
   const transport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -16,11 +16,5 @@ export const sendEmail = (email, verificationLink) => {
     text: `Please verify your email address by clicking the following link: ${verificationLink}`,
   };
 
-  transport.sendMail(mailOptions, function (err, result) {
-    if (err) {
-      return false;
-    } else {
-      return true;
-    }
-  });
+  await transport.sendMail(mailOptions);
 };

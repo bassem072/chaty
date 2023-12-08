@@ -1,9 +1,12 @@
 import express from "express";
+import path from 'path';
+import { fileURLToPath } from "url";
 import { Router } from "express";
 import { verifyEmail, verifyToken } from "../middlewares/auth.middleware.js";
 import { updateUserValidator } from "../utils/validation/profile.validator.js";
 import {
   destroy,
+  logout,
   removeProfileImage,
   show,
   update,
@@ -15,6 +18,9 @@ const profileRouter = Router();
 
 profileRouter.use(verifyToken);
 profileRouter.use(verifyEmail);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 profileRouter.use(
   "/image",
@@ -29,5 +35,6 @@ profileRouter
 
 profileRouter.post("/changeProfileImage", upload, uploadProfileImage);
 profileRouter.post("/removeProfileImage", removeProfileImage);
+profileRouter.get("/logout", logout);
 
 export default profileRouter;

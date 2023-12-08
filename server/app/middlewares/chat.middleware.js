@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
-import Chat from "../models/chat.model";
-import { ApiError } from "../utils/apiError";
-import User from "../models/user.model";
+import Chat from "../models/chat.model.js";
+import { ApiError } from "../utils/apiError.js";
+import User from "../models/user.model.js";
 
 export const verifyUpdateChat = asyncHandler(async (req, res, next) => {
   const chat = await Chat.findById(req.params.id);

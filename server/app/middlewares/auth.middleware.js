@@ -1,13 +1,13 @@
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
-import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/apiError.js";
 import User from "../models/user.model.js";
 import Token from "../models/token.model.js";
-import { createAccessToken } from "../utils/createAccessToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
 
 export const verifyToken = asyncHandler(async (req, res, next) => {
+  const { TokenExpiredError } = jwt;
+
   if (!req.headers["x-access-token"]) {
     return next(new ApiError("Not authorized", 401));
   }
@@ -20,15 +20,22 @@ export const verifyToken = asyncHandler(async (req, res, next) => {
 
   if (!token) return next(new ApiError("Invalid access token", 401));
 
-  const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decode) => {
+    if (err) {
+      if (err instanceof TokenExpiredError) {
+        return next(new ApiError("Access token expired", 401));
+      }
+      return next(new ApiError("Invalid access token", 401));
+    }
 
-  const user = await User.findById(decode.userId);
+    const user = await User.findById(decode.userId);
 
-  if (!user) return next(new ApiError("No user for this api token", 401));
+    if (!user) return next(new ApiError("No user for this api token", 401));
 
-  req.user = user;
+    req.user = user;
 
-  next();
+    next();
+  });
 });
 
 export const verifyEmail = asyncHandler(async (req, res, next) => {
@@ -57,10 +64,12 @@ export const verifyEmail = asyncHandler(async (req, res, next) => {
 
       const verificationLink = `http://localhost:3000/verify?id=${token.user}&token=${token.token}`;
 
-      const isSent = sendEmail(req.user.email, verificationLink);
-
-      if (!isSent) {
+      try {
+        await sendEmail(req.user.email, verificationLink);
+      } catch (err) {
         await Token.findByIdAndDelete(token.id);
+
+        console.log(err);
 
         return next(
           new ApiError("Can't send email to user, please try again.", 500)
@@ -70,9 +79,9 @@ export const verifyEmail = asyncHandler(async (req, res, next) => {
 
     return next(
       new ApiError(
-        "Email not verified, please check your inbox or spam to verify your email"
-      ),
-      401
+        "Email not verified, please check your inbox or spam to verify your email",
+        401
+      )
     );
   }
 

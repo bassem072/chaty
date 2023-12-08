@@ -1,24 +1,38 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { profile } from "../slices/auth";
 
-export default function ProtectedRoutes(props) {
+export default function ProtectedRoutes({ children, isVerified }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const checkUserToken = () => {
-    const token = localStorage.getItem("token");
-
-    if (!token || token === "undefined") {
-      setIsLoggedIn(false);
-      return navigate("auth");
-    }
-
-    setIsLoggedIn(true);
-  };
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    checkUserToken();
-  });
+    if (!token || token === "undefined") {
+      return navigate("/auth");
+    }
 
-  return isLoggedIn ? props.children : null;
+    dispatch(profile())
+      .unwrap()
+      .then(() => {
+        setIsLoggedIn(true);
+      })
+      .catch((error) => {
+        //alert(error);
+        if (
+          error ===
+          "Email not verified, please check your inbox or spam to verify your email"
+        ) {
+          if (isVerified) {
+            return navigate("/verifyEmail");
+          } else {
+            setIsLoggedIn(true);
+          }
+        }
+      });
+  }, [dispatch, isVerified, navigate, token])
+
+  return isLoggedIn ? children : null;
 }
