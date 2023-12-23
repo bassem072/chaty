@@ -6,20 +6,29 @@ import login from "../assets/images/Login-amico.svg";
 import register from "../assets/images/register-amicro.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { changeRegister } from "../slices/auth";
+import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet";
 
 export default function Auth() {
   const { isRegister } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const { t, i18n } = useTranslation("auth");
+  const dir = i18n.language === "ar" ? "rtl" : "ltr";
 
   return (
-    <div className="w-screen h-screen text-start">
+    <div dir="ltr" className="w-screen h-screen text-start">
+      <Helmet>
+        <title>
+          {t(isRegister ? "pageTitle.register" : "pageTitle.login")}
+        </title>
+      </Helmet>
       <div
         className={
           "relative w-full md:min-h-[800px] h-screen lg:min-h-screen overflow-hidden p-6 md:p-0 c " +
           (isRegister ? "sign-up" : "")
         }
       >
-        <div className="absolute w-full h-full top-0 right-0">
+        <div dir={dir} className="absolute w-full h-full top-0 right-0">
           <div
             className={
               "absolute w-full lg:w-1/2 top-[95%] lg:top-1/2 left-1/2 lg:left-3/4 -translate-x-1/2 -translate-y-[70%] lg:-translate-y-1/2 grid grid-cols-1 z-[5] transition-all delay-1000 duration-700 ease-in-out " +
@@ -38,9 +47,9 @@ export default function Auth() {
               "lg:pr-[17%] lg:pl-[12%] row-[1/2] lg:row-auto " +
               (isRegister ? "pointer-events-none" : "pointer-events-auto")
             }
-            title="Welcome Back!"
-            description="To keep connected with us please login with your personal info."
-            buttonText=" Sign up"
+            title={t("panel.login.title")}
+            description={t("panel.login.description")}
+            buttonText={t("panel.login.buttonText")}
             trans={
               isRegister
                 ? "-translate-x-[1000px] -translate-y-[300px] lg:translate-y-0"
@@ -54,9 +63,9 @@ export default function Auth() {
               "lg:pr-[12%] lg:pl-[17%] row-[3/4] lg:row-auto " +
               (isRegister ? "pointer-events-auto" : "pointer-events-none")
             }
-            title="Hello, Friend!"
-            description="Enter your personal details and start Journey with us."
-            buttonText="Sign in"
+            title={t("panel.register.title")}
+            description={t("panel.register.description")}
+            buttonText={t("panel.register.buttonText")}
             image={register}
             trans={
               isRegister

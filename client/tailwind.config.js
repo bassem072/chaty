@@ -4,14 +4,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#1D1B2E",
-        active: "#343142",
+        primary: "#262E35",
+        active: "#303841",
         message: "#7754B2",
         paragraph: "#EEEFF6",
-        sidebar: "#283142",
+        sidebar: "#36404A",
       },
       fontFamily: {
         archivo: ["Archivo"],
+        cairo: ["Cairo"],
       },
       boxShadow: {
         "my-shadow":

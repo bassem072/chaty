@@ -16,27 +16,27 @@ export default function PagesList() {
   const current = location.substring(1, location.length).split("/")[0];
   const pages = [
     {
-      name: "Chats",
-      route: "/",
+      name: "chats",
+      route: "/chats",
       icon: faComment,
     },
     {
-      name: "Groups",
+      name: "groups",
       route: "/groups",
       icon: faComments,
     },
     {
-      name: "Contacts",
+      name: "contacts",
       route: "/contacts",
       icon: faContactBook,
     },
     {
-      name: "Profile",
+      name: "profile",
       route: "/profile",
       icon: faUser,
     },
     {
-      name: "Settings",
+      name: "settings",
       route: "/settings",
       icon: faGear,
     },
@@ -59,20 +59,21 @@ export default function PagesList() {
   }, [menuRef]);
 
   return (
-    <button
-      ref={menuRef}
-      className="flex justify-between lg:flex-col lg:gap-2"
-      onClick={() => setShow(!show)}
-    >
+    <div className="flex justify-between lg:flex-col lg:gap-2">
       {pages.map((page) => (
         <PageListItem
+          key={page.name}
           name={page.name}
           route={page.route}
           icon={page.icon}
           isActive={page.route === "/" + current}
         />
       ))}
-      <div className="h-full lg:hidden px-3 rounded-full flex items-center relative">
+      <button
+        ref={menuRef}
+        className="h-full lg:hidden px-3 rounded-full flex items-center relative"
+        onClick={() => setShow(!show)}
+      >
         <img
           src={user}
           alt="Profile Pic"
@@ -84,20 +85,20 @@ export default function PagesList() {
           <div className="absolute w-40 ltr:right-5 rtl:!left-5 bottom-[50px] z-10 p-1 bg-[#303841] rounded-md transition-all duration-700">
             <div className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar">
               <div>Profile</div>
-              <FontAwesomeIcon icon={faUser} size="x" />
+              <FontAwesomeIcon icon={faUser} size="1x" />
             </div>
             <div className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar">
               <div>Setting</div>
-              <FontAwesomeIcon icon={faGear} size="x" />
+              <FontAwesomeIcon icon={faGear} size="1x" />
             </div>
             <div className="h-0.5 bg-paragraph/30"></div>
             <div className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar">
               <div>Logout</div>
-              <FontAwesomeIcon icon={faRightFromBracket} size="x" />
+              <FontAwesomeIcon icon={faRightFromBracket} size="1x" />
             </div>
           </div>
         )}
-      </div>
-    </button>
+      </button>
+    </div>
   );
 }

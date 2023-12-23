@@ -2,43 +2,49 @@ export default function validate(values) {
       const errors = {};
 
       if (!values.name) {
-        errors.name = "Required";
+        errors.name = "errors.name.required";
       } else if (values.name.length < 3) {
-        errors.name = "Name must be at least 3 characters";
+        errors.name = "errors.name.short";
       }
 
       if (!values.email) {
-        errors.email = "Required";
+        errors.email = "errors.email.required";
       } else if (
         !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i.test(
           values.email
         )
       ) {
-        errors.email = "Invalid email address";
+        errors.email = "errors.email.invalid";
       }
 
       if (!values.password) {
-        errors.password = "Required";
+        errors.password = "errors.password.required";
       } else if (values.password.length < 8) {
-        errors.password = "Password must be at least 8 characters";
+        errors.password = "errors.password.short";
       }
 
       if (!values.repeatPassword) {
-        errors.repeatPassword = "Required";
+        errors.repeatPassword = "errors.repeatPassword.required";
       } else if (values.password !== values.repeatPassword) {
-        errors.repeatPassword = "Two passwords does not match";
+        errors.repeatPassword = "errors.repeatPassword.notMatch";
       }
+
+      const str = values.year + "-" + (+values.month + 1) + "-" + values.day;
       
-      const date = new Date(
-        values.year + "-" + (+values.month + 1) + "-" + values.day
+      const date = new Date(str);
+
+      console.log(
+        str,
+        new Date(str),
+        date.getDate()
       );
 
       if (date.getDate() !== Number(values.day)) {
-        errors.date = "Invalid Date";
+        errors.date = "errors.date.invalid";
       }
 
       if (values.gender === null) {
-        errors.gender = "Required";
+        errors.gender = "errors.gender.required";
       }
 
       return errors;

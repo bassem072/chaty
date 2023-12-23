@@ -4,10 +4,12 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faGear, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import user from "../../../../assets/images/users/user_1.avif";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function ProfileMenu() {
   const [show, setShow] = useState(false);
   const menuRef = useRef();
+  const { t } = useTranslation("sidebar");
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -39,16 +41,16 @@ export default function ProfileMenu() {
       {show && (
         <div className="absolute w-40 left-5 rtl:right-6 bottom-10 z-10 p-1 bg-[#303841] rounded-md transition-all duration-700">
           <div className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar">
-            <div>Profile</div>
+            <div>{t("profile")}</div>
             <FontAwesomeIcon icon={faUser} size="x" />
           </div>
           <div className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar">
-            <div>Setting</div>
+            <div>{t("settings")}</div>
             <FontAwesomeIcon icon={faGear} size="x" />
           </div>
           <div className="h-0.5 bg-paragraph/30"></div>
           <div className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar">
-            <div>Logout</div>
+            <div>{t("logout")}</div>
             <FontAwesomeIcon icon={faRightFromBracket} size="x" />
           </div>
         </div>

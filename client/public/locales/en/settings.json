@@ -1,0 +1,13 @@
+{
+  "title": "Chaty | Settings",
+  "settings": "Settings",
+  "name": "Name",
+  "about": "Status",
+  "email": "Email",
+  "save": "Save",
+  "language": "Language",
+  "sidebar": {
+    "editProfile": "Edit Profile",
+    "appSetting": "App Settings"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "title": "Chaty | Chats",
+  "chats": "Chats",
+  "description": "Join the conversation, share your thoughts, and learn something new.",
+  "messagePlaceholder": "Type a message...",
+  "sidebar": {
+    "searchPlaceholder": "Search Chats"
+  }
+}

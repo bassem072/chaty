@@ -1,12 +1,15 @@
 import React from 'react';
 import { days, months, years } from '../../../../helpers/dates';
+import { useTranslation } from 'react-i18next';
 
 export default function SelectField({ onBlur, onChange, dayVal, monthVal, yearVal, error }) {
+  const { t } = useTranslation("auth");
+
   return (
     <>
       <div className="max-w-sm w-full flex gap-5 my-3">
         <p className="text-lg pb-1 flex items-center whitespace-nowrap">
-          Date of birth
+          {t("form.register.birthday.title")}
         </p>
         <div className="flex w-full gap-4">
           <select

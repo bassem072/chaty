@@ -5,7 +5,7 @@ export default function Tooltip({
   customStyle,
 }) {
   return (
-    <div className={"absolute text-xs top-[] z-10 hidden group-hover:block bg-black text-white p-2 rounded " + customStyle}>
+    <div className={"absolute text-xs z-10 hidden group-hover:block text-white p-2 rounded " + customStyle}>
       {name}
       <div className="tooltip-arrow"></div>
     </div>

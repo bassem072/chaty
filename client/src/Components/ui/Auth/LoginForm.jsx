@@ -10,12 +10,14 @@ import { setMessage } from "../../../slices/message";
 import { login } from "../../../slices/auth";
 import CheckField from "./FormFields/CheckField";
 import validate from "../../../services/validation/login";
+import { useTranslation } from "react-i18next";
 
 export default function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const { isLoading, isRegister } = useSelector((state) => state.auth);
+  const { t } = useTranslation("auth");
 
   const formik = useFormik({
     initialValues: {
@@ -53,37 +55,40 @@ export default function LoginForm() {
         className="flex items-center justify-center flex-col mb-2"
         onSubmit={formik.handleSubmit}
       >
-        <h2 className="text-4xl text-paragraph mb-2.5">Sign In</h2>
+        <h2 className="text-4xl text-paragraph mb-2.5">{t("title.login")}</h2>
         <FormInput
           icon={faEnvelope}
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder={t("form.common.email")}
           val={formik.values.email}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           condition={formik.touched.email && formik.errors.email}
-          error={formik.errors.email}
+          error={t(formik.errors.email)}
         />
         <FormInput
           icon={faLock}
           type="password"
           name="password"
-          placeholder="Password"
+          placeholder={t("form.common.password")}
           val={formik.values.password}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           condition={formik.touched.password && formik.errors.password}
-          error={formik.errors.password}
+          error={t(formik.errors.password, {length: 8})}
         />
         <CheckField
           name="remember"
           val={formik.values.remember}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          text="Remember me"
+          text={t("form.login.remember")}
         />
-        <FormButton name="Login" disabled={isLoading ? true : false} />
+        <FormButton
+          name={t("form.login.button")}
+          disabled={isLoading ? true : false}
+        />
       </form>
       <SocialLogin />
     </div>

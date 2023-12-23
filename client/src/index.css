@@ -14,9 +14,26 @@
   .input-label {
     @apply text-center leading-[55px] text-lg;
   }
+
+  .message-bubble-left {
+    @apply relative w-auto max-w-xs min-w-[150px] bg-message ltr:rounded-tl-lg ltr:rounded-br-lg rtl:rounded-tr-lg rtl:rounded-bl-lg p-2 text-white;
+  }
+
+  .message-bubble-left-after {
+    @apply absolute w-0 h-0 border-t-[8px] border-t-transparent border-l-[8px] ltr:border-l-transparent rtl:border-l-message border-r-[8px] ltr:border-r-message rtl:border-r-transparent bottom-0 ltr:-left-4 rtl:-right-4;
+  }
+
+  .message-bubble-right {
+    @apply relative w-auto max-w-xs min-w-[150px] bg-message rtl:rounded-tl-lg rtl:rounded-br-lg ltr:rounded-tr-lg ltr:rounded-bl-lg p-2 text-white;
+  }
+
+  .message-bubble-right-after {
+    @apply absolute w-0 h-0 border-t-[8px] border-t-transparent border-r-[8px] ltr:border-r-transparent rtl:border-r-message border-l-[8px] ltr:border-l-message rtl:border-l-transparent bottom-0 ltr:-right-4 rtl:-left-4;
+  }
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Cairo:wght@200;300;400;500;600;700;800;900;1000&display=swap');
 
 body {
   margin: 0;
@@ -115,4 +132,36 @@ input::selection {
   border-top: 5px solid black;
   bottom: -5px;
   left: calc(50% - 5px);
+}
+
+.message-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-left: 10px solid #7754B2;
+  bottom: 0px;
+  right: -20px;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  display: none;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 5px;
+}
+
+.scrollbar:hover::-webkit-scrollbar-thumb {
+  background: rgba(238, 239, 246, 0.2);
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgb(238, 239, 246, 0.5);
 }

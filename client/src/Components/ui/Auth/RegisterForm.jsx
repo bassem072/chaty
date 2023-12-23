@@ -15,11 +15,13 @@ import {
 import SelectField from "./FormFields/SelectField";
 import RadioField from "./FormFields/RadioField";
 import validate from "../../../services/validation/register";
+import { useTranslation } from "react-i18next";
 
 export default function RegisterForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+  const { t } = useTranslation("auth");
   const { isLoading, isRegister } = useSelector(
     (state) => state.auth
   );
@@ -31,7 +33,7 @@ export default function RegisterForm() {
       password: "",
       repeatPassword: "",
       day: current_day,
-      month: current_month + 1,
+      month: current_month,
       year: current_year,
       gender: 0,
     },
@@ -76,52 +78,54 @@ export default function RegisterForm() {
         className="flex items-center justify-center flex-col mb-2"
         onSubmit={formik.handleSubmit}
       >
-        <h2 className="text-4xl text-paragraph mb-2.5">Sign In</h2>
+        <h2 className="text-4xl text-paragraph mb-2.5">
+          {t("title.register")}
+        </h2>
         <FormInput
           icon={faUser}
           type="text"
           name="name"
-          placeholder="Name"
+          placeholder={t("form.register.name")}
           val={formik.values.name}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           condition={formik.touched.name && formik.errors.name}
-          error={formik.errors.name}
+          error={t(formik.errors.name, {length: 3})}
         />
         <FormInput
           icon={faEnvelope}
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder={t("form.common.email")}
           val={formik.values.email}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           condition={formik.touched.email && formik.errors.email}
-          error={formik.errors.email}
+          error={t(formik.errors.email)}
         />
         <FormInput
           icon={faLock}
           type="password"
           name="password"
-          placeholder="Password"
+          placeholder={t("form.common.password")}
           val={formik.values.password}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           condition={formik.touched.password && formik.errors.password}
-          error={formik.errors.password}
+          error={t(formik.errors.password, {length: 8})}
         />
         <FormInput
           icon={faLock}
           type="password"
           name="repeatPassword"
-          placeholder="Repeat Password"
+          placeholder={t("form.register.repeatPassword")}
           val={formik.values.repeatPassword}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           condition={
             formik.touched.repeatPassword && formik.errors.repeatPassword
           }
-          error={formik.errors.repeatPassword}
+          error={t(formik.errors.repeatPassword)}
         />
         <SelectField
           onChange={formik.handleChange}
@@ -129,17 +133,20 @@ export default function RegisterForm() {
           dayVal={formik.values.day}
           monthVal={formik.values.month}
           yearVal={formik.values.year}
-          error={formik.errors.date}
+          error={t(formik.errors.date)}
         />
         <RadioField
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          title="Gender"
+          title={t("form.register.gender.title")}
           currentVal={formik.values.gender}
           condition={formik.touched.gender && formik.errors.gender}
-          error={formik.errors.gender}
+          error={t(formik.errors.gender)}
         />
-        <FormButton name="Register" disabled={isLoading ? true : false} />
+        <FormButton
+          name={t("form.register.button")}
+          disabled={isLoading ? true : false}
+        />
       </form>
       <SocialLogin />
     </div>
