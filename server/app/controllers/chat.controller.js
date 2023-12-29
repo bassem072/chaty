@@ -6,13 +6,20 @@ import Message from "../models/message.model.js";
 
 export const index = asyncHandler(async (req, res) => {
   const docsCount = await Chat.countDocuments();
+
+  const filter = {
+    $text: {
+      $search: req.query.keyword || "",
+    },
+    users: req.user.id,
+  };
+
+  if (req.query.hasOwnProperty("isGroupChat")) {
+    filter.isGroupChat = req.query.isGroupChat;
+  }
+
   const apiFeatures = new ApiFeatures(
-    Chat.find({
-      $text: {
-        $search: req.query.keyword || "",
-      },
-      users: req.user.id,
-    }),
+    Chat.find(filter).sort(),
     req.query
   )
     .paginate(docsCount)
@@ -20,14 +27,12 @@ export const index = asyncHandler(async (req, res) => {
     .limitFields()
     .sort();
 
-  const { mongooseQuery, paginationResult } = apiFeatures;
+  const { mongooseQuery } = apiFeatures;
   const chats = await mongooseQuery
     .populate("users", "-password")
     .populate("latestMessage");
 
   res.status(200).json({
-    results: chats.length,
-    paginationResult,
     data: chats,
   });
 });

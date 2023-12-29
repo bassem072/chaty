@@ -58,18 +58,18 @@ export const verifyManegeUsers = asyncHandler(async (req, res, next) => {
     return next(new ApiError("Chat not found for id " + req.params.id, 404));
   }
 
+  if (!chat.isGroupChat) {
+    return next(new ApiError("This is not a group chat", 405));
+  }
+
   if (!chat.users.includes(req.user.id)) {
     return next(
       new ApiError("You do not have permission to delete this chat", 403)
     );
   }
 
-  if (chat.isGroupChat && chat.groupAdmins.includes(req.user.id)) {
+  if (chat.groupAdmins.includes(req.user.id)) {
     return next(new ApiError("You are not admin", 403));
-  }
-
-  if (!chat.isGroupChat) {
-    return next(new ApiError("This is not a group chat", 405));
   }
 
   const user = User.findById(req.body.user);

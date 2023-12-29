@@ -11,6 +11,7 @@ import {
   show,
   update,
 } from "../controllers/chat.controller.js";
+
 import {
   addAdminToChatValidator,
   addUserToChatValidator,
@@ -21,12 +22,14 @@ import {
   showChatValidator,
   updateChatValidator,
 } from "../utils/validation/chat.validator.js";
+
 import {
   verifyDeleteChat,
   verifyManegeAdmins,
   verifyManegeUsers,
   verifyUpdateChat,
 } from "../middlewares/chat.middleware.js";
+
 import messageRouter from "./message.routes.js";
 import { verifyEmail, verifyToken } from "../middlewares/auth.middleware.js";
 

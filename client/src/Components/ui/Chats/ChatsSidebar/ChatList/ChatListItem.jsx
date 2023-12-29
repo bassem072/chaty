@@ -19,7 +19,7 @@ export default function ChatListItem({ chat, ref }) {
       }
     >
       <ProfilePic />
-      <ChatInfo />
+      <ChatInfo chat={chat} />
     </Link>
   );
 }

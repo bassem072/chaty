@@ -3,6 +3,7 @@ import ChatList from "./ChatList";
 import Search from "./Search";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import FilterMessages from "./FilterMessages";
 
 export default function ChatsSidebar() {
   const { t } = useTranslation("chats");
@@ -18,8 +19,9 @@ export default function ChatsSidebar() {
       }
     >
       <div className="w-full lg:w-[380px] text-start text-xl font-semibold px-5">
-        {t("chats")}
+        {t("header")}
       </div>
+      <FilterMessages />
       <Search />
       <ChatList />
     </div>

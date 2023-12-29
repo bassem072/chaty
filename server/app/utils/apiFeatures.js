@@ -6,7 +6,7 @@ export class ApiFeatures {
 
   filter = () => {
     const queryStringObj = { ...this.queryString };
-    const excludesFields = ["page", "sort", "limit", "fields"];
+    const excludesFields = ["sort", "fields", "skip", "limit"];
 
     excludesFields.forEach((field) => delete queryStringObj[field]);
 
@@ -56,28 +56,12 @@ export class ApiFeatures {
     return this;
   };
 
-  paginate = (countDocs) => {
-    const page = this.queryString.page || 1;
+  paginate = () => {
     const limit = this.queryString.limit || 1;
-    const skip = (page - 1) * limit;
-    const endIndex = page * limit;
-
-    const pagination = {};
-    pagination.currentPage = page;
-    pagination.limit = limit;
-    pagination.numberOfPages = Math.ceil(countDocs / limit);
-
-    if(endIndex < countDocs) {
-        pagination.next = page + 1;
-    }
-
-    if(skip > 0) {
-        pagination.prev = page - 1;
-    }
+    const skip = this.queryString.skip || 0;
 
     this.mongooseQuery = this.mongooseQuery.skip(skip).limit(limit);
-
-    this.paginationResult = pagination;
+    
     return this;
   }
 }

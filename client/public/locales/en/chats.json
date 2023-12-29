@@ -1,9 +1,14 @@
 {
   "title": "Chaty | Chats",
+  "header": "Chaty",
+  "all": "All",
   "chats": "Chats",
+  "groups": "Groups",
   "description": "Join the conversation, share your thoughts, and learn something new.",
   "messagePlaceholder": "Type a message...",
-  "sidebar": {
-    "searchPlaceholder": "Search Chats"
+  "search": {
+    "all": "Search in chats and groups...",
+    "chats": "Search in chats...",
+    "groups": "Search in groups..."
   }
 }

@@ -3,7 +3,7 @@ import user from '../../../../../assets/images/users/user_5.png';
 
 export default function ProfilePic() {
   return (
-    <div className="relative">
+    <div className="relative w-16">
       <img
         src={user}
         alt="user"

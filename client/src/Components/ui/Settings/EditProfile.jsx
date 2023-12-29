@@ -18,7 +18,7 @@ export default function EditProfile() {
           height={120}
           className="rounded-full border-4 border-message/70"
         />
-        <button className="absolute w-8 h-8 flex justify-center items-center bg-message rounded-full ltr:left-3/4 rtl:left-[15%] bottom-[5%]">
+        <button className="absolute w-8 h-8 flex justify-center items-center bg-message rounded-full ltr:left-3/4 rtl:left-0 bottom-0">
           <FontAwesomeIcon icon={faPen} />
         </button>
       </div>
