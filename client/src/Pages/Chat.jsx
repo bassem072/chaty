@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {Helmet} from "react-helmet";
 import { useTranslation } from "react-i18next";
 import ChatsSidebar from "../Components/ui/Chats/ChatsSidebar";
 import ChatMessages from "../Components/ui/Chats/ChatMessages";
-import { useParams } from "react-router-dom";
 import NoChatSelected from "../Components/ui/Shared/NoChatSelected";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchChats } from "../slices/chat";
 
 export default function Chat() {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  let { id } = useParams();
+  let { selectedChat } = useSelector(state => state.chat);
+
+  useEffect(() => {
+    dispatch(fetchChats({}));
+  }, [dispatch]);
 
   return (
     <div className="w-full h-full flex justify-start items-center overflow-hidden">
@@ -16,7 +22,7 @@ export default function Chat() {
         <title>{t("title")}</title>
       </Helmet>
       <ChatsSidebar />
-      {id ? <ChatMessages /> : <NoChatSelected />}
+      {selectedChat ? <ChatMessages /> : <NoChatSelected />}
     </div>
   );
 }

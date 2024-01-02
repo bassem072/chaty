@@ -1,6 +1,27 @@
 import mongoose from "mongoose";
+import { faker, fakerAR } from "@faker-js/faker";
 import dbConfig from "../configs/db.config.js";
 import User from "../models/user.model.js";
+
+const createUsers = () => {
+  for (let i = 1; i <= 20; i++) {
+    const user = new User({
+      name: faker.person.fullName(),
+      bio: faker.person.bio(),
+      email: "user" + i + "@gmail.com",
+      password: "user" + i + "2751959@",
+      verified: true,
+      gender: faker.person.sex(),
+      birthdate: faker.date.birthdate(),
+      role: "user",
+    });
+
+    user
+      .save()
+      .then((saved_user) => console.log("User Added: ", saved_user))
+      .catch((error) => console.log("User Error: ", error));
+  }
+};
 
 const dbSetup = () => {
   mongoose
@@ -25,6 +46,8 @@ const dbSetup = () => {
           .save()
           .then((saved_admin) => console.log("Admin Added: ", saved_admin))
           .catch((error) => console.log("Admin Error: ", error));
+
+        createUsers();
       }
     })
     .catch((err) => {

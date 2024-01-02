@@ -25,7 +25,6 @@ function App() {
   const dispatch = useDispatch();
   const { i18n } = useTranslation();
   const dir = i18n.language === "ar" ? "rtl" : "ltr";
-  localStorage.removeItem("token");
 
   const { message } = useSelector((state) => state.message);
 
@@ -59,17 +58,21 @@ function App() {
           <Route
             path="/chats"
             element={
-              <HomeLayout>
-                <Chat />
-              </HomeLayout>
+              <ProtectedRoutes isVerified={true}>
+                <HomeLayout>
+                  <Chat />
+                </HomeLayout>
+              </ProtectedRoutes>
             }
           />
           <Route
             path="/chats/:id"
             element={
-              <HomeLayout>
-                <Chat />
-              </HomeLayout>
+              <ProtectedRoutes isVerified={true}>
+                <HomeLayout>
+                  <Chat />
+                </HomeLayout>
+              </ProtectedRoutes>
             }
           />
           <Route
@@ -107,17 +110,21 @@ function App() {
           <Route
             path="/profile"
             element={
-              <HomeLayout>
-                <Profile />
-              </HomeLayout>
+              <ProtectedRoutes isVerified={true}>
+                <HomeLayout>
+                  <Profile />
+                </HomeLayout>
+              </ProtectedRoutes>
             }
           />
           <Route
             path="/settings"
             element={
-              <HomeLayout>
-                <Setting />
-              </HomeLayout>
+              <ProtectedRoutes isVerified={true}>
+                <HomeLayout>
+                  <Setting />
+                </HomeLayout>
+              </ProtectedRoutes>
             }
           />
           <Route

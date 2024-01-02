@@ -6,6 +6,8 @@
   "groups": "Groups",
   "description": "Join the conversation, share your thoughts, and learn something new.",
   "messagePlaceholder": "Type a message...",
+  "newMessage": "New Message",
+  "newGroup": "New Group",
   "search": {
     "all": "Search in chats and groups...",
     "chats": "Search in chats...",

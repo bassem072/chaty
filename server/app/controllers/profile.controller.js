@@ -5,7 +5,7 @@ import { ApiError } from "../utils/apiError.js";
 import { userResponse } from "../utils/dto/userResponseDTO.js";
 
 export const show = asyncHandler(async (req, res, next) => {
-  console.log("hi", req.cookies.refresh);
+  console.log("hi", req.cookies);
   res.status(200).json({ data: userResponse(req.user) });
 });
 

@@ -81,7 +81,7 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-::-moz-selection { /* Code for Firefox */
+::-moz-selection {
   color: #7553b2;
 }
 input::selection {

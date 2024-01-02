@@ -5,36 +5,37 @@ import { ApiError } from "../utils/apiError.js";
 import Message from "../models/message.model.js";
 
 export const index = asyncHandler(async (req, res) => {
-  const docsCount = await Chat.countDocuments();
+  const limit = req.query.limit ?? 10;
+  const skip = req.query.skip ?? 0;
+  const keyword = req.query.keyword;
 
   const filter = {
-    $text: {
-      $search: req.query.keyword || "",
-    },
     users: req.user.id,
   };
+
+  if (keyword) {
+    filter["$text"] = {
+      $search: keyword,
+    };
+  }
 
   if (req.query.hasOwnProperty("isGroupChat")) {
     filter.isGroupChat = req.query.isGroupChat;
   }
 
-  const apiFeatures = new ApiFeatures(
-    Chat.find(filter).sort(),
-    req.query
-  )
-    .paginate(docsCount)
-    .filter()
-    .limitFields()
-    .sort();
-
-  const { mongooseQuery } = apiFeatures;
-  const chats = await mongooseQuery
+  const chats = await Chat.find(filter)
+    .sort("-created")
+    .skip(skip)
+    .limit(limit)
     .populate("users", "-password")
+    .populate("groupAdmins", "-password")
     .populate("latestMessage");
 
   res.status(200).json({
     data: chats,
   });
+
+  console.log(chats);
 });
 
 export const create = asyncHandler(async (req, res, next) => {
@@ -72,7 +73,10 @@ export const fetch = asyncHandler(async (req, res, next) => {
   let chat = await Chat.findOne({
     users: [req.user.id, req.body.user],
     isGroupChat: false,
-  });
+  })
+    .populate("users", "-password")
+    .populate("groupAdmins", "-password")
+    .populate("latestMessage");
 
   if (!chat) {
     const chatObj = new Chat({
@@ -81,14 +85,33 @@ export const fetch = asyncHandler(async (req, res, next) => {
 
     const addChat = await chatObj.save();
 
-    chat = Chat.findById(addChat.id).populate("users", "-password");
+    const createChatMessage = new Message({
+      sender: req.user.id,
+      messageType: "create_chat",
+      chatId: addChat.id,
+      content: "",
+    });
+
+    const message = await createChatMessage.save();
+
+    chat = await Chat.findByIdAndUpdate(
+      addChat.id,
+      {
+        latestMessage: message.id,
+      },
+      { new: true }
+    )
+      .populate("users", "-password")
+      .populate("groupAdmins", "-password")
+      .populate("latestMessage");
 
     if (!chat) {
       return next(new ApiError("Can't create this chat", 404));
     }
+    res.status(200).json({ data: chat });
+  } else {
+    res.status(200).json({ data: chat });
   }
-
-  res.status(200).json({ data: chat });
 });
 
 export const update = asyncHandler(async (req, res, next) => {

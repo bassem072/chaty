@@ -11,10 +11,11 @@ import {
   removeUserFromGroupService,
   addAdminToGroupService,
   removeAdminFromGroupService,
+  fetchChatService,
 } from "../services/chat.service";
 
 export const fetchChats = createAsyncThunk(
-  "/chats/fetch",
+  "/chats/fetchChats",
   async (filters, thunkAPI) => {
     try {
       const { data } = await fetchChatsService(filters);
@@ -35,6 +36,23 @@ export const createChat = createAsyncThunk(
   async (chatData, thunkAPI) => {
     try {
       const { data } = await createChatService(chatData);
+      return { chat: data };
+    } catch (error) {
+      let message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const fetchChat = createAsyncThunk(
+  "/chats/fetch",
+  async (chatData, thunkAPI) => {
+    try {
+      const { data } = await fetchChatService(chatData);
       return { chat: data };
     } catch (error) {
       let message =
@@ -185,6 +203,7 @@ export const removeAdminFromGroup = createAsyncThunk(
 
 const initialState = {
   chats: [],
+  selectedChat: null,
   isLoading: false,
   filter: "all",
 };
@@ -196,6 +215,12 @@ const chat = createSlice({
     changeFilter: (state, action) => {
       if (["all", "chats", "groups"].includes(action.payload)) {
         state.filter = action.payload;
+      }
+    },
+    selectChat: (state, action) => {
+      const index = state.chats.findIndex((item) => item.id === action.payload);
+      if (index !== -1) {
+        state.selectedChat = action.payload;
       }
     },
     newMessage: (state, action) => {
@@ -243,7 +268,7 @@ const chat = createSlice({
       })
       .addCase(fetchChats.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.chats = state.chats.concat(action.payload);
+        state.chats = action.payload.chats;
       })
       .addCase(createChat.pending, (state) => {
         state.isLoading = true;
@@ -252,7 +277,23 @@ const chat = createSlice({
         state.isLoading = false;
       })
       .addCase(createChat.fulfilled, (state, action) => {
-        state.chats = state.chats.push(action.payload);
+        state.chats = state.chats.push(action.payload.data);
+        state.isLoading = false;
+      })
+      .addCase(fetchChat.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchChat.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(fetchChat.fulfilled, (state, action) => {
+        const index = state.chats.findIndex(
+          (item) => item._id === action.payload.chat._id
+        );
+        if (index === -1) {
+          state.chats = [action.payload.chat, ...state.chats];
+        }
+        state.selectedChat = action.payload.chat._id;
         state.isLoading = false;
       })
       .addCase(getChat.pending, (state) => {
@@ -275,9 +316,9 @@ const chat = createSlice({
         state.chats = state.chats.push(action.payload);
         state.isLoading = false;
       });
-  }
+  },
 });
 
-export const { changeFilter, newMessage } = chat.actions;
+export const { changeFilter, selectChat, newMessage } = chat.actions;
 
 export default chat.reducer;

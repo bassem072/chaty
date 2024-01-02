@@ -16,7 +16,22 @@ const schema = new Schema(
     },
     messageType: {
       type: String,
-      enum: ["text", "photo", "video", "file", "record"],
+      enum: [
+        "text",
+        "photo",
+        "video",
+        "file",
+        "record",
+        "create_chat",
+        "create_group",
+        "addAdminToGroup",
+        "deleteAdminFromGroup",
+        "addUserToGroup",
+        "deleteUserFromGroup",
+        "leave",
+        "join",
+        "change_chat_pic",
+      ],
       default: "text",
     },
     fileUrl: {
@@ -34,7 +49,7 @@ const schema = new Schema(
   }
 );
 
-schema.index({"content": "text"});
+schema.index({ content: "text" });
 
 const Message = model("Message", schema);
 

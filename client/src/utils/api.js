@@ -1,4 +1,3 @@
-import axios from "axios";
 import { remove } from "../slices/auth";
 import apiInstance from "./apiInstance";
 import { getToken } from "./storage";
@@ -33,7 +32,7 @@ const apiSetup = (store, navigate) => {
         ) {
           originalRequest._retry = true;
           try {
-            const response = await axios.get(
+            const response = await apiInstance.get(
               "http://localhost:5000/api/refresh"
             );
             const { token } = response.data;

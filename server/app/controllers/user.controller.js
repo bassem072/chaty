@@ -1,24 +1,25 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/user.model.js";
-import { ApiFeatures } from "../utils/apiFeatures.js";
 import { ApiError } from "../utils/apiError.js";
 import { userResponse, usersResponse } from "../utils/dto/userResponseDTO.js";
 
 export const index = asyncHandler(async (req, res) => {
-  const docsCount = await User.countDocuments();
-  const apiFeatures = new ApiFeatures(User.find(), req.query)
-    .paginate(docsCount)
-    .filter()
-    .search(["name", "email"])
-    .limitFields()
-    .sort();
+  const limit = req.query.limit ?? 10;
+  const skip = req.query.skip ?? 0;
+  const keyword = req.query.keyword ?? "";
 
-  const { mongooseQuery, paginationResult } = apiFeatures;
-  const users = await mongooseQuery;
+  const users = await User.find({
+    $or: [
+      { name: { $regex: keyword, $options: "i" } },
+      { email: { $regex: keyword, $options: "i" } },
+    ],
+    _id: { $not: { $in: [req.user.id] } },
+  })
+    .sort("-created")
+    .skip(skip)
+    .limit(limit);
 
   res.status(200).json({
-    results: users.length,
-    paginationResult,
     data: usersResponse(users),
   });
 });

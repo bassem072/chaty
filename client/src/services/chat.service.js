@@ -5,7 +5,7 @@ export const fetchChatsService = async ({
   keyword = "",
   sort = "-latestMessage.createdAt",
   limit = 20,
-  isGroupChat,
+  isGroupChat = null,
 }) => {
   const query = {
     keyword,
@@ -14,7 +14,7 @@ export const fetchChatsService = async ({
     sort,
   };
 
-  if (isGroupChat !== null && isGroupChat !== undefined) {
+  if (isGroupChat !== null) {
     query.isGroupChat = isGroupChat;
   }
   const response = await apiInstance.get(`chats`, query);
@@ -33,6 +33,16 @@ export const createChatService = async ({ userId, isGroupChat = false, name = ""
   }
 
   const response = await apiInstance.post(`chats`, body);
+
+  return response.data;
+};
+
+export const fetchChatService = async ({ userId }) => {
+  const body = {
+    user: userId,
+  };
+
+  const response = await apiInstance.post(`chats/fetch`, body);
 
   return response.data;
 };

@@ -67,7 +67,7 @@ schema.pre("save", async function hashPassword(next) {
   this.password = bcrypt.hashSync(this.password, 10);
 });
 
-schema.index({"name": "text", "email": "text"})
+schema.index({ name: "text", email: "text" });
 
 const User = model("User", schema);
 

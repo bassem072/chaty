@@ -20,7 +20,6 @@ export default function ProtectedRoutes({ children, isVerified }) {
         setIsLoggedIn(true);
       })
       .catch((error) => {
-        //alert(error);
         if (
           error ===
           "Email not verified, please check your inbox or spam to verify your email"

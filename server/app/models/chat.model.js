@@ -35,6 +35,7 @@ const schema = new Schema(
 
 schema.index({
   "users.name": "text",
+  "users.email": "text",
   "name": "text",
 });
 

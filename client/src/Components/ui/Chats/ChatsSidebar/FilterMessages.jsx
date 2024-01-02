@@ -17,8 +17,9 @@ export default function FilterMessages() {
   return (
     <div className="w-full px-5">
       <div className="w-full h-12 bg-sidebar rounded-xl flex justify-between overflow-hidden">
-        {filters.map((filter) => (
+        {filters.map((filter, index) => (
           <button
+            key={index}
             className={
               "group w-full flex justify-center items-center gap-2 hover:bg-primary hover:text-message" +
               (chats.filter === filter.name ? " bg-primary text-message" : "")

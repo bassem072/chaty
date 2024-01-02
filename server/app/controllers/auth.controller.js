@@ -86,9 +86,11 @@ export const login = asyncHandler(async (req, res, next) => {
   const accessToken = createAccessToken(user._id);
   const refreshToken = await createRefreshToken(user._id, remember);
 
+  console.log(refreshToken);
+
   res.cookie("refresh", refreshToken, {
     httpOnly: true,
-    sameSite: "none",
+    sameSite: false,
     secure: true,
     maxAge: remember ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000,
   });
@@ -105,7 +107,7 @@ export const socialLogin = asyncHandler(async (req, res) => {
 
   res.cookie("refresh", refreshToken, {
     httpOnly: true,
-    sameSite: "none",
+    sameSite: false,
     secure: true,
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
@@ -152,6 +154,8 @@ export const verifyEmail = asyncHandler(async (req, res, next) => {
 
 export const refresh = asyncHandler(async (req, res, next) => {
   const refreshTokenString = req.cookies.refresh;
+
+  console.log("from refresh token: " + refreshTokenString);
 
   console.log(refreshTokenString);
 

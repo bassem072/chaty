@@ -5,6 +5,7 @@ import {
   clear,
   create,
   destroy,
+  fetch,
   index,
   removeAdminFromGroup,
   removeUserFromGroup,
@@ -17,6 +18,7 @@ import {
   addUserToChatValidator,
   createChatValidator,
   deleteChatValidator,
+  fetchChatValidator,
   removeAdminFromChatValidator,
   removeUserFromChatValidator,
   showChatValidator,
@@ -51,6 +53,8 @@ chatRouter.post(
   [...deleteChatValidator, verifyDeleteChat],
   clear
 );
+
+chatRouter.post("/fetch", [...fetchChatValidator], fetch);
 
 chatRouter.put(
   "/:id/users/add",
