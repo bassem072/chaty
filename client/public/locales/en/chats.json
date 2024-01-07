@@ -8,6 +8,9 @@
   "messagePlaceholder": "Type a message...",
   "newMessage": "New Message",
   "newGroup": "New Group",
+  "messageType": {
+    "create_chat": "You are now connected, You can chat now."
+  },
   "search": {
     "all": "Search in chats and groups...",
     "chats": "Search in chats...",

@@ -7,6 +7,27 @@ import {
   updateMessageService,
 } from "../services/message.service";
 import { setMessage } from "./message";
+import { getChatService } from "../services/chat.service";
+import sound from "../assets/audios/message.mp3";
+
+const messageSound = new Audio(sound);
+
+export const getChat = createAsyncThunk(
+  "/messages/chat/get",
+  async ({ chatId }, thunkAPI) => {
+    try {
+      const { data } = await getChatService(chatId);
+      return { chat: data };
+    } catch (error) {
+      let message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 export const fetchMessages = createAsyncThunk(
   "/messages/fetch",
@@ -82,7 +103,7 @@ export const updateMessage = createAsyncThunk(
 
 export const deleteMessage = createAsyncThunk(
   "/messages/delete",
-  async ({chatId, messageId}, thunkAPI) => {
+  async ({ chatId, messageId }, thunkAPI) => {
     try {
       await deleteMessageService(chatId, messageId);
       return;
@@ -98,6 +119,7 @@ export const deleteMessage = createAsyncThunk(
 );
 
 const initialState = {
+  chat: null,
   messages: [],
   isLoading: false,
 };
@@ -105,9 +127,68 @@ const initialState = {
 const chatMessages = createSlice({
   name: "chatMessages",
   initialState,
-  reducers: {},
+  reducers: {
+    addMessage: (state, action) => {
+      if (state.messages[state.messages.length - 1].id !== action.payload.id) {
+        state.messages.push(action.payload);
+        state.chat.latestMessage = action.payload;
+        messageSound.play();
+      }
+    },
+    updateChat: (state, action) => {
+      state.chat.latestMessage = action.payload;
+    },
+    clearMessagesHistory: (state, action) => {
+      state.chat = null;
+      state.messages = [];
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getChat.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getChat.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(getChat.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.chat = action.payload.chat;
+      })
+      .addCase(fetchMessages.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchMessages.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(fetchMessages.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.messages = action.payload.messages;
+      })
+      .addCase(getMessage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getMessage.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(getMessage.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.chat = [action.payload.message, ...state.messages];
+      })
+      .addCase(createMessage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createMessage.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(createMessage.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.messages = [...state.messages, action.payload.message];
+        state.chat.latestMessage = action.payload.message;
+      });
+  },
 });
 
-export const {} = chatMessages.actions;
+export const { updateChat, addMessage, clearMessagesHistory } = chatMessages.actions;
 
 export default chatMessages.reducer;

@@ -8,6 +8,9 @@
   "messagePlaceholder": "اكتب رسالة",
   "newMessage": "رسالة جديدة",
   "newGroup": "مجموعة جديدة",
+  "messageType": {
+    "create_chat": "انتم الآن متصلين. يمكنكم الدردشة معا"
+  },
   "search": {
     "all": "ابحث فى المحادثات و المجموعات.",
     "chats": "ابحث فى الدردشات.",

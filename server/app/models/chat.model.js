@@ -17,6 +17,12 @@ const schema = new Schema(
         ref: "User",
       },
     ],
+    waitingList: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     latestMessage: {
       type: Schema.Types.ObjectId,
       ref: "Message",

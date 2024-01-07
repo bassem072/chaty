@@ -2,11 +2,15 @@ import { Router } from "express";
 import {
   addAdminToGroup,
   addUserToGroup,
+  cancelJoinGroup,
   clear,
   create,
   destroy,
   fetch,
   index,
+  joinGroup,
+  leaveAdminGroup,
+  leaveGroup,
   removeAdminFromGroup,
   removeUserFromGroup,
   show,
@@ -56,30 +60,36 @@ chatRouter.post(
 
 chatRouter.post("/fetch", [...fetchChatValidator], fetch);
 
-chatRouter.put(
+chatRouter.post(
   "/:id/users/add",
   [...addUserToChatValidator, verifyManegeUsers],
   addUserToGroup
 );
 
-chatRouter.put(
+chatRouter.post(
   "/:id/users/remove",
   [...removeUserFromChatValidator, verifyManegeUsers],
   removeUserFromGroup
 );
 
-chatRouter.put(
+chatRouter.post(
   "/:id/admins/add",
   [...addAdminToChatValidator, verifyManegeAdmins],
   addAdminToGroup
 );
 
-chatRouter.put(
+chatRouter.post(
   "/:id/admins/remove",
   [...removeAdminFromChatValidator, verifyManegeAdmins],
   removeAdminFromGroup
 );
 
-chatRouter.use("/:id/messages", messageRouter);
+chatRouter.post("/:id/join", joinGroup);
+
+chatRouter.post("/:id/leave", leaveGroup);
+
+chatRouter.post("/:id/cancelJoin", cancelJoinGroup);
+
+chatRouter.post("/:id/leaveAdmin", leaveAdminGroup);
 
 export default chatRouter;

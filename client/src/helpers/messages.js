@@ -1,5 +1,4 @@
 import moment from "moment-timezone";
-import messages from "../data/messages";
 
 export const isNewDay = (date1, date2) => {
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -21,15 +20,19 @@ export const checkDateDiff = (date1, date2, numberOfMins) => {
   return diffMin > numberOfMins;
 };
 
-export const checkShow = (index) => {
+export const checkShow = (index, messages) => {
   if (index === messages.length - 1) {
     return true;
   } else {
-    if (messages[index].userId === messages[index + 1].userId) {
-      if (isNewDay(messages[index].date, messages[index + 1].date)) {
+    if (messages[index].sender.id === messages[index + 1].sender.id) {
+      if (isNewDay(messages[index].createdAt, messages[index + 1].createdAt)) {
         return true;
       } else {
-        return checkDateDiff(messages[index].date, messages[index + 1].date, 30);
+        return checkDateDiff(
+          messages[index].createdAt,
+          messages[index + 1].createdAt,
+          30
+        );
       }
     } else {
       return true;

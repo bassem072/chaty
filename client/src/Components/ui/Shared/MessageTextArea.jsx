@@ -2,13 +2,19 @@ import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useAutoSizeTextArea from "../../../helpers/Hooks/useAutoSizeTextArea";
 
-export default function MessageTextArea({ messageType }) {
-  const [value, setValue] = useState("");
+export default function MessageTextArea({ message, setMessage, send }) {
   const textAreaRef = useRef();
-  const { t, i18n } = useTranslation(messageType);
+  const { t, i18n } = useTranslation();
   const [dir, setDir] = useState(i18n.language === "ar" ? "rtl" : "ltr");
 
-  useAutoSizeTextArea(textAreaRef.current, value);
+  useAutoSizeTextArea(textAreaRef.current, message);
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      send();
+    }
+  };
 
   const handleChange = (evt) => {
     const val = evt.target?.value;
@@ -23,7 +29,7 @@ export default function MessageTextArea({ messageType }) {
       setDir(i18n.language === "ar" ? "rtl" : "ltr");
     }
 
-    setValue(val);
+    setMessage(val);
   };
 
   return (
@@ -35,7 +41,8 @@ export default function MessageTextArea({ messageType }) {
         ref={textAreaRef}
         dir={dir}
         rows={1}
-        value={value}
+        value={message}
+        onKeyDown={handleKeyPress}
       />
     </div>
   );

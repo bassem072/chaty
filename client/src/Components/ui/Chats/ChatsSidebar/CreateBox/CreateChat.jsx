@@ -24,17 +24,16 @@ export default function CreateChat({ setShowBox }) {
 
   const fetchThisChat = (userId) => {
     const index = chats.indexOf(
-      (ch) => !ch.isGroupChat && ch.users.includes(userId)
+      (ch) => !ch.isGroupChat && ch.users.find(member => member._id === userId)
     );
 
     if (index !== -1) {
-      dispatch(selectChat(chats[index].id));
+      dispatch(selectChat(chats[index]._id));
       setShowBox(false);
     } else {
       dispatch(fetchChat({ userId }))
         .unwrap()
-        .then((chat) => {
-          dispatch(selectChat(chat.id));
+        .then((_) => {
           setShowBox(false);
         })
         .catch((err) => {

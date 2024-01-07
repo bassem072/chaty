@@ -6,15 +6,19 @@ export const sendMessageValidator = [
     .notEmpty()
     .withMessage("Message type must be specified")
     .isIn(["text", "photo", "video", "file", "record"]).withMessage("Message type is invalid"),
-  body("content").custom((val, { req }) => {
-    if (req.body.messageType === "text" && !req.body.content) {
+  body("content").optional().custom((val, { req }) => {
+    if (req.body.messageType === "text" && !val) {
       throw new Error("Content is required");
+    }else {
+      return true;
     }
   }),
-  body("fileUrl").custom((val, { req }) => {
+  body("fileUrl").optional().custom((val, { req }) => {
     const types = ["photo", "video", "file", "record"];
     if (types.includes(req.body.messageType) && !req.body.fileUrl) {
       throw new Error("File URL must be specified");
+    } else {
+      return true;
     }
   }),
   validatorMiddleware,

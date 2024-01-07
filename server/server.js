@@ -1,5 +1,7 @@
 import express from "express";
 import morgan from "morgan";
+import http from "http";
+import { Server } from "socket.io";
 import { rateLimit } from "express-rate-limit";
 import url from "url";
 import path from "path";
@@ -46,6 +48,43 @@ const limiter = rateLimit({
     "Too many accounts created from this IP, please try again after an hour",
 });
 
+const SocketServer = http.createServer(app);
+const io = new Server(SocketServer, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("a user connected");
+
+  socket.on("join_user_room", (userId) => {
+    console.log("From Socket Server", userId);
+    socket.join(userId);
+  });
+
+  socket.on("send_message", (messageContent) => {
+    console.log("Sent message", messageContent.message);
+    if (messageContent.message.chatId.isGroupChat) {
+      messageContent.message.chatId.users.forEach((user) => {
+        console.log(user._id);
+        io.to(user._id).emit("receive_message", messageContent);
+      });
+    } else {
+      console.log(messageContent.message.chatId.user._id);
+      io.to(messageContent.message.chatId.user._id).emit(
+        "receive_message",
+        messageContent.message
+      );
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
+
 app.use("/api/auth", limiter);
 app.disable("etag");
 
@@ -57,7 +96,7 @@ app.all("*", (req, res, next) => {
 
 app.use(globalError);
 
-const server = app.listen(PORT, () => {
+const server = SocketServer.listen(PORT, () => {
   console.log(`App running running on port ${PORT}`);
 });
 

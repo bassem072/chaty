@@ -2,41 +2,46 @@ import asyncHandler from "express-async-handler";
 import Chat from "../models/chat.model.js";
 import { ApiError } from "../utils/apiError.js";
 import Message from "../models/message.model.js";
-import { ApiFeatures } from "../utils/apiFeatures.js";
+import {
+  MessageResponse,
+  MessagesResponse,
+} from "../utils/dto/messageResponseDTO.js";
 
 export const index = asyncHandler(async (req, res, next) => {
   const { chatId } = req.params;
+  const limit = req.query.limit ?? 50;
+  const skip = req.query.skip ?? 0;
+  const keyword = req.query.keyword;
 
-  const docsCount = await Message.countDocuments();
-  const apiFeatures = new ApiFeatures(
-    Message.find({
-      $text: {
-        $search: req.query.keyword || "",
-      },
-      chatId,
-    }),
-    req.query
-  )
-    .paginate(docsCount)
-    .filter()
-    .limitFields()
-    .sort();
+  const filter = {
+    chatId,
+  };
 
-  const { mongooseQuery, paginationResult } = apiFeatures;
-  const messages = await mongooseQuery
-    .populate("sender", "-password")
+  if (keyword) {
+    filter["$text"] = {
+      $search: keyword,
+    };
+  }
+
+  const messages = await Message.find(filter)
+    .sort("createdAt")
+    .skip(skip)
     .populate({
       path: "chatId",
-      populate: {
-        path: "users",
-        select: "-password",
-      },
-    });
+      populate: [
+        {
+          path: "users",
+          select: "-password",
+        },
+        {
+          path: "latestMessage",
+        },
+      ],
+    })
+    .populate("sender", "-password");
 
   res.status(200).json({
-    results: messages.length,
-    paginationResult,
-    data: messages,
+    data: MessagesResponse(messages, req.user.id),
   });
 });
 
@@ -50,22 +55,38 @@ export const send = asyncHandler(async (req, res, next) => {
     chatId: chatId,
   });
 
-  let message = await messageObj.save();
-  message = message.populate("sender", "-password").populate({
-    path: "chatId",
-    populate: {
-      path: "users",
-      select: "-password",
-    },
-  });
+  const newMessage = await messageObj.save();
 
-  res.status(201).json({ data: message });
+  await Chat.findByIdAndUpdate(
+    chatId,
+    { latestMessage: newMessage.id },
+    { new: true }
+  );
+
+  const message = await Message.findById(newMessage.id)
+    .populate("sender", "-password")
+    .populate({
+      path: "chatId",
+      populate: [
+        {
+          path: "users",
+          select: "-password",
+        },
+        {
+          path: "latestMessage",
+        },
+      ],
+    });
+
+    console.log(message);
+
+  res.status(201).json({ data: MessageResponse(message, req.user.id) });
 });
 
 export const show = asyncHandler(async (req, res, next) => {
   const { chatId, id } = req.params;
 
-  const message = Message.findById(id)
+  const message = await Message.findById(id)
     .populate("sender", "-password")
     .populate({
       path: "chatId",

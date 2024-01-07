@@ -9,9 +9,8 @@ export const fetchMessagesService = async (
     skip,
     limit,
     sort,
-    isGroupChat: false,
   };
-  const response = await apiInstance.get(`chats/${chatId}/messages`, query);
+  const response = await apiInstance.get(`chats/${chatId}/messages/`, query);
 
   return response.data;
 };
@@ -26,7 +25,10 @@ export const createMessageService = async (
     fileUrl,
   };
 
-  const response = await apiInstance.post(`chats/${chatId}/messages`, body);
+  const response = await apiInstance.post(
+    `chats/${chatId}/messages`,
+    body
+  );
 
   return response.data;
 };
@@ -54,7 +56,7 @@ export const updateMessageService = async (
 
 export const deleteMessageService = async (chatId, messageId) => {
   const response = await apiInstance.delete(
-    `chats/${chatId}/messages/${messageId}`
+    `chatMessages/${chatId}/messages/${messageId}`
   );
 
   return response.data;

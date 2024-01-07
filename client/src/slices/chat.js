@@ -13,6 +13,9 @@ import {
   removeAdminFromGroupService,
   fetchChatService,
 } from "../services/chat.service";
+import sound from "../assets/audios/message.mp3";
+
+const messageSound = new Audio(sound);
 
 export const fetchChats = createAsyncThunk(
   "/chats/fetchChats",
@@ -224,26 +227,38 @@ const chat = createSlice({
       }
     },
     newMessage: (state, action) => {
-      const index = state.chats.findIndex(
-        (item) => item.id === action.payload.id
-      );
+      const index = state.chats.findIndex((item) => {
+        return item.id === action.payload.id;
+      });
       if (index !== -1) {
-        state.chats.splice(index, 1);
+        //console.log(index);
+        state.chats[index] = action.payload;
+      } else {
+        state.chats = [action.payload, ...state.chats];
       }
-      state.chats.unshift(action.payload);
+      state.chats.sort((a, b) => {
+        const date1 = new Date(a.latestMessage.createdAt);
+        const date2 = new Date(b.latestMessage.createdAt);
+
+        return date2 - date1;
+      });
     },
     updateMessage: (state, action) => {
       const index = state.chats.findIndex(
         (item) =>
-          item.id === action.payload.chatId &&
-          item.latestMessage.id === action.payload.id
+          item.id === action.payload.chatId.id &&
+          item.latestMessage.id !== action.payload.id
       );
       if (index !== -1) {
-        const chat = state.chats[index];
-        chat.latestMessage = action.payload;
-        state.chats.splice(index, 1);
-        state.chats.unshift(chat);
+        state.chats[index].latestMessage = action.payload;
       }
+      state.chats.sort((a, b) => {
+        const date1 = new Date(a.latestMessage.createdAt);
+        const date2 = new Date(b.latestMessage.createdAt);
+
+        return date2 - date1;
+      });
+      messageSound.play();
     },
     deleteMessage: (state, action) => {
       const index = state.chats.findIndex(
@@ -269,6 +284,12 @@ const chat = createSlice({
       .addCase(fetchChats.fulfilled, (state, action) => {
         state.isLoading = false;
         state.chats = action.payload.chats;
+        state.chats.sort((a, b) => {
+          const date1 = new Date(a.latestMessage.createdAt);
+          const date2 = new Date(b.latestMessage.createdAt);
+
+          return date2 - date1;
+        });
       })
       .addCase(createChat.pending, (state) => {
         state.isLoading = true;
@@ -303,7 +324,6 @@ const chat = createSlice({
         state.isLoading = false;
       })
       .addCase(getChat.fulfilled, (state, action) => {
-        state.chats = state.chats.push(action.payload);
         state.isLoading = false;
       })
       .addCase(updateChat.pending, (state) => {
@@ -319,6 +339,7 @@ const chat = createSlice({
   },
 });
 
-export const { changeFilter, selectChat, newMessage } = chat.actions;
+export const { changeFilter, selectChat, newMessage, updateMessage } =
+  chat.actions;
 
 export default chat.reducer;

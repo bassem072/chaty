@@ -6,13 +6,13 @@ import { useSelector } from "react-redux";
 import SidebarHeader from "./SidebarHeader";
 
 export default function ChatsSidebar() {
-  let { selectedChat } = useSelector((state) => state.chat);
+  let { chat } = useSelector((state) => state.chatMessages);
 
   return (
     <div
       className={
         "h-full bg-active py-6" +
-        (selectedChat
+        (chat
           ? " hidden lg:flex flex-col gap-5"
           : " w-full lg:w-auto flex flex-col gap-5")
       }

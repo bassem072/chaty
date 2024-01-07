@@ -4,15 +4,13 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 export default function ChatInfo({ chat }) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useSelector((state) => state.auth);
   moment.locale(i18n.language);
 
   const title = chat.isGroupChat
     ? chat.name
-    : chat.users[0]._id === user.id
-    ? chat.users[1].name
-    : chat.users[0].name;
+    : chat.user.name
 
   const content = () => {
     if (chat.isGroupChat) {
@@ -23,7 +21,7 @@ export default function ChatInfo({ chat }) {
       }
     } else {
       if (chat.latestMessage.messageType === "create_chat") {
-        return "You are now connected, You can chat now.";
+        return t("messageType.create_chat");
       } else if (chat.latestMessage.messageType === "text") {
         return chat.latestMessage.content;
       }

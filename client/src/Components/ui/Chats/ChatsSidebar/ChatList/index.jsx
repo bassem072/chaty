@@ -27,7 +27,7 @@ export default function ChatList() {
   }, []);
 
   return (
-    <div className="w-full h-full whitespace-normal overflow-auto scrollbar px-2 flex flex-col">
+    <div className="w-full h-full whitespace-normal overflow-auto scrollbar px-2 flex flex-col gap-2">
       {filteredChats.map((chat, index) => (
         <ChatListItem
           key={index}
