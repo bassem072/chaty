@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import userPic from "../../../../../assets/images/users/user_5.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,14 +10,23 @@ import {
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessagesHistory } from "../../../../../slices/chatMessages";
+import { useBackListener } from "../../../../../helpers/Hooks/useBackButton";
 
 export default function ChatHeader() {
   const { i18n } = useTranslation();
   const { chat } = useSelector((state) => state.chatMessages);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.onpopstate = () => {
+      dispatch(clearMessagesHistory());
+      navigate("/chats", { replace: true });
+    };
+  }, [dispatch, navigate]);
 
   const title = chat.isGroupChat ? chat.name : chat.user.name;
 
@@ -41,7 +50,9 @@ export default function ChatHeader() {
           className="rounded-full w-8 sm:w-10 h-8 sm:h-10"
         />
         <div className="flex items-center gap-2">
-          <div className="font-medium sm:font-semibold text-sm w-20 min-[350px]:w-auto truncate">{title.substring(0, 15)}</div>
+          <div className="font-medium sm:font-semibold text-sm w-20 min-[350px]:w-auto truncate">
+            {title.substring(0, 15)}
+          </div>
           <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-green-500 rounded-full"></div>
         </div>
       </div>

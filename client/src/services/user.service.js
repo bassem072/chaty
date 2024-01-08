@@ -12,10 +12,8 @@ export const fetchUsersService = async ({
   };
 
   const queryString = new URLSearchParams(query).toString();
-  console.log(queryString);
 
   const response = await apiInstance.get(`users?${queryString}`);
-  console.log(response.data.data);
 
   return response.data;
 };

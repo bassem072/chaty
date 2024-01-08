@@ -18,6 +18,7 @@ export default function CreateBox({ showBox, setShowBox }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setShowBox]);
+  
   return (
     <div className="fixed w-screen h-screen top-0 right-0 flex justify-center items-center z-20 bg-black/20">
       <div

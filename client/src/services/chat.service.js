@@ -17,7 +17,9 @@ export const fetchChatsService = async ({
   if (isGroupChat !== null) {
     query.isGroupChat = isGroupChat;
   }
-  const response = await apiInstance.get(`chats`, query);
+
+  const queryString = new URLSearchParams(query).toString();
+  const response = await apiInstance.get(`chats?${queryString}`);
 
   return response.data;
 };

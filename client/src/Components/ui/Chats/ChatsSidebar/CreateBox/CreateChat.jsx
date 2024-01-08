@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { fetchUsersService } from "../../../../../services/user.service";
 import { useDispatch, useSelector } from "react-redux";
 import { setMessage } from "../../../../../slices/message";
 import userPic from "../../../../../assets/images/users/user_5.png";
 import { fetchChat, selectChat } from "../../../../../slices/chat";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateChat({ setShowBox }) {
   const { t } = useTranslation();
   const [users, setUsers] = useState([]);
   const dispatch = useDispatch();
   const { chats } = useSelector((state) => state.chat);
+  const navigate = useNavigate();
 
   const getUsers = (keyword) => {
     fetchUsersService({ keyword, limit: 10 })
@@ -23,17 +25,27 @@ export default function CreateChat({ setShowBox }) {
   };
 
   const fetchThisChat = (userId) => {
-    const index = chats.indexOf(
-      (ch) => !ch.isGroupChat && ch.users.find(member => member._id === userId)
-    );
+    let index = -1;
+    for(let i = 0; i < chats.length; i++) {
+      if (!chats[i].isGroupChat && chats[i].user._id === userId) {
+        index = i;
+        break
+      }
+    }
+
+    console.log(userId, index);
 
     if (index !== -1) {
-      dispatch(selectChat(chats[index]._id));
+      //alert(index);
+      navigate(`/chats/${chats[index].id}`);
       setShowBox(false);
     } else {
+      alert(userId);
       dispatch(fetchChat({ userId }))
         .unwrap()
-        .then((_) => {
+        .then((data) => {
+          console.log(data);
+          navigate("/chats/" + data.chat.id);
           setShowBox(false);
         })
         .catch((err) => {
@@ -57,7 +69,10 @@ export default function CreateChat({ setShowBox }) {
 
       <div className="w-full h-full bg-active p-3 text-base font-medium rounded-md overflow-auto whitespace-nowrap scrollbar flex flex-col">
         {users.map((user, index) => (
-          <div key={index} className="w-full py-5 px-3 flex justify-between items-center hover:bg-sidebar rounded-xl">
+          <div
+            key={index}
+            className="w-full py-5 px-3 flex justify-between items-center hover:bg-sidebar rounded-xl"
+          >
             <div className="flex items-center gap-3">
               <img
                 src={userPic}
@@ -69,7 +84,9 @@ export default function CreateChat({ setShowBox }) {
               <div className="font-semibold text-paragraph/90">{user.name}</div>
             </div>
             <button
-              onClick={() => {fetchThisChat(user.id)}}
+              onClick={() => {
+                fetchThisChat(user.id);
+              }}
               className="px-3 py-1 bg-message rounded-md font-normal"
             >
               Message

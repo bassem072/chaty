@@ -1,6 +1,5 @@
 import asyncHandler from "express-async-handler";
 import Chat from "../models/chat.model.js";
-import { ApiFeatures } from "../utils/apiFeatures.js";
 import { ApiError } from "../utils/apiError.js";
 import Message from "../models/message.model.js";
 import {
@@ -15,11 +14,17 @@ import {
 export const index = asyncHandler(async (req, res) => {
   const limit = req.query.limit ?? 10;
   const skip = req.query.skip ?? 0;
-  const keyword = req.query.keyword;
+  const keyword = req.query.keyword ?? "";
+  const isGroupChat = req.query.isGroupChat ?? null;
 
   const filter = {
     users: req.user.id,
   };
+
+  if (isGroupChat !== null) {
+    filter.isGroupChat = isGroupChat;
+    filter.name = { $regex: keyword, $options: "i" };
+  }
 
   if (keyword) {
     filter["$text"] = {
