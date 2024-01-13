@@ -9,7 +9,8 @@
   "newMessage": "New Message",
   "newGroup": "New Group",
   "messageType": {
-    "create_chat": "You are now connected, You can chat now."
+    "create_chat": "You are now connected, You can chat now.",
+    "create_group": "A group was created by "
   },
   "search": {
     "all": "Search in chats and groups...",

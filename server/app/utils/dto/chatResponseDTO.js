@@ -21,7 +21,7 @@ export const GroupResponse = (chat) => {
 };
 
 export const GroupAdminResponse = (chat) => {
-  const groupChat = groupAdmins(chat);
+  const groupChat = GroupResponse(chat);
   groupChat.status = "admin";
   groupChat.waitingList = chat.waitingList;
 

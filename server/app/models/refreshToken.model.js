@@ -8,12 +8,9 @@ const schema = new Schema({
   },
   expiryDate: {
     type: Schema.Types.Date,
+    default: Date.now(),
     expires: 2592000,
-  },
-  remember: {
-    type: Boolean,
-    default: false,
-  },
+  }
 });
 
 const RefreshToken = model("RefreshToken", schema);

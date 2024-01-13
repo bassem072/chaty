@@ -7,7 +7,7 @@ export const profileService = async () => {
 };
 
 export const logoutService = async () => {
-    const response = await apiInstance.get('profile/logout');
+    const response = await apiInstance.delete('profile/logout');
 
     return response.data;
 };

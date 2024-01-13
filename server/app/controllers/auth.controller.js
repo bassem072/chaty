@@ -24,7 +24,7 @@ export const register = asyncHandler(async (req, res, next) => {
   });
 
   const accessToken = createAccessToken(user._id);
-  const refreshToken = await createRefreshToken(user._id, false);
+  const refreshToken = await createRefreshToken(user._id);
 
   const tokenStr = jwt.sign(
     { userId: user._id },
@@ -58,7 +58,7 @@ export const register = asyncHandler(async (req, res, next) => {
     httpOnly: true,
     sameSite: false,
     secure: true,
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
   res.status(201).json({
@@ -84,7 +84,7 @@ export const login = asyncHandler(async (req, res, next) => {
   }
 
   const accessToken = createAccessToken(user._id);
-  const refreshToken = await createRefreshToken(user._id, remember);
+  const refreshToken = await createRefreshToken(user._id);
 
   console.log(refreshToken);
 
@@ -92,7 +92,7 @@ export const login = asyncHandler(async (req, res, next) => {
     httpOnly: true,
     sameSite: false,
     secure: true,
-    maxAge: remember ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000,
+    maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
   res.status(200).json({
@@ -103,7 +103,7 @@ export const login = asyncHandler(async (req, res, next) => {
 
 export const socialLogin = asyncHandler(async (req, res) => {
   const accessToken = createAccessToken(req.user.id);
-  const refreshToken = await createRefreshToken(req.user.id, true);
+  const refreshToken = await createRefreshToken(req.user.id);
 
   res.cookie("refresh", refreshToken, {
     httpOnly: true,
@@ -137,8 +137,13 @@ export const verifyEmail = asyncHandler(async (req, res, next) => {
     );
   }
 
-  if(userToken.token !== token) {
-    return next(new ApiError("Invalid verification link for this user id, Please check your mail", 401));
+  if (userToken.token !== token) {
+    return next(
+      new ApiError(
+        "Invalid verification link for this user id, Please check your mail",
+        401
+      )
+    );
   }
 
   const user = await User.findByIdAndUpdate(
@@ -155,8 +160,6 @@ export const verifyEmail = asyncHandler(async (req, res, next) => {
 export const refresh = asyncHandler(async (req, res, next) => {
   const refreshTokenString = req.cookies.refresh;
 
-  console.log("from refresh token: " + refreshTokenString);
-
   console.log(refreshTokenString);
 
   if (!refreshTokenString) {
@@ -168,12 +171,11 @@ export const refresh = asyncHandler(async (req, res, next) => {
     token: refreshTokenString,
   });
 
+  console.log(oldRefreshToken);
   if (!oldRefreshToken) {
     res.clearCookie("refresh");
     return next(new ApiError("Invalid refresh token", 403));
   }
-
-  const remember = oldRefreshToken.remember;
 
   const user = await User.findById(oldRefreshToken.user);
 
@@ -186,17 +188,14 @@ export const refresh = asyncHandler(async (req, res, next) => {
   }
 
   const accessToken = createAccessToken(oldRefreshToken.user);
-  const refreshToken = await createRefreshToken(
-    oldRefreshToken.user,
-    oldRefreshToken.remember
-  );
+  const refreshToken = await createRefreshToken(oldRefreshToken.user);
   await RefreshToken.deleteOne({ token: oldRefreshToken.token });
 
   res.cookie("refresh", refreshToken, {
     httpOnly: true,
     secure: true,
     sameSite: "none",
-    maxAge: remember ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000,
+    maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
   res.status(200).json({

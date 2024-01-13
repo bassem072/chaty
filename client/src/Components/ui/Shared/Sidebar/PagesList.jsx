@@ -1,34 +1,31 @@
 import {
-  faComment,
   faComments,
-  faContactBook,
   faUser,
 } from "@fortawesome/free-regular-svg-icons";
 import React, { useEffect, useRef, useState } from "react";
 import PageListItem from "./PageListItem";
-import { faGear, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { useLocation } from "react-router-dom";
+import { faGear, faRightFromBracket, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import user from "../../../../assets/images/users/user_1.avif";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { logout } from "../../../../slices/auth";
+import { useDispatch } from "react-redux";
 
 export default function PagesList() {
   const location = useLocation().pathname;
   const current = location.substring(1, location.length).split("/")[0];
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const pages = [
     {
       name: "chats",
       route: "/chats",
-      icon: faComment,
-    },
-    {
-      name: "groups",
-      route: "/groups",
       icon: faComments,
     },
     {
-      name: "contacts",
-      route: "/contacts",
-      icon: faContactBook,
+      name: "users",
+      route: "/users",
+      icon: faUsers,
     },
     {
       name: "profile",
@@ -58,8 +55,18 @@ export default function PagesList() {
     };
   }, [menuRef]);
 
+  const MenuItem = ({ to, children, icon }) => (
+    <Link
+      to={to}
+      className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar"
+    >
+      <div>{children}</div>
+      <FontAwesomeIcon icon={icon} size="1x" />
+    </Link>
+  );
+
   return (
-    <div className="flex justify-between lg:flex-col lg:gap-2">
+    <div className="w-full lg:w-auto flex justify-between lg:flex-col lg:gap-2">
       {pages.map((page) => (
         <PageListItem
           key={page.name}
@@ -69,9 +76,9 @@ export default function PagesList() {
           isActive={page.route === "/" + current}
         />
       ))}
-      <button
+      <div
         ref={menuRef}
-        className="h-full lg:hidden px-3 rounded-full flex items-center relative"
+        className="w-full h-full lg:hidden px-3 rounded-full flex justify-center items-center relative"
         onClick={() => setShow(!show)}
       >
         <img
@@ -83,22 +90,30 @@ export default function PagesList() {
         />
         {show && (
           <div className="absolute w-40 ltr:right-5 rtl:!left-5 bottom-[50px] z-10 p-1 bg-[#303841] rounded-md transition-all duration-700">
-            <div className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar">
-              <div>Profile</div>
-              <FontAwesomeIcon icon={faUser} size="1x" />
-            </div>
-            <div className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar">
-              <div>Setting</div>
-              <FontAwesomeIcon icon={faGear} size="1x" />
-            </div>
+            <MenuItem to="/profile" icon={faUser}>
+              Profile
+            </MenuItem>
+            <MenuItem to="/settings" icon={faGear}>
+              Setting
+            </MenuItem>
             <div className="h-0.5 bg-paragraph/30"></div>
-            <div className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar">
+            <button
+              onClick={() => {
+                dispatch(logout())
+                  .unwrap()
+                  .then((payload) => {
+                    navigate("/auth");
+                  })
+                  .catch((err) => {});
+              }}
+              className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar"
+            >
               <div>Logout</div>
               <FontAwesomeIcon icon={faRightFromBracket} size="1x" />
-            </div>
+            </button>
           </div>
         )}
-      </button>
+      </div>
     </div>
   );
 }

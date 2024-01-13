@@ -1,22 +1,22 @@
 import { v4 as uuid } from "uuid";
 import RefreshToken from "../models/refreshToken.model.js";
 
-const expireDate = (remember) => {
-  const duration = remember ? 60 * 60 * 24 * 30 : 60 * 60 * 24;
-  const expireDate = new Date();
-  expireDate.setSeconds(expireDate.getSeconds() + duration);
-  console.log(duration, expireDate);
-  return expireDate;
-};
+// const expireDate = (remember) => {
+//   const duration = remember ? 60 * 60 * 24 * 30 : 60 * 60 * 24;
+//   const expireDate = new Date();
+//   expireDate.setSeconds(expireDate.getSeconds() + duration);
+//   console.log(duration, expireDate);
+//   return expireDate;
+// };
 
-export const createRefreshToken = async (payload, remember) => {
+export const createRefreshToken = async (payload) => {
   const _token = uuid();
   const refreshToken = await RefreshToken.create({
     token: _token,
     user: payload,
-    expiryDate: expireDate(remember),
-    remember,
   });
+
+  console.log("That's", refreshToken.token);
 
   return refreshToken.token;
 };

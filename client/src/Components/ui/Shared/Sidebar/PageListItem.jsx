@@ -10,7 +10,7 @@ export default function PageListItem({ name, route, icon, isActive }) {
   return (
     <Link
       to={route}
-      className={`group relative w-14 lg:w-full h-full lg:h-16 hover:bg-message/20 hover:text-message flex justify-center items-center rounded-lg transition-all duration-300 ${
+      className={`group relative w-full lg:w-full h-full lg:h-16 hover:bg-message/20 hover:text-message flex justify-center items-center gap-2 rounded-lg transition-all duration-300 ${
         isActive ? "bg-message/20 text-message" : "text-paragraph/50"
       }`}
     >

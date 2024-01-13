@@ -56,33 +56,56 @@ const io = new Server(SocketServer, {
   },
 });
 
-io.on("connection", (socket) => {
-  console.log("a user connected");
+// Helper function to broadcast messages to users
+const broadcastMessage = (socket, messageContent, event) => {
+  // Determine the users to broadcast the message to
+  const users = messageContent.chatId.isGroupChat
+    ? messageContent.chatId.users.map(user => user._id)
+    : [messageContent.chatId.user._id, messageContent.sender.id];
 
+  // Broadcast the message to each user
+  users.forEach((userId) => {
+    socket.broadcast.to(userId).emit(event, messageContent);
+  });
+};
+
+// Helper function to broadcast chats to users
+const broadcastNewChat = (socket, chatContent, event) => {
+  console.log(chatContent);
+  // Determine the users to broadcast the chat to
+  const users = chatContent.isGroupChat
+    ? chatContent.users.map((user) => user._id)
+    : [chatContent.user._id, chatContent.latestMessage.sender];
+
+    console.log(users);
+
+  // Broadcast the chat to each user
+  users.forEach((userId) => {
+    socket.broadcast.to(userId).emit(event, chatContent);
+  });
+};
+
+io.on("connection", (socket) => {
+  // Handle a new user connection
   socket.on("join_user_room", (userId) => {
-    console.log("From Socket Server", userId);
+    // Join the user to their room
     socket.join(userId);
   });
 
+  // Handle a user sending a message
   socket.on("send_message", (messageContent) => {
-    console.log("Sent message", messageContent.message);
-    if (messageContent.message.chatId.isGroupChat) {
-      messageContent.message.chatId.users.forEach((user) => {
-        console.log(user._id);
-        io.to(user._id).emit("receive_message", messageContent);
-      });
-    } else {
-      console.log(messageContent.message.chatId.user._id);
-      io.to(messageContent.message.chatId.user._id).emit(
-        "receive_message",
-        messageContent.message
-      );
-    }
+    // Broadcast the message to the appropriate users
+    broadcastMessage(socket, messageContent, "receive_message");
   });
 
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
+  // Handle a user creating a chat
+  socket.on("create_chat", (chatContent) => {
+    // Broadcast the chat to the appropriate users
+    broadcastNewChat(socket, chatContent, "new_chat");
   });
+
+  // Handle a user disconnecting
+  socket.on("disconnect", () => {});
 });
 
 app.use("/api/auth", limiter);

@@ -18,16 +18,16 @@ export default function CreateBox({ showBox, setShowBox }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setShowBox]);
-  
+
   return (
     <div className="fixed w-screen h-screen top-0 right-0 flex justify-center items-center z-20 bg-black/20">
       <div
         ref={boxRef}
         className="w-[500px] h-[70%] bg-sidebar rounded-3xl flex flex-col items-center py-10 px-5 overflow-hidden"
       >
-        <div className="w-full h-full flex flex-col gap-7 justify-center items-center overflow-auto scrollbar">
+        <div className="w-full h-full flex flex-col gap-4 justify-center items-center whitespace-nowrap overflow-auto scrollbar">
           {showBox === "chat" && <CreateChat setShowBox={setShowBox} />}
-          {showBox === "group" && <CreateGroup />}
+          {showBox === "group" && <CreateGroup setShowBox={setShowBox} />}
         </div>
       </div>
     </div>

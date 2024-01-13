@@ -6,6 +6,7 @@ import { setMessage } from "../../../../../slices/message";
 import userPic from "../../../../../assets/images/users/user_5.png";
 import { fetchChat, selectChat } from "../../../../../slices/chat";
 import { useNavigate } from "react-router-dom";
+import { socket } from "../../../../../socket";
 
 export default function CreateChat({ setShowBox }) {
   const { t } = useTranslation();
@@ -26,26 +27,22 @@ export default function CreateChat({ setShowBox }) {
 
   const fetchThisChat = (userId) => {
     let index = -1;
-    for(let i = 0; i < chats.length; i++) {
+    for (let i = 0; i < chats.length; i++) {
       if (!chats[i].isGroupChat && chats[i].user._id === userId) {
         index = i;
-        break
+        break;
       }
     }
 
-    console.log(userId, index);
-
     if (index !== -1) {
-      //alert(index);
       navigate(`/chats/${chats[index].id}`);
       setShowBox(false);
     } else {
-      alert(userId);
       dispatch(fetchChat({ userId }))
         .unwrap()
-        .then((data) => {
-          console.log(data);
-          navigate("/chats/" + data.chat.id);
+        .then((payload) => {
+          socket.emit("create_chat", payload.chat);
+          navigate("/chats/" + payload.chat.id);
           setShowBox(false);
         })
         .catch((err) => {

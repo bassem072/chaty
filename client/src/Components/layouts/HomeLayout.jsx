@@ -7,8 +7,10 @@ export default function HomeLayout({ children }) {
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    socket.emit("join_user_room", user.id);
-  }, [user.id]);
+    if (user) {
+      socket.emit("join_user_room", user.id);
+    }
+  }, [user]);
 
   return (
     <div className="w-screen h-screen flex flex-col-reverse lg:flex-row justify-start text-paragraph overflow-hidden">

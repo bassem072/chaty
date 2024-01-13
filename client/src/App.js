@@ -6,8 +6,7 @@ import ProtectedRoutes from "./utils/ProtectedRoutes";
 import GuestRoutes from "./utils/GuestRoutes";
 import Auth from "./Pages/Auth";
 import Chat from "./Pages/Chat";
-import Group from "./Pages/Group";
-import Contact from "./Pages/Contact";
+import Users from "./Pages/Users";
 import Profile from "./Pages/Profile";
 import Setting from "./Pages/Setting";
 import VerifyEmail from "./Pages/VerifyEmail";
@@ -76,34 +75,18 @@ function App() {
             }
           />
           <Route
-            path="/groups"
+            path="/users"
             element={
               <HomeLayout>
-                <Group />
+                <Users />
               </HomeLayout>
             }
           />
           <Route
-            path="/groups/:id"
+            path="/users/:id"
             element={
               <HomeLayout>
-                <Group />
-              </HomeLayout>
-            }
-          />
-          <Route
-            path="/contacts"
-            element={
-              <HomeLayout>
-                <Contact />
-              </HomeLayout>
-            }
-          />
-          <Route
-            path="/contacts/:id"
-            element={
-              <HomeLayout>
-                <Contact />
+                <Users />
               </HomeLayout>
             }
           />

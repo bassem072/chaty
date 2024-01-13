@@ -9,6 +9,7 @@ import { fetchChats, updateMessage } from "../slices/chat";
 import { useParams } from "react-router-dom";
 import { addMessage, fetchMessages, getChat } from "../slices/chatMessages";
 import { socket } from "../socket";
+import { setMessage } from "../slices/message";
 
 export default function Chat() {
   const dispatch = useDispatch();
@@ -17,31 +18,25 @@ export default function Chat() {
   let { id } = useParams();
 
   useEffect(() => {
-    dispatch(fetchChats({}));
-  }, [dispatch]);
+    const fetchData = async () => {
+      try {
+        // Fetch all chats
+        await dispatch(fetchChats({})).unwrap();
 
-  useEffect(() => {
-    socket.on("receive_message", (data) => {
-      if(chat && chat.id === data.chatId.id) {
-        dispatch(addMessage(data));
-      } else {
-        dispatch(updateMessage(data));
+        // If an ID is provided, fetch the specific chat and its messages
+        if (id) {
+          await dispatch(getChat({ chatId: id })).unwrap();
+          await dispatch(fetchMessages({ chatId: id, filters: {} })).unwrap();
+        }
+      } catch (err) {
+        // Log any errors for debugging purposes
+        console.error("An error occurred while fetching data:", err);
+        dispatch(setMessage("An error occurred while fetching data:", err));
       }
-    });
-  }, [chat, dispatch]);
+    };
 
-  useEffect(() => {
-    if (id) {
-      dispatch(getChat({ chatId: id }))
-        .unwrap()
-        .then(() => {
-          dispatch(fetchMessages({ chatId: id, filters: {} }))
-            .unwrap()
-            .then(() => {})
-            .catch(() => {});
-        })
-        .catch((err) => {});
-    }
+    // Invoke the fetchData function
+    fetchData();
   }, [dispatch, id]);
 
   return (

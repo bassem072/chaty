@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessagesHistory } from "../../../../../slices/chatMessages";
-import { useBackListener } from "../../../../../helpers/Hooks/useBackButton";
 
 export default function ChatHeader() {
   const { i18n } = useTranslation();
@@ -34,10 +33,8 @@ export default function ChatHeader() {
     <div className="w-full h-20 sm:h-[100px] px-3 sm:px-6 border-b-[.2px] border-paragraph/10 flex justify-between items-center">
       <div className="flex items-center gap-2 sm:gap-3">
         <Link
-          onClick={() => {
-            dispatch(clearMessagesHistory());
-          }}
           to="/chats"
+          onClick={() => dispatch(clearMessagesHistory())}
           className="flex lg:hidden bg-sidebar px-1.5 sm:px-3 py-1.5 sm:py-3 rounded-full"
         >
           <FontAwesomeIcon

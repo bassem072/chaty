@@ -15,7 +15,7 @@ i18n
       order: ["localStorage", "navigator"],
       caches: ["localStorage"],
     },
-    ns: ["auth", "chats", "groups", "contacts", "profile", "settings", "sidebar"],
+    ns: ["auth", "chats", "groups", "users", "profile", "settings", "sidebar"],
     defaultNS: "chats",
   });
 export default i18n;

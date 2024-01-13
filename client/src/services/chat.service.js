@@ -4,7 +4,7 @@ export const fetchChatsService = async ({
   skip = 0,
   keyword = "",
   sort = "-latestMessage.createdAt",
-  limit = 20,
+  limit = 100,
   isGroupChat = null,
 }) => {
   const query = {
@@ -24,10 +24,10 @@ export const fetchChatsService = async ({
   return response.data;
 };
 
-export const createChatService = async ({ userId, isGroupChat = false, name = "" }) => {
+export const createChatService = async ({ users, isGroupChat = false, name = "" }) => {
   const body = {
     isGroupChat,
-    users: [userId],
+    users,
   };
 
   if(isGroupChat) {

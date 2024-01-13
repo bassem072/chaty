@@ -32,7 +32,7 @@ const apiSetup = (store, navigate) => {
         ) {
           originalRequest._retry = true;
           try {
-            const response = await apiInstance.get(
+            const response = await apiInstance.post(
               "http://localhost:5000/api/refresh"
             );
             const { token } = response.data;

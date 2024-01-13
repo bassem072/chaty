@@ -8,9 +8,6 @@ import {
 } from "../services/message.service";
 import { setMessage } from "./message";
 import { getChatService } from "../services/chat.service";
-import sound from "../assets/audios/message.mp3";
-
-const messageSound = new Audio(sound);
 
 export const getChat = createAsyncThunk(
   "/messages/chat/get",
@@ -129,10 +126,10 @@ const chatMessages = createSlice({
   initialState,
   reducers: {
     addMessage: (state, action) => {
+      console.log(action.payload, state.messages);
       if (state.messages[state.messages.length - 1].id !== action.payload.id) {
         state.messages.push(action.payload);
         state.chat.latestMessage = action.payload;
-        messageSound.play();
       }
     },
     updateChat: (state, action) => {
@@ -141,6 +138,7 @@ const chatMessages = createSlice({
     clearMessagesHistory: (state, action) => {
       state.chat = null;
       state.messages = [];
+      console.log(state.messages);
     },
   },
   extraReducers: (builder) => {

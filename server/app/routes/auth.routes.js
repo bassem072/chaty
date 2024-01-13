@@ -61,7 +61,7 @@ authRouter.get(
   passport.authenticate("facebook", { failureRedirect: "api/login/failed" }),
   socialLogin
 );
-authRouter.get("/refresh", refresh);
+authRouter.post("/refresh", refresh);
 authRouter.get("/verifyEmail", verifyValidator, verifyEmail);
 authRouter.post("/forgetPassword", forgetPasswordValidator, forgetPassword);
 authRouter.get("/verifyPasswordLink", verifyLinkValidator, verifyLink);

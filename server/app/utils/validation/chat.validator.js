@@ -15,20 +15,21 @@ export const createChatValidator = [
           let users = [req.user.id, ...val];
 
           users = users.filter(
-            (user) =>
-              Types.ObjectId.isValid(user) && user === users.indexOf(user)
+            (user, index) =>
+              Types.ObjectId.isValid(user) && index === users.findIndex(item => item === user)
           );
           let isValid = true;
-
-          for (let user in users) {
-            user = await User.findById(user);
-
+          
+          for (let i = 0; i < users.length; i++) {
+            console.log(users[i]);
+            let user = await User.findById(users[i]);
+            
             if (!user) {
               isValid = false;
               break;
             }
           }
-
+          
           if (!isValid) {
             throw new Error("Some users not found");
           } else {

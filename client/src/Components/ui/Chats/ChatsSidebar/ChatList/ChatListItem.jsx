@@ -3,6 +3,7 @@ import ProfilePic from "./ProfilePic";
 import ChatInfo from "./ChatInfo";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { clearMessagesHistory } from "../../../../../slices/chatMessages";
 
 export default function ChatListItem({ chat, ref }) {
   const { chat: selectedChat } = useSelector((state) => state.chatMessages);
@@ -12,6 +13,7 @@ export default function ChatListItem({ chat, ref }) {
   return (
     <Link
       to={"/chats/" + chat.id}
+      onClick={() => dispatch(clearMessagesHistory())}
       replace={id ? true : false}
       ref={ref}
       className={

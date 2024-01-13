@@ -6,8 +6,8 @@ import ContactsSidebar from '../Components/ui/Contacts/ContactsSidebar';
 import NoChatSelected from '../Components/ui/Shared/NoChatSelected';
 import ContactInfo from '../Components/ui/Contacts/ContactInfo';
 
-export default function Contact() {
-  const { t } = useTranslation("contacts");
+export default function Users() {
+  const { t } = useTranslation("users");
   let { id } = useParams();
 
   return (

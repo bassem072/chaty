@@ -7,7 +7,7 @@ import sendImg from "../../../../../assets/icons/send.png";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createMessage, updateChat } from "../../../../../slices/chatMessages";
-import { newMessage } from "../../../../../slices/chat";
+import { newMessage, updateMessage } from "../../../../../slices/chat";
 import { socket } from "../../../../../socket";
 import { useTranslation } from "react-i18next";
 
@@ -22,7 +22,6 @@ export default function SendMessage() {
   const emojiRef = useRef();
 
   const onEmojiClick = (emojiObject, event) => {
-    event.preventDefault();
     setMessage(message + emojiObject.emoji);
   };
 
@@ -40,10 +39,12 @@ export default function SendMessage() {
       dispatch(createMessage({ chatId: chat.id, messageData: body }))
         .unwrap()
         .then((payload) => {
+          console.log("from send", payload, chat);
           setMessage("");
           setFile("");
           setMessageType("text");
-          socket.emit("send_message", payload);
+          socket.emit("send_message", payload.message);
+          dispatch(updateMessage(payload));
         })
         .catch((err) => {});
     }

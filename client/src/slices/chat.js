@@ -13,9 +13,6 @@ import {
   removeAdminFromGroupService,
   fetchChatService,
 } from "../services/chat.service";
-import sound from "../assets/audios/message.mp3";
-
-const messageSound = new Audio(sound);
 
 export const fetchChats = createAsyncThunk(
   "/chats/fetchChats",
@@ -226,6 +223,16 @@ const chat = createSlice({
         state.selectedChat = action.payload;
       }
     },
+    newChat: (state, action) => {
+      console.log(action.payload);
+      state.chats = [action.payload, ...state.chats];
+      state.chats.sort((a, b) => {
+        const date1 = new Date(a.latestMessage.createdAt);
+        const date2 = new Date(b.latestMessage.createdAt);
+
+        return date2 - date1;
+      });
+    },
     newMessage: (state, action) => {
       const index = state.chats.findIndex((item) => {
         return item.id === action.payload.id;
@@ -244,6 +251,7 @@ const chat = createSlice({
       });
     },
     updateMessage: (state, action) => {
+      console.log(action.payload);
       const index = state.chats.findIndex(
         (item) =>
           item.id === action.payload.chatId.id &&
@@ -258,7 +266,6 @@ const chat = createSlice({
 
         return date2 - date1;
       });
-      messageSound.play();
     },
     deleteMessage: (state, action) => {
       const index = state.chats.findIndex(
@@ -298,7 +305,7 @@ const chat = createSlice({
         state.isLoading = false;
       })
       .addCase(createChat.fulfilled, (state, action) => {
-        state.chats = state.chats.push(action.payload.data);
+        state.chats = [action.payload.chat, ...state.chats];
         state.isLoading = false;
       })
       .addCase(fetchChat.pending, (state) => {
@@ -314,7 +321,6 @@ const chat = createSlice({
         if (index === -1) {
           state.chats = [action.payload.chat, ...state.chats];
         }
-        state.selectedChat = action.payload.chat._id;
         state.isLoading = false;
       })
       .addCase(getChat.pending, (state) => {
@@ -339,7 +345,7 @@ const chat = createSlice({
   },
 });
 
-export const { changeFilter, selectChat, newMessage, updateMessage } =
+export const { changeFilter, selectChat, newMessage, updateMessage, newChat } =
   chat.actions;
 
 export default chat.reducer;

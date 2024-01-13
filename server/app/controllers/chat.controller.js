@@ -12,7 +12,7 @@ import {
 } from "../utils/dto/chatResponseDTO.js";
 
 export const index = asyncHandler(async (req, res) => {
-  const limit = req.query.limit ?? 10;
+  const limit = req.query.limit ?? 100;
   const skip = req.query.skip ?? 0;
   const keyword = req.query.keyword ?? "";
   const isGroupChat = req.query.isGroupChat ?? null;
@@ -37,7 +37,7 @@ export const index = asyncHandler(async (req, res) => {
   }
 
   const chats = await Chat.find(filter)
-    .sort("-LatestMessage.created")
+    .sort("-LatestMessage.createdAt")
     .skip(skip)
     .limit(limit)
     .populate("users", "-password")
@@ -50,9 +50,33 @@ export const index = asyncHandler(async (req, res) => {
 });
 
 export const create = asyncHandler(async (req, res, next) => {
-  const newChat = await Chat.create(req.chat);
+  const chatObj = new Chat(req.chat);
 
-  const chat = await Chat.findById(newChat.id).populate("users", "-password");
+  const addChat = await chatObj.save();
+
+  if (!addChat) {
+    return next(new ApiError("Can't create this chat", 404));
+  }
+
+  const createChatMessage = new Message({
+    sender: req.user.id,
+    messageType: addChat.isGroupChat ? "create_group" : "create_chat",
+    chatId: addChat.id,
+    content: req.user.id,
+  });
+
+  const message = await createChatMessage.save();
+
+  const chat = await Chat.findByIdAndUpdate(
+    addChat.id,
+    {
+      latestMessage: message.id,
+    },
+    { new: true }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmins", "-password")
+    .populate("latestMessage");
 
   if (!chat) {
     return next(new ApiError("Can't create this chat", 404));
@@ -139,7 +163,7 @@ export const fetch = asyncHandler(async (req, res, next) => {
     if (!chat) {
       return next(new ApiError("Can't create this chat", 404));
     }
-    res.status(200).json({ data: ChatResponse(chat) });
+    res.status(200).json({ data: ChatResponse(chat, req.user.id) });
   } else {
     res.status(200).json({ data: ChatResponse(chat) });
   }

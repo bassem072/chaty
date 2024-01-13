@@ -35,6 +35,6 @@ profileRouter
 
 profileRouter.post("/changeProfileImage", upload, uploadProfileImage);
 profileRouter.post("/removeProfileImage", removeProfileImage);
-profileRouter.get("/logout", logout);
+profileRouter.delete("/logout", logout);
 
 export default profileRouter;

@@ -165,3 +165,11 @@ input::selection {
 .scrollbar::-webkit-scrollbar-thumb:hover {
     background: rgb(238, 239, 246, 0.5);
 }
+
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hidden-scrollbar::-webkit-scrollbar-track {
+  display: none;
+}

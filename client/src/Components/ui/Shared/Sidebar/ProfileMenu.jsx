@@ -5,11 +5,16 @@ import { faGear, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import user from "../../../../assets/images/users/user_1.avif";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../../../../slices/auth";
+import { useDispatch } from "react-redux";
 
 export default function ProfileMenu() {
   const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
   const menuRef = useRef();
   const { t } = useTranslation("sidebar");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -25,8 +30,18 @@ export default function ProfileMenu() {
     };
   }, [menuRef]);
 
+  const MenuItem = ({ to, children, icon }) => (
+    <Link
+      to={to}
+      className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar"
+    >
+      <div>{children}</div>
+      <FontAwesomeIcon icon={icon} size="1x" />
+    </Link>
+  );
+
   return (
-    <button
+    <div
       ref={menuRef}
       className="hidden lg:block px-3 rounded-full relative"
       onClick={() => setShow(!show)}
@@ -40,21 +55,29 @@ export default function ProfileMenu() {
       />
       {show && (
         <div className="absolute w-40 left-5 rtl:right-6 bottom-10 z-10 p-1 bg-[#303841] rounded-md transition-all duration-700">
-          <div className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar">
-            <div>{t("profile")}</div>
-            <FontAwesomeIcon icon={faUser} size="x" />
-          </div>
-          <div className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar">
-            <div>{t("settings")}</div>
-            <FontAwesomeIcon icon={faGear} size="x" />
-          </div>
+          <MenuItem to="/profile" icon={faUser}>
+            Profile
+          </MenuItem>
+          <MenuItem to="/settings" icon={faGear}>
+            Setting
+          </MenuItem>
           <div className="h-0.5 bg-paragraph/30"></div>
-          <div className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar">
+          <button
+            onClick={() => {
+              dispatch(logout())
+                .unwrap()
+                .then((payload) => {
+                  navigate("/auth");
+                })
+                .catch((err) => {});
+            }}
+            className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar"
+          >
             <div>{t("logout")}</div>
-            <FontAwesomeIcon icon={faRightFromBracket} size="x" />
-          </div>
+            <FontAwesomeIcon icon={faRightFromBracket} size="1x" />
+          </button>
         </div>
       )}
-    </button>
+    </div>
   );
 }
