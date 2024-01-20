@@ -1,7 +1,8 @@
 import React from 'react'
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import ProfileContent from '../Components/ui/Profile/ProfileContent';
+import ProfileImages from '../Components/ui/Profile/ProfileImages';
+import ProfileInfo from '../Components/ui/Profile/ProfileInfo';
 
 export default function Profile() {
   const { t } = useTranslation("profile");
@@ -11,7 +12,10 @@ export default function Profile() {
       <Helmet>
         <title>{t("title")}</title>
       </Helmet>
-      <ProfileContent />
+      <div className="w-full h-full flex flex-col gap-72 lg:gap-44 whitespace-nowrap overflow-auto scrollbar">
+        <ProfileImages />
+        <ProfileInfo />
+      </div>
     </div>
   );
 }

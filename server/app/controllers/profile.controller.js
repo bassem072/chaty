@@ -1,4 +1,7 @@
 import asyncHandler from "express-async-handler";
+import { fileURLToPath } from "url";
+import path from "path";
+import fs from "fs";
 import RefreshToken from "../models/refreshToken.model.js";
 import User from "../models/user.model.js";
 import { ApiError } from "../utils/apiError.js";
@@ -32,7 +35,7 @@ export const destroy = asyncHandler(async (req, res, next) => {
   res.status(204).json();
 });
 
-export const uploadProfileImage = asyncHandler(async (req, res, next) => {
+export const uploadProfileImage = async (req, res, next) => {
   const user = await User.findByIdAndUpdate(
     req.user.id,
     { profileImage: req.file.filename },
@@ -43,23 +46,50 @@ export const uploadProfileImage = asyncHandler(async (req, res, next) => {
     return next(new ApiError("User not found"), 404);
   }
 
-  res.status(200).json({ data: user });
-});
+  res.status(200).json({ data: userResponse(user) });
+};
 
-export const removeProfileImage = asyncHandler(async (req, res, next) => {
-  if (req.user.profileImage != "user.png") {
+export const getProfileImage = async (req, res, next) => {
+  if (req.user.profileImage === "default") {
     return next(new ApiError("No profile image here!"), 404);
   }
 
-  const filePath = path.join("uploads/profileImages/", req.user.profileImage);
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  console.log(__dirname);
+  const filePath = path.join(
+    __dirname,
+    "..",
+    "uploads",
+    "profileImages",
+    req.user.profileImage
+  );
+
+  const r = fs.createReadStream(filePath);
+  r.pipe(res);
+};
+
+export const removeProfileImage = asyncHandler(async (req, res, next) => {
+  if (req.user.profileImage === "default") {
+    return next(new ApiError("No profile image here!"), 404);
+  }
+
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const filePath = path.join(
+    __dirname,
+    "..",
+    "uploads",
+    "profileImages",
+    req.user.profileImage
+  );
 
   if (fs.existsSync(filePath)) {
+    console.log("x ", true);
     fs.unlinkSync(filePath);
   }
 
   const user = await User.findByIdAndUpdate(
     req.user.id,
-    { profileImage: "user.png" },
+    { profileImage: "default" },
     { new: true }
   );
 

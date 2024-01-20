@@ -10,6 +10,8 @@ import user from "../../../../assets/images/users/user_1.avif";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { logout } from "../../../../slices/auth";
 import { useDispatch } from "react-redux";
+import { clearMessagesHistory } from "../../../../slices/chatMessages";
+import { clearChats } from "../../../../slices/chat";
 
 export default function PagesList() {
   const location = useLocation().pathname;
@@ -58,6 +60,7 @@ export default function PagesList() {
   const MenuItem = ({ to, children, icon }) => (
     <Link
       to={to}
+      onClick={() => dispatch(clearMessagesHistory())}
       className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar"
     >
       <div>{children}</div>
@@ -66,7 +69,7 @@ export default function PagesList() {
   );
 
   return (
-    <div className="w-full lg:w-auto flex justify-between lg:flex-col lg:gap-2">
+    <div className="w-full lg:w-auto flex justify-between lg:flex-col gap-2">
       {pages.map((page) => (
         <PageListItem
           key={page.name}
@@ -89,7 +92,7 @@ export default function PagesList() {
           className="rounded-full overflow-hidden border-[1.5px] border-paragraph"
         />
         {show && (
-          <div className="absolute w-40 ltr:right-5 rtl:!left-5 bottom-[50px] z-10 p-1 bg-[#303841] rounded-md transition-all duration-700">
+          <div className="absolute w-40 ltr:right-5 rtl:!left-5 bottom-[50px] z-10 p-1 bg-[#303841] rounded-md transition-all duration-700 z-30">
             <MenuItem to="/profile" icon={faUser}>
               Profile
             </MenuItem>
@@ -102,6 +105,8 @@ export default function PagesList() {
                 dispatch(logout())
                   .unwrap()
                   .then((payload) => {
+                    dispatch(clearMessagesHistory());
+                    dispatch(clearChats());
                     navigate("/auth");
                   })
                   .catch((err) => {});

@@ -10,7 +10,7 @@ export default function TextMessage({ message, checkShow, isNewDay, seen = true 
   const { user } = useSelector((state) => state.auth);
   const { i18n } = useTranslation();
   moment.locale(i18n.language);
-  const isMe = user.id === message.sender.id;
+  const isMe = user?.id === message.sender.id;
   const time = moment(message.createdAt).format("hh:mm A");
   const day = moment(message.createdAt).format(
     i18n.language === "ar" ? "yyyy/MM/DD" : "DD/MM/yyyy"

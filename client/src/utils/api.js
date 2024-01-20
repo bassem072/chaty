@@ -1,3 +1,4 @@
+import axios from "axios";
 import { remove } from "../slices/auth";
 import apiInstance from "./apiInstance";
 import { getToken } from "./storage";
@@ -24,7 +25,6 @@ const apiSetup = (store, navigate) => {
     async (err) => {
       const originalRequest = err.config;
       if (err.response && err.response.status === 401) {
-        //alert(err.response.data.message);
         if (
           !originalRequest._retry &&
           err.response.data.message !==

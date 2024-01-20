@@ -8,7 +8,12 @@ import {
 } from "../services/auth.service";
 import { removeToken, removeUser, setToken, setUser } from "../utils/storage";
 import { setMessage } from "./message";
-import { logoutService, profileService } from "../services/profile.service";
+import {
+  changeProfilePicService,
+  editProfileService,
+  logoutService,
+  profileService,
+} from "../services/profile.service";
 
 export const register = createAsyncThunk(
   "/register",
@@ -110,6 +115,43 @@ export const logout = createAsyncThunk("/logout", async (_, thunkAPI) => {
     return thunkAPI.rejectWithValue(message);
   }
 });
+
+export const editProfile = createAsyncThunk(
+  "/profile/edit",
+  async (userData, thunkAPI) => {
+    try {
+      const { data } = await editProfileService(userData);
+      setUser(data);
+      return { user: data };
+    } catch (error) {
+      let message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const changeProfilePic = createAsyncThunk(
+  "/profile/changeProfilePic",
+  async (userData, thunkAPI) => {
+    try {
+      const { data } = await changeProfilePicService(userData);
+      setUser(data);
+      return { user: data };
+    } catch (error) {
+      console.log(error.response.data);
+      let message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 export const verifyEmail = createAsyncThunk(
   "/verifyEmail",
@@ -227,6 +269,26 @@ const auth = createSlice({
         state.isAuthenticated = false;
         state.isLoading = false;
         state.user = null;
+      })
+      .addCase(editProfile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editProfile.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(editProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
+      })
+      .addCase(changeProfilePic.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(changeProfilePic.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(changeProfilePic.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
       });
   },
 });

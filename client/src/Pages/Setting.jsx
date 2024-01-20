@@ -10,10 +10,9 @@ import AppSettings from "../Components/ui/Settings/AppSettings";
 export default function Setting() {
   const { t } = useTranslation("settings");
   const { page } = useParams();
-  const availablePages = ["editProfile", "appSetting"];
+  const availablePages = ["editProfile", "appSettings"];
   const include = page && availablePages.includes(page);
-  console.log(include);
-  const pages = {editProfile: <EditProfile />, appSetting: <AppSettings />};
+  const pages = {editProfile: <EditProfile />, appSettings: <AppSettings />};
 
   return (
     <div className="w-full h-full flex justify-start items-center overflow-hidden">

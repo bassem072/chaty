@@ -8,6 +8,8 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../../../slices/auth";
 import { useDispatch } from "react-redux";
+import { clearMessagesHistory } from "../../../../slices/chatMessages";
+import { clearChats } from "../../../../slices/chat";
 
 export default function ProfileMenu() {
   const [show, setShow] = useState(false);
@@ -33,6 +35,7 @@ export default function ProfileMenu() {
   const MenuItem = ({ to, children, icon }) => (
     <Link
       to={to}
+      onClick={() => dispatch(clearMessagesHistory())}
       className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar"
     >
       <div>{children}</div>
@@ -67,6 +70,8 @@ export default function ProfileMenu() {
               dispatch(logout())
                 .unwrap()
                 .then((payload) => {
+                  dispatch(clearMessagesHistory());
+                  dispatch(clearChats());
                   navigate("/auth");
                 })
                 .catch((err) => {});

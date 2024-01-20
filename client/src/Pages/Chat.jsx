@@ -5,10 +5,9 @@ import ChatsSidebar from "../Components/ui/Chats/ChatsSidebar";
 import ChatMessages from "../Components/ui/Chats/ChatMessages";
 import NoChatSelected from "../Components/ui/Shared/NoChatSelected";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChats, updateMessage } from "../slices/chat";
+import { fetchChats } from "../slices/chat";
 import { useParams } from "react-router-dom";
-import { addMessage, fetchMessages, getChat } from "../slices/chatMessages";
-import { socket } from "../socket";
+import { fetchMessages, getChat } from "../slices/chatMessages";
 import { setMessage } from "../slices/message";
 
 export default function Chat() {

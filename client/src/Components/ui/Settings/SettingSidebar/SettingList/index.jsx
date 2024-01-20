@@ -7,7 +7,7 @@ import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 export default function SettingList() {
   const settingRef = useRef(null);
   const { page } = useParams();
-  const availablePages = { editProfile: faPenToSquare, appSetting: faGear };
+  const availablePages = { editProfile: faPenToSquare, appSettings: faGear };
 
   const scrollToChat = () => {
     settingRef.current?.scrollIntoView();

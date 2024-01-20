@@ -279,6 +279,10 @@ const chat = createSlice({
         state.chats.splice(index, 1);
       }
     },
+    clearChats: (state, action) => {
+      state.chats = [];
+      state.filter = "all";
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -345,7 +349,7 @@ const chat = createSlice({
   },
 });
 
-export const { changeFilter, selectChat, newMessage, updateMessage, newChat } =
+export const { changeFilter, selectChat, newMessage, updateMessage, newChat, clearChats } =
   chat.actions;
 
 export default chat.reducer;

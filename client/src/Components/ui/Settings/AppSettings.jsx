@@ -10,7 +10,7 @@ export default function AppSettings() {
 
   return (
     <div className="w-full h-full flex flex-col gap-5 p-6">
-      <div className="text-xl font-semibold">{t("sidebar.appSetting")}</div>
+      <div className="text-xl font-semibold">{t("sidebar.appSettings")}</div>
       <div className="w-full py-3 flex justify-between items-center">
         <div>{t("language")}</div>
         <div className="relative px-5 h-10 bg-sidebar flex items-center">
@@ -23,8 +23,9 @@ export default function AppSettings() {
           </button>
           {show && (
             <div className="absolute w-full bg-active top-10 right-0 flex flex-col">
-              {Object.keys(languages).map((lang) => (
+              {Object.keys(languages).map((lang, index) => (
                 <button
+                  key={index}
                   className="h-10"
                   onClick={() => {
                     i18n.changeLanguage(lang);

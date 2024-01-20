@@ -113,9 +113,11 @@ function App() {
           <Route
             path="/settings/:page"
             element={
-              <HomeLayout>
-                <Setting />
-              </HomeLayout>
+              <ProtectedRoutes isVerified={true}>
+                <HomeLayout>
+                  <Setting />
+                </HomeLayout>
+              </ProtectedRoutes>
             }
           />
           <Route

@@ -7,7 +7,8 @@ export default function SettingSidebar() {
   const { t } = useTranslation("settings");
   const { page } = useParams();
   const availablePages = ["editProfile", "appSettings"]
-  const include = availablePages.includes(page);
+  const include = page && availablePages.includes(page);
+  console.log(include);
 
   return (
     <div

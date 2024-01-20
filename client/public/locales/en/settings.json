@@ -2,12 +2,16 @@
   "title": "Chaty | Settings",
   "settings": "Settings",
   "name": "Name",
-  "about": "Status",
+  "bio": "Status",
+  "birthdate": "Birthday",
+  "gender": "Gender",
   "email": "Email",
   "save": "Save",
   "language": "Language",
+  "male": "Male",
+  "female": "Female",
   "sidebar": {
     "editProfile": "Edit Profile",
-    "appSetting": "App Settings"
+    "appSettings": "App Settings"
   }
 }

@@ -3,13 +3,17 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Tooltip from "../Tooltip";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { clearMessagesHistory } from "../../../../slices/chatMessages";
 
 export default function PageListItem({ name, route, icon, isActive }) {
   const { t } = useTranslation("sidebar");
+  const dispatch = useDispatch();
 
   return (
     <Link
       to={route}
+      onClick={() => dispatch(clearMessagesHistory())}
       className={`group relative w-full lg:w-full h-full lg:h-16 hover:bg-message/20 hover:text-message flex justify-center items-center gap-2 rounded-lg transition-all duration-300 ${
         isActive ? "bg-message/20 text-message" : "text-paragraph/50"
       }`}

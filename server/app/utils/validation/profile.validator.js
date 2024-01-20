@@ -1,5 +1,6 @@
-import { body, param } from "express-validator";
+import { body } from "express-validator";
 import { validatorMiddleware } from "../../middlewares/validator.middleware.js";
+import slugify from "slugify";
 
 export const updateUserValidator = [
   body("name")

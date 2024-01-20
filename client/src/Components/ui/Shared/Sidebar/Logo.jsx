@@ -1,11 +1,19 @@
 import React from 'react';
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../../../../assets/images/home/logo.svg";
+import { useDispatch } from 'react-redux';
+import { clearMessagesHistory } from '../../../../slices/chatMessages';
 
 export default function Logo() {
+  const dispatch = useDispatch();
+
   return (
-    <NavLink to="/chats" className="hidden lg:block px-4">
+    <Link
+      onClick={() => dispatch(clearMessagesHistory())}
+      to="/chats"
+      className="hidden lg:block px-4"
+    >
       <img src={logo} alt="Logo" width={30} height={30} />
-    </NavLink>
+    </Link>
   );
 }

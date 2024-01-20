@@ -1,10 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { checkShow, isNewDay } from "../../../../../helpers/messages";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import TextMessage from "./TextMessage";
 import ActionMessage from "./ActionMessage";
-import { socket } from "../../../../../socket";
-import { addMessage } from "../../../../../slices/chatMessages";
 
 export default function Messages() {
   const { messages } = useSelector((state) => state.chatMessages);

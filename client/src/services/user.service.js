@@ -17,3 +17,9 @@ export const fetchUsersService = async ({
 
   return response.data;
 };
+
+export const getUserService = async (userId) => {
+  const response = await apiInstance.get(`users/${userId}`);
+
+  return response.data;
+};
