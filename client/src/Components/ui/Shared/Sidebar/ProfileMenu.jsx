@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../../../slices/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearMessagesHistory } from "../../../../slices/chatMessages";
 import { clearChats } from "../../../../slices/chat";
 
@@ -17,6 +17,7 @@ export default function ProfileMenu() {
   const menuRef = useRef();
   const { t } = useTranslation("sidebar");
   const navigate = useNavigate();
+  const { profilePic } = useSelector(state => state.auth);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -50,7 +51,7 @@ export default function ProfileMenu() {
       onClick={() => setShow(!show)}
     >
       <img
-        src={user}
+        src={profilePic}
         alt="Profile Pic"
         width={40}
         height={40}

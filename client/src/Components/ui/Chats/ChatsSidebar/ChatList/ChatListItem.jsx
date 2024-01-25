@@ -21,7 +21,7 @@ export default function ChatListItem({ chat, ref }) {
         (chat.id === selectedChat?.id ? " bg-sidebar" : "")
       }
     >
-      <ProfilePic />
+      <ProfilePic chat={chat} />
       <ChatInfo chat={chat} />
     </Link>
   );

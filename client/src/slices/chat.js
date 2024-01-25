@@ -137,7 +137,7 @@ export const addUserToGroup = createAsyncThunk(
   "/chats/users/add",
   async ({ groupId, userId }, thunkAPI) => {
     try {
-      const { data } = await addUserToGroupService(groupId, { userId });
+      const { data } = await addUserToGroupService(groupId, { user: userId });
       return { chat: data };
     } catch (error) {
       let message =
@@ -154,7 +154,9 @@ export const removeUserFromGroup = createAsyncThunk(
   "/chats/users/remove",
   async ({ groupId, userId }, thunkAPI) => {
     try {
-      const { data } = await removeUserFromGroupService(groupId, { userId });
+      const { data } = await removeUserFromGroupService(groupId, {
+        user: userId,
+      });
       return { chat: data };
     } catch (error) {
       let message =
@@ -171,7 +173,7 @@ export const addAdminToGroup = createAsyncThunk(
   "/chats/admins/add",
   async ({ groupId, userId }, thunkAPI) => {
     try {
-      const { data } = await addAdminToGroupService(groupId, { userId });
+      const { data } = await addAdminToGroupService(groupId, { user: userId });
       return { chat: data };
     } catch (error) {
       let message =
@@ -188,7 +190,9 @@ export const removeAdminFromGroup = createAsyncThunk(
   "/chats/admins/remove",
   async ({ groupId, userId }, thunkAPI) => {
     try {
-      const { data } = await removeAdminFromGroupService(groupId, { userId });
+      const { data } = await removeAdminFromGroupService(groupId, {
+        user: userId,
+      });
       return { chat: data };
     } catch (error) {
       let message =
@@ -224,7 +228,6 @@ const chat = createSlice({
       }
     },
     newChat: (state, action) => {
-      console.log(action.payload);
       state.chats = [action.payload, ...state.chats];
       state.chats.sort((a, b) => {
         const date1 = new Date(a.latestMessage.createdAt);
@@ -282,6 +285,26 @@ const chat = createSlice({
     clearChats: (state, action) => {
       state.chats = [];
       state.filter = "all";
+    },
+    newGroupAction: (state, action) => {
+      const index = state.chats.findIndex(
+        (chat) => chat.id === action.payload.id
+      );
+
+      if (index !== -1) {
+        state.chats[index] = action.payload;
+      } else {
+        state.chats = state.chats.push(action.payload);
+      }
+
+      state.chats.sort((a, b) => {
+        const date1 = new Date(a.latestMessage.createdAt);
+        const date2 = new Date(b.latestMessage.createdAt);
+
+        return date2 - date1;
+      });
+
+      state.isLoading = false;
     },
   },
   extraReducers: (builder) => {
@@ -345,11 +368,119 @@ const chat = createSlice({
       .addCase(updateChat.fulfilled, (state, action) => {
         state.chats = state.chats.push(action.payload);
         state.isLoading = false;
+      })
+      .addCase(addAdminToGroup.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addAdminToGroup.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(addAdminToGroup.fulfilled, (state, action) => {
+        const index = state.chats.findIndex(
+          (chat) => chat.id === action.payload.chat.id
+        );
+
+        if (index !== -1) {
+          state.chats[index] = action.payload.chat;
+        } else {
+          state.chats = state.chats.push(action.payload.chat);
+        }
+
+        state.chats.sort((a, b) => {
+          const date1 = new Date(a.latestMessage.createdAt);
+          const date2 = new Date(b.latestMessage.createdAt);
+
+          return date2 - date1;
+        });
+
+        state.isLoading = false;
+      })
+      .addCase(removeAdminFromGroup.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(removeAdminFromGroup.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(removeAdminFromGroup.fulfilled, (state, action) => {
+         const index = state.chats.findIndex(
+           (chat) => chat.id === action.payload.chat.id
+         );
+
+         if (index !== -1) {
+           state.chats[index] = action.payload.chat;
+         } else {
+           state.chats = state.chats.push(action.payload.chat);
+         }
+
+         state.chats.sort((a, b) => {
+           const date1 = new Date(a.latestMessage.createdAt);
+           const date2 = new Date(b.latestMessage.createdAt);
+
+           return date2 - date1;
+         });
+        state.isLoading = false;
+      })
+      .addCase(addUserToGroup.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addUserToGroup.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(addUserToGroup.fulfilled, (state, action) => {
+         const index = state.chats.findIndex(
+           (chat) => chat.id === action.payload.chat.id
+         );
+
+         if (index !== -1) {
+           state.chats[index] = action.payload.chat;
+         } else {
+           state.chats = state.chats.push(action.payload.chat);
+         }
+
+         state.chats.sort((a, b) => {
+           const date1 = new Date(a.latestMessage.createdAt);
+           const date2 = new Date(b.latestMessage.createdAt);
+
+           return date2 - date1;
+         });
+        state.isLoading = false;
+      })
+      .addCase(removeUserFromGroup.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(removeUserFromGroup.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(removeUserFromGroup.fulfilled, (state, action) => {
+         const index = state.chats.findIndex(
+           (chat) => chat.id === action.payload.chat.id
+         );
+
+         if (index !== -1) {
+           state.chats[index] = action.payload.chat;
+         } else {
+           state.chats = state.chats.push(action.payload.chat);
+         }
+
+         state.chats.sort((a, b) => {
+           const date1 = new Date(a.latestMessage.createdAt);
+           const date2 = new Date(b.latestMessage.createdAt);
+
+           return date2 - date1;
+         });
+        state.isLoading = false;
       });
   },
 });
 
-export const { changeFilter, selectChat, newMessage, updateMessage, newChat, clearChats } =
-  chat.actions;
+export const {
+  changeFilter,
+  selectChat,
+  newMessage,
+  updateMessage,
+  newChat,
+  clearChats,
+  newGroupAction,
+} = chat.actions;
 
 export default chat.reducer;

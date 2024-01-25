@@ -7,7 +7,7 @@ export const googleStrategy = new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "/auth/google/callback",
+    callbackURL: "api/auth/google/callback",
   },
   async (accessToken, refreshToken, profile, done) => {
     const existingUser = await User.findOne({
@@ -41,7 +41,7 @@ export const facebookStrategy = new FacebookStrategy(
   {
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "/auth/facebook/callback",
+    callbackURL: "api/auth/facebook/callback",
     profileFields: ["id", "emails", "name", "birthday", "gender"],
   },
   async (accessToken, refreshToken, profile, done) => {

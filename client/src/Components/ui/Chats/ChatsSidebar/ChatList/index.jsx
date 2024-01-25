@@ -3,7 +3,7 @@ import ChatListItem from "./ChatListItem";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../../../../../socket";
-import { newChat, updateMessage } from "../../../../../slices/chat";
+import { newChat, newGroupAction, updateMessage } from "../../../../../slices/chat";
 
 export default function ChatList() {
   const dispatch = useDispatch();
@@ -46,6 +46,11 @@ export default function ChatList() {
       dispatch(updateMessage(data));
     };
 
+    const handleNewGroupAction = (data) => {
+      console.log(data);
+      dispatch(newGroupAction(data));
+    };
+
     // Use the helper function to handle the events
     const cleanupNewChat = handleSocketEvent("new_chat", handleNewChat);
 
@@ -54,10 +59,31 @@ export default function ChatList() {
       handleReceiveMessage
     );
 
+    const cleanupAddUserAction = handleSocketEvent(
+      "add_user",
+      handleNewGroupAction
+    );
+    const cleanupRemoveUserAction = handleSocketEvent(
+      "remove_user",
+      handleNewGroupAction
+    );
+    const cleanupAddAdminAction = handleSocketEvent(
+      "add_admin",
+      handleNewGroupAction
+    );
+    const cleanupRemoveAdminAction = handleSocketEvent(
+      "remove_admin",
+      handleNewGroupAction
+    );
+
     // Return a cleanup function to remove all event listeners
     return () => {
       cleanupNewChat();
       cleanupReceiveMessage();
+      cleanupAddUserAction();
+      cleanupAddAdminAction();
+      cleanupRemoveUserAction();
+      cleanupRemoveAdminAction();
     };
   }, [dispatch]);
 

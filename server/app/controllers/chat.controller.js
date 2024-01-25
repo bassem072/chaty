@@ -10,6 +10,7 @@ import {
   GroupResponse,
   GroupWaitingResponse,
 } from "../utils/dto/chatResponseDTO.js";
+import User from "../models/user.model.js";
 
 export const index = asyncHandler(async (req, res) => {
   const limit = req.query.limit ?? 100;
@@ -198,7 +199,7 @@ export const clear = asyncHandler(async (req, res) => {
 });
 
 export const addUserToGroup = asyncHandler(async (req, res, next) => {
-  const chat = await Chat.findByIdAndUpdate(
+  const updatedChat = await Chat.findByIdAndUpdate(
     req.params.id,
     {
       $addToSet: { users: req.body.user },
@@ -206,20 +207,49 @@ export const addUserToGroup = asyncHandler(async (req, res, next) => {
     {
       new: true,
     }
-  )
-    .populate("users", "-password")
-    .populate("groupAdmins", "-password")
-    .populate("latestMessage");
+  );
 
-  if (!chat) {
+  if (!updatedChat) {
     return next(new ApiError("Chat not found for id " + req.params.id, 404));
   }
 
-  res.status(200).json({ data: GroupAdminResponse(chat) });
+  const createChatMessage = new Message({
+    sender: req.user.id,
+    messageType: "add_user_to_group",
+    chatId: updatedChat.id,
+    content: req.body.user,
+  });
+
+  const message = await createChatMessage.save();
+
+  const chat = await Chat.findByIdAndUpdate(
+    updatedChat.id,
+    {
+      latestMessage: message.id,
+    },
+    { new: true }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmins", "-password")
+    .populate({
+      path: "latestMessage",
+      populate: [
+        {
+          path: "sender",
+          select: "-password",
+        },
+      ],
+    });
+
+  if (!chat) {
+    return next(new ApiError("Can't create this chat", 404));
+  }
+
+  res.status(201).json({ data: GroupAdminResponse(chat) });
 });
 
 export const removeUserFromGroup = asyncHandler(async (req, res, next) => {
-  const chat = await Chat.findByIdAndUpdate(
+  const updatedChat = await Chat.findByIdAndUpdate(
     req.params.id,
     {
       $pull: { groupAdmins: req.body.user, users: req.body.user },
@@ -227,20 +257,49 @@ export const removeUserFromGroup = asyncHandler(async (req, res, next) => {
     {
       new: true,
     }
-  )
-    .populate("users", "-password")
-    .populate("groupAdmins", "-password")
-    .populate("latestMessage");
+  );
 
-  if (!chat) {
+  if (!updatedChat) {
     return next(new ApiError("Chat not found for id " + req.params.id, 404));
   }
 
-  res.status(200).json({ data: GroupAdminResponse(chat) });
+  const createChatMessage = new Message({
+    sender: req.user.id,
+    messageType: "remove_user_from_group",
+    chatId: updatedChat.id,
+    content: req.body.user,
+  });
+
+  const message = await createChatMessage.save();
+
+  const chat = await Chat.findByIdAndUpdate(
+    updatedChat.id,
+    {
+      latestMessage: message.id,
+    },
+    { new: true }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmins", "-password")
+    .populate({
+      path: "latestMessage",
+      populate: [
+        {
+          path: "sender",
+          select: "-password",
+        },
+      ],
+    });
+
+  if (!chat) {
+    return next(new ApiError("Can't create this chat", 404));
+  }
+
+  res.status(201).json({ data: GroupAdminResponse(chat) });
 });
 
 export const addAdminToGroup = asyncHandler(async (req, res, next) => {
-  const chat = await Chat.findByIdAndUpdate(
+  const updatedChat = await Chat.findByIdAndUpdate(
     req.params.id,
     {
       $addToSet: { groupAdmins: req.body.user },
@@ -248,20 +307,49 @@ export const addAdminToGroup = asyncHandler(async (req, res, next) => {
     {
       new: true,
     }
-  )
-    .populate("users", "-password")
-    .populate("groupAdmins", "-password")
-    .populate("latestMessage");
+  );
 
-  if (!chat) {
+  if (!updatedChat) {
     return next(new ApiError("Chat not found for id " + req.params.id, 404));
   }
 
-  res.status(200).json({ data: GroupAdminResponse(chat) });
+  const createChatMessage = new Message({
+    sender: req.user.id,
+    messageType: "add_admin_to_group",
+    chatId: updatedChat.id,
+    content: req.body.user,
+  });
+
+  const message = await createChatMessage.save();
+
+  const chat = await Chat.findByIdAndUpdate(
+    updatedChat.id,
+    {
+      latestMessage: message.id,
+    },
+    { new: true }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmins", "-password")
+    .populate({
+      path: "latestMessage",
+      populate: [
+        {
+          path: "sender",
+          select: "-password",
+        },
+      ],
+    });
+
+  if (!chat) {
+    return next(new ApiError("Can't create this chat", 404));
+  }
+
+  res.status(201).json({ data: GroupAdminResponse(chat) });
 });
 
 export const removeAdminFromGroup = asyncHandler(async (req, res, next) => {
-  const chat = await Chat.findByIdAndUpdate(
+  const updatedChat = await Chat.findByIdAndUpdate(
     req.params.id,
     {
       $pull: { groupAdmins: req.body.user },
@@ -269,16 +357,45 @@ export const removeAdminFromGroup = asyncHandler(async (req, res, next) => {
     {
       new: true,
     }
-  )
-    .populate("users", "-password")
-    .populate("groupAdmins", "-password")
-    .populate("latestMessage");
+  );
 
-  if (!chat) {
+  if (!updatedChat) {
     return next(new ApiError("Chat not found for id " + req.params.id, 404));
   }
 
-  res.status(200).json({ data: GroupAdminResponse(chat) });
+  const createChatMessage = new Message({
+    sender: req.user.id,
+    messageType: "remove_admin_from_group",
+    chatId: updatedChat.id,
+    content: req.body.user,
+  });
+
+  const message = await createChatMessage.save();
+
+  const chat = await Chat.findByIdAndUpdate(
+    updatedChat.id,
+    {
+      latestMessage: message.id,
+    },
+    { new: true }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmins", "-password")
+    .populate({
+      path: "latestMessage",
+      populate: [
+        {
+          path: "sender",
+          select: "-password",
+        },
+      ],
+    });
+
+  if (!chat) {
+    return next(new ApiError("Can't create this chat", 404));
+  }
+
+  res.status(201).json({ data: GroupAdminResponse(chat) });
 });
 
 export const joinGroup = asyncHandler(async (req, res, next) => {
@@ -322,6 +439,87 @@ export const joinGroup = asyncHandler(async (req, res, next) => {
     .populate("latestMessage");
 
   res.status(200).json({ data: GroupWaitingResponse(joinedGroup) });
+});
+
+export const approveUserGroup = asyncHandler(async (req, res, next) => {
+  const oldChat = await Chat.findById(req.params.id);
+
+  if (!oldChat) {
+    return next(new ApiError("Chat not found for id " + req.params.id, 404));
+  }
+
+  if (!oldChat.isGroupChat) {
+    return next(new ApiError("This is not a group chat", 405));
+  }
+
+  if (!oldChat.users.includes(req.user.id)) {
+    return next(
+      new ApiError("You do not have permission to delete this chat", 403)
+    );
+  }
+
+  if (!oldChat.groupAdmins.includes(req.user.id)) {
+    return next(new ApiError("You are not admin", 403));
+  }
+
+  const user = User.findById(req.body.user);
+
+  if (!user) {
+    return next(
+      new ApiError("User not found for this id: " + req.body.user, 404)
+    );
+  }
+
+  if(!oldChat.waitingList.includes(user.id)) {
+    return next(
+      new ApiError("User not request to join this group", 404)
+    );
+  }
+
+  const updatedChat = await Chat.findByIdAndUpdate(
+    req.params.id,
+    {
+      $addToSet: { users: req.body.user },
+      $pull: { waitingList: req.body.user },
+    },
+    {
+      new: true,
+    }
+  );
+
+  const createChatMessage = new Message({
+    sender: req.user.id,
+    messageType: "join",
+    chatId: updatedChat.id,
+    content: req.body.user,
+  });
+
+  const message = await createChatMessage.save();
+
+  const chat = await Chat.findByIdAndUpdate(
+    updatedChat.id,
+    {
+      latestMessage: message.id,
+    },
+    { new: true }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmins", "-password")
+    .populate({
+      path: "latestMessage",
+      populate: [
+        {
+          path: "sender",
+          select: "-password",
+        },
+      ],
+    });
+
+  if (!chat) {
+    return next(new ApiError("Can't create this chat", 404));
+  }
+
+  res.status(201).json({ data: GroupAdminResponse(chat) });
 });
 
 export const cancelJoinGroup = asyncHandler(async (req, res, next) => {

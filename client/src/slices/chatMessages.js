@@ -125,6 +125,10 @@ const chatMessages = createSlice({
   name: "chatMessages",
   initialState,
   reducers: {
+    actionMessage: (state, action) => {
+      state.messages.push(action.payload.latestMessage);
+      state.chat = action.payload;
+    },
     addMessage: (state, action) => {
       console.log(action.payload, state.messages);
       if (state.messages[state.messages.length - 1].id !== action.payload.id) {
@@ -187,6 +191,6 @@ const chatMessages = createSlice({
   },
 });
 
-export const { updateChat, addMessage, clearMessagesHistory } = chatMessages.actions;
+export const { updateChat, addMessage, clearMessagesHistory, actionMessage } = chatMessages.actions;
 
 export default chatMessages.reducer;

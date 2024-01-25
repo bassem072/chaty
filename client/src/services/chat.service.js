@@ -76,9 +76,9 @@ export const clearChatService = async (groupId) => {
   return response.data;
 };
 
-export const addUserToGroupService = async (groupId, { userId }) => {
+export const addUserToGroupService = async (groupId, { user }) => {
   const response = await apiInstance.post(`chats/${groupId}/users/add`, {
-    user: userId,
+    user,
   });
 
   return response.data;

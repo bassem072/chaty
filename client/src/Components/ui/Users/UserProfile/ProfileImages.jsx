@@ -1,16 +1,18 @@
 import { faComment, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
-import userPic from "../../../../assets/images/users/user_2.png";
+import React, { useEffect, useState } from 'react';
+import userPic from "../../../../assets/images/users/user_1.png";
 import cover from "../../../../assets/images/home/cover.webp";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchChatService } from '../../../../services/chat.service';
 import { socket } from '../../../../socket';
 import { setMessage } from '../../../../slices/message';
+import { getUserImageService } from '../../../../services/user.service';
 
 export default function ProfileImages({ user }) {
     const { chats } = useSelector((state) => state.chat);
+    const [profilePicture, setProfilePicture] = useState(userPic);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -36,13 +38,27 @@ export default function ProfileImages({ user }) {
           });
       }
     };
+    
+
+  useEffect(() => {
+    if(user.ProfileImage !== "default") {
+      getUserImageService(user.id)
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          setProfilePicture(url);
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+        });
+    }
+  }, [user]);
 
   return (
     <div className="relative w-full h-80 bg-active/50 flex justify-center items-center">
       <img src={cover} alt="User" className="h-full w-full object-cover" />
       <div className="absolute w-full flex flex-col lg:flex-row lg:p-10 items-center lg:gap-5 bottom-0 translate-y-2/3 lg:translate-y-1/2">
         <img
-          src={userPic}
+          src={profilePicture}
           alt="User"
           className="w-60 h-60 bg-sidebar rounded-full border-[5px] border-paragraph/50"
         />

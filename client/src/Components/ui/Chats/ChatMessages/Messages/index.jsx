@@ -44,8 +44,11 @@ export default function Messages() {
             ) : (
               <ActionMessage
                 message={message}
-                isNewDay={isNewDay}
-                checkShow={checkShow}
+                isNewDay={
+                  index === 0 ||
+                  isNewDay(message.createdAt, messages[index - 1].createdAt)
+                }
+                checkShow={checkShow(index, messages)}
               />
             )}
           </div>

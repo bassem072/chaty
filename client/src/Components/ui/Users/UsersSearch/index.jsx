@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { fetchUsersService } from "../../../../services/user.service";
-import userPic from "../../../../assets/images/users/user_5.png";
-import { Link } from "react-router-dom";
+import UserSearchItem from "./UserSearchItem";
 
 export default function UsersSearch({ searchText = "", setSearchText }) {
   const { i18n } = useTranslation("users");
@@ -45,16 +44,7 @@ export default function UsersSearch({ searchText = "", setSearchText }) {
           {isActive && users.length > 0 && (
             <div className="absolute w-full max-h-[50vh] p-2 bg-sidebar top-14 rounded whitespace-nowrap overflow-auto scrollbar z-10">
               {users.map((user, index) => (
-                <Link key={index} to={`/users/${user.id}`} className="w-full py-3 flex items-center gap-2 hover:bg-active px-2 rounded-md">
-                  <img
-                    src={userPic}
-                    alt="user"
-                    width={38}
-                    height={38}
-                    className="rounded-full"
-                  />
-                  <div>{user.name}</div>
-                </Link>
+                <UserSearchItem key={index} user={user} />
               ))}
             </div>
           )}

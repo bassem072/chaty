@@ -68,7 +68,7 @@ export const verifyManegeUsers = asyncHandler(async (req, res, next) => {
     );
   }
 
-  if (chat.groupAdmins.includes(req.user.id)) {
+  if (!chat.groupAdmins.includes(req.user.id)) {
     return next(new ApiError("You are not admin", 403));
   }
 
@@ -96,7 +96,7 @@ export const verifyManegeAdmins = asyncHandler(async (req, res, next) => {
     );
   }
 
-  if (chat.isGroupChat && chat.groupAdmins.includes(req.user.id)) {
+  if (chat.isGroupChat && !chat.groupAdmins.includes(req.user.id)) {
     return next(new ApiError("You are not admin", 403));
   }
 
@@ -104,7 +104,7 @@ export const verifyManegeAdmins = asyncHandler(async (req, res, next) => {
     return next(new ApiError("This is not a group chat", 405));
   }
 
-  const user = User.findById(req.body.user);
+  const user = await User.findById(req.body.user);
 
   if (!user) {
     return next(

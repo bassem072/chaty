@@ -15,6 +15,7 @@ export default function TextMessage({ message, checkShow, isNewDay, seen = true 
   const day = moment(message.createdAt).format(
     i18n.language === "ar" ? "yyyy/MM/DD" : "DD/MM/yyyy"
   );
+  const name = message.sender.name.split(" ")[0];
 
   const checkDir = (char) => {
     if (/[\u0600-\u06FF]/.test(char)) {
@@ -61,27 +62,34 @@ export default function TextMessage({ message, checkShow, isNewDay, seen = true 
           }
         >
           <div className="flex flex-col gap-1">
-            <div
-              className="text-start text-[15px]"
-              dir={checkDir(message.content[0])}
-            >
-              {message.content}
-            </div>
-            <div className="min-w-[100px] flex justify-between items-center text-[11px]">
-              <div className="flex gap-0.5 items-center text-paragraph/50">
-                <div>{time}</div>
+            {!isMe && (
+              <div className="text-start text-[10px] text-paragraph/70">
+                {name}
               </div>
-              {isMe && (
-                <div className={seen ? "text-message" : "text-paragraph"}>
-                  <FontAwesomeIcon
-                    icon={faCheck}
-                    className={
-                      "relative -rotate-6 ltr:left-[5px] rtl:right-[5px]"
-                    }
-                  />
-                  <FontAwesomeIcon icon={faCheck} className="-rotate-6" />
+            )}
+            <div className="flex flex-col gap-1">
+              <div
+                className="text-start text-[15px]"
+                dir={checkDir(message.content[0])}
+              >
+                {message.content}
+              </div>
+              <div className="min-w-[100px] flex justify-between items-center text-[11px]">
+                <div className="flex gap-0.5 items-center text-paragraph/50">
+                  <div>{time}</div>
                 </div>
-              )}
+                {isMe && (
+                  <div className={seen ? "text-message" : "text-paragraph"}>
+                    <FontAwesomeIcon
+                      icon={faCheck}
+                      className={
+                        "relative -rotate-6 ltr:left-[5px] rtl:right-[5px]"
+                      }
+                    />
+                    <FontAwesomeIcon icon={faCheck} className="-rotate-6" />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

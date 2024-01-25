@@ -11,9 +11,11 @@ import { setMessage } from "./message";
 import {
   changeProfilePicService,
   editProfileService,
+  getProfilePicService,
   logoutService,
   profileService,
 } from "../services/profile.service";
+import avatar from '../assets/images/users/user_1.png';
 
 export const register = createAsyncThunk(
   "/register",
@@ -134,6 +136,23 @@ export const editProfile = createAsyncThunk(
   }
 );
 
+export const getProfileImage = createAsyncThunk(
+  "/profile/profilePic",
+  async (_, thunkAPI) => {
+    try {
+      const data = await getProfilePicService();
+      return { image: data };
+    } catch (error) {
+      let message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const changeProfilePic = createAsyncThunk(
   "/profile/changeProfilePic",
   async (userData, thunkAPI) => {
@@ -176,6 +195,7 @@ const initialState = {
   isRegister: false,
   isAuthenticated: false,
   user: localStorage.getItem("user"),
+  profilePic: avatar,
 };
 
 const auth = createSlice({
@@ -289,6 +309,16 @@ const auth = createSlice({
       .addCase(changeProfilePic.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
+      })
+      .addCase(getProfileImage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getProfileImage.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(getProfileImage.fulfilled, (state, action) => {
+        state.profilePic = URL.createObjectURL(action.payload.image);
+        state.isLoading = false;
       });
   },
 });

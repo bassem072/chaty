@@ -18,8 +18,8 @@ export default function ProfileInfo() {
   );
   
   return (
-    <div className="w-full flex flex-col lg:flex-row gap-5 px-5 pb-20">
-      <div className="lg:w-1/3 p-4 bg-active rounded-lg flex flex-col gap-4">
+    <div className="w-full flex flex-col lg:flex-row gap-5 px-20 pb-20">
+      <div className="lg:w-1/4 p-4 bg-active rounded-lg flex flex-col gap-4">
         <div>{user.bio}</div>
         <div className="w-full h-[1px] bg-paragraph/30 rounded"></div>
         <div className="w-full flex flex-col gap-2">
@@ -45,7 +45,7 @@ export default function ProfileInfo() {
           </div>
         </div>
       </div>
-      <div className="lg:w-2/3">
+      <div className="lg:w-3/4">
         <div className="text-2xl font-bold py-3 text-paragraph/70">
           No posts available now
         </div>

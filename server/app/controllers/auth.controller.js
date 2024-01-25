@@ -102,6 +102,7 @@ export const login = asyncHandler(async (req, res, next) => {
 });
 
 export const socialLogin = asyncHandler(async (req, res) => {
+  console.log("hi");
   const accessToken = createAccessToken(req.user.id);
   const refreshToken = await createRefreshToken(req.user.id);
 

@@ -14,7 +14,9 @@ export const loginService = async (userData) => {
 };
 
 export const googleService = async () => {
-  const response = await apiInstance.get("auth/google");
+  const response = await apiInstance.get("auth/google", {
+    headers: { "Access-Control-Allow-Origin": "*" },
+  });
 
   return response.data;
 };

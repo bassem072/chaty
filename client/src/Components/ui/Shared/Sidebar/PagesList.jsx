@@ -9,13 +9,14 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import user from "../../../../assets/images/users/user_1.avif";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { logout } from "../../../../slices/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearMessagesHistory } from "../../../../slices/chatMessages";
 import { clearChats } from "../../../../slices/chat";
 
 export default function PagesList() {
   const location = useLocation().pathname;
   const current = location.substring(1, location.length).split("/")[0];
+  const { profilePic } = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pages = [
@@ -85,7 +86,7 @@ export default function PagesList() {
         onClick={() => setShow(!show)}
       >
         <img
-          src={user}
+          src={profilePic}
           alt="Profile Pic"
           width={40}
           height={40}
@@ -104,7 +105,7 @@ export default function PagesList() {
               onClick={() => {
                 dispatch(logout())
                   .unwrap()
-                  .then((payload) => {
+                  .then((_) => {
                     dispatch(clearMessagesHistory());
                     dispatch(clearChats());
                     navigate("/auth");

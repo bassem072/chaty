@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import userPic from "../../../../../assets/images/users/user_5.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleLeft,
   faAngleRight,
-  faEllipsis,
   faPhone,
   faSearch,
   faVideo,
@@ -13,10 +12,13 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessagesHistory } from "../../../../../slices/chatMessages";
+import OptionsMenu from "./OptionsMenu";
+import Members from "./Members";
 
 export default function ChatHeader() {
   const { i18n } = useTranslation();
   const { chat } = useSelector((state) => state.chatMessages);
+  const [showMembers, setShowMembers] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -63,10 +65,11 @@ export default function ChatHeader() {
         <div className="hover:text-paragraph transition-all duration-300 cursor-pointer">
           <FontAwesomeIcon icon={faVideo} size="lg" />
         </div>
-        <div className="hover:text-paragraph transition-all duration-300 cursor-pointer">
-          <FontAwesomeIcon icon={faEllipsis} size="lg" />
-        </div>
+        <OptionsMenu chat={chat} setShowMembers={setShowMembers} />
       </div>
+      {showMembers && (
+        <Members setShowMembers={setShowMembers} />
+      )}
     </div>
   );
 }

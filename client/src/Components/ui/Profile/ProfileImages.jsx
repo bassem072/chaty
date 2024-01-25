@@ -1,24 +1,20 @@
 import { faCamera, faClose, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useRef, useState } from "react";
-import userPic from "../../../assets/images/users/user_2.png";
+import React, { useRef, useState } from "react";
 import cover from "../../../assets/images/home/cover.webp";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import AvatarEditor from "react-avatar-editor";
 import { changeProfilePic } from "../../../slices/auth";
-import apiInstance from "../../../utils/apiInstance";
 
 export default function ProfileImages() {
-  const { user } = useSelector((state) => state.auth);
+  const { user, profilePic } = useSelector((state) => state.auth);
   const [showProfilePic, setShowProfilePic] = useState(false);
   const [showEditProfilePic, setShowEditProfilePic] = useState(false);
-  const [profilePicture, setProfilePicture] = useState(userPic);
   const [image, setImage] = useState(null);
   const [slideValue, setSlideValue] = useState(10);
   const dispatch = useDispatch();
   const cropRef = useRef(null);
-  console.log(profilePicture);
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -48,21 +44,6 @@ export default function ProfileImages() {
     }
   };
 
-  useEffect(() => {
-    apiInstance
-      .get("profile/profileImage", {
-        responseType: "blob",
-        timeout: 30000,
-      })
-      .then((blob) => {
-        const url = URL.createObjectURL(blob.data);
-        setProfilePicture(url);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [user]);
-
   return (
     <div className="relative w-full h-80 bg-active/50 flex justify-center items-center">
       <img src={cover} alt="User" className="h-full w-full object-cover" />
@@ -70,7 +51,7 @@ export default function ProfileImages() {
         <div className="relative w-48 h-48">
           <button onClick={() => setShowProfilePic(true)}>
             <img
-              src={profilePicture}
+              src={profilePic}
               alt="User"
               className="bg-sidebar rounded-full border-[5px] border-paragraph/50 object-cover"
             />
@@ -108,7 +89,7 @@ export default function ProfileImages() {
       </div>
       {showProfilePic && (
         <div className="fixed w-screen h-screen bg-black/70 right-0 top-0 flex justify-center items-center">
-          <img src={profilePicture} alt="User" className="h-[50%]" />
+          <img src={profilePic} alt="User" className="h-[50%]" />
           <button
             onClick={() => setShowProfilePic(false)}
             className="absolute top-5 right-5"

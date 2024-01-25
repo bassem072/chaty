@@ -3,6 +3,7 @@ import CreateChatMessage from "./CreateChatMessage";
 import CreateGroupMessage from "./CreateGroupMessage";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
+import OtherActionsMessage from "./OtherActionsMessage";
 
 export default function ActionMessage({ message, checkShow, isNewDay }) {
   const { i18n } = useTranslation();
@@ -17,6 +18,42 @@ export default function ActionMessage({ message, checkShow, isNewDay }) {
       }
       case "create_group": {
         return <CreateGroupMessage content={message.content} />;
+      }
+      case "add_user_to_group": {
+        return (
+          <OtherActionsMessage
+            content={message.content}
+            messageType="add_user_to_group"
+            senderId={message.sender.id || message.sender._id}
+          />
+        );
+      }
+      case "remove_user_from_group": {
+        return (
+          <OtherActionsMessage
+            content={message.content}
+            messageType="add_user_to_group"
+            senderId={message.sender.id || message.sender._id}
+          />
+        );
+      }
+      case "add_admin_to_group": {
+        return (
+          <OtherActionsMessage
+            content={message.content}
+            messageType="add_user_to_group"
+            senderId={message.sender.id || message.sender._id}
+          />
+        );
+      }
+      case "remove_admin_from_group": {
+        return (
+          <OtherActionsMessage
+            content={message.content}
+            messageType="add_user_to_group"
+            senderId={message.sender.id || message.sender._id}
+          />
+        );
       }
       default: {
       }

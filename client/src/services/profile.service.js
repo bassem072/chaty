@@ -12,6 +12,15 @@ export const editProfileService = async (userData) => {
     return response.data;
 };
 
+export const getProfilePicService = async () => {
+    const response = await apiInstance.get("profile/profileImage", {
+      responseType: "blob",
+      timeout: 30000,
+    });
+
+    return response.data;
+};
+
 export const changeProfilePicService = async (userData) => {
   const response = await apiInstance.post(
     "profile/changeProfilePic",
