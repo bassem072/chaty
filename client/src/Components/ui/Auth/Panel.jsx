@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Panel({
   decoration,
@@ -9,8 +10,11 @@ export default function Panel({
   trans = "",
   onClick,
 }) {
+  const { i18n } = useTranslation("auth");
+
   return (
     <div
+      dir={i18n.dir()}
       className={
         "flex flex-row col-[1/2] lg:col-auto lg:flex-col justify-around items-center lg:items-end text-center z-[6] py-10 px-[8%] lg:pt-12 lg:pb-8 " +
         decoration
@@ -18,11 +22,13 @@ export default function Panel({
     >
       <div
         className={
-          "text-paragraph transition-transform duration-[.9s] lg:duration-1000 ease-in-out delay-[.8s] lg:delay-700 w-full py-2 px-4 md:py-0 md:px-0 pr-[15%] lg:pr-0 " +
+          "text-paragraph transition-transform duration-[.9s] lg:duration-1000 ease-in-out delay-[.8s] lg:delay-700 w-full py-2 px-4 md:pt-20 md:pl-0 pr-[15%] lg:pr-0 " +
           trans
         }
       >
-        <h3 className="font-semibold leading-none text-xl lg:text-2xl">{title}</h3>
+        <h3 className="font-semibold leading-none text-xl lg:text-2xl">
+          {title}
+        </h3>
         <p className="text-xs lg:text-base py-2 lg:py-3">{description}</p>
         <button
           onClick={onClick}

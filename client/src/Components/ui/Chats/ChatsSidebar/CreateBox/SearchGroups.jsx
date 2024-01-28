@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchChatsService } from "../../../../../services/chat.service";
 import { setMessage } from "../../../../../slices/message";
+import { useTranslation } from "react-i18next";
 
 export default function SearchGroups({ setShowBox }) {
-  const { user } = useSelector((state) => state.auth);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [groups, setGroups] = useState([]);
 
@@ -25,7 +26,7 @@ export default function SearchGroups({ setShowBox }) {
         <input
           type="text"
           name="search"
-          placeholder="Search for groups..."
+          placeholder={t("search.groups")}
           className="w-full bg-transparent outline-none"
           onChange={(event) => fetchGroups(event.target.value)}
         />

@@ -7,14 +7,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Members from "./Members";
-import ChangeChatImage from "./ChengeChatImage";
+import ChangeChatImage from "./ChangeChatImage";
 import { useSelector } from "react-redux";
 
 export default function OptionsMenu({ chat, setShowMembers, onImageChange }) {
   const [show, setShow] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const menuRef = useRef();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const isAdmin = () =>
     chat.groupAdmins.findIndex((admin) => admin._id === user.id) !== -1;
@@ -67,7 +67,7 @@ export default function OptionsMenu({ chat, setShowMembers, onImageChange }) {
             onClick={() => {}}
             className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar"
           >
-            <div>Leave</div>
+            <div>{t("leave")}</div>
             <FontAwesomeIcon icon={faRightFromBracket} />
           </button>
         </div>

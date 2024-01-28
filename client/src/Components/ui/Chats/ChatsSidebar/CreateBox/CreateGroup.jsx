@@ -15,13 +15,13 @@ export default function CreateGroup({ setShowBox }) {
           className={"w-full" + (isSearch ? " bg-primary" : "")}
           onClick={() => setIsSearch(true)}
         >
-          Search Groups
+          {t("search_groups")}
         </button>
         <button
           className={"w-full" + (!isSearch ? " bg-primary" : "")}
           onClick={() => setIsSearch(false)}
         >
-          Create Group
+          {t("create_group")}
         </button>
       </div>
       <div className="w-full h-[86%] whitespace-nowrap overflow-auto scrollbar flex flex-col">

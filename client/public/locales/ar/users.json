@@ -1,7 +1,21 @@
 {
   "title": "شاتى | الاشخاص",
   "contacts": "الاشخاص",
-  "sidebar": {
-    "searchPlaceholder": "ابحث فى جهات الاتصال"
+  "add_friend": "إضافة صديق",
+  "followers": "{{num}} الف متابع",
+  "message": "رسالة",
+  "no_posts": "المنشورات غير متاحة الآن.",
+  "bio": "الحالة",
+  "birthday": "تاريخ الميلاد",
+  "gender": "النوع",
+  "male": "ذكر",
+  "female": "أنثى",
+  "edit_profile": "تعديل الملف الشخصى",
+  "cancel": "الغاء",
+  "save": "حفظ",
+  "user_not_found": "المستخدم غير موجود",
+  "not_found_message": "نحن آسفون، ولكن لم نتمكن من العثور على المستخدم الذي كنت تبحث عنه.",
+  "navbar": {
+    "searchPlaceholder": "ابحث فى الاشخاص..."
   }
 }

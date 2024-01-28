@@ -12,6 +12,7 @@ import { logout } from "../../../../slices/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessagesHistory } from "../../../../slices/chatMessages";
 import { clearChats } from "../../../../slices/chat";
+import { useTranslation } from "react-i18next";
 
 export default function PagesList() {
   const location = useLocation().pathname;
@@ -19,6 +20,7 @@ export default function PagesList() {
   const { profilePic } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation("sidebar");
   const pages = [
     {
       name: "chats",
@@ -95,10 +97,10 @@ export default function PagesList() {
         {show && (
           <div className="absolute w-40 ltr:right-5 rtl:!left-5 bottom-[50px] z-10 p-1 bg-[#303841] rounded-md transition-all duration-700 z-30">
             <MenuItem to="/profile" icon={faUser}>
-              Profile
+              {t('profile')}
             </MenuItem>
             <MenuItem to="/settings" icon={faGear}>
-              Setting
+              {t("settings")}
             </MenuItem>
             <div className="h-0.5 bg-paragraph/30"></div>
             <button
@@ -114,7 +116,7 @@ export default function PagesList() {
               }}
               className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar"
             >
-              <div>Logout</div>
+              <div>{t("logout")}</div>
               <FontAwesomeIcon icon={faRightFromBracket} size="1x" />
             </button>
           </div>

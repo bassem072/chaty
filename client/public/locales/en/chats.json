@@ -8,6 +8,13 @@
   "messagePlaceholder": "Type a message...",
   "newMessage": "New Message",
   "newGroup": "New Group",
+  "message": "Message",
+  "search_groups": "Search Groups",
+  "create_group": "Create Group",
+  "members": "Members",
+  "change_image": "Change Image",
+  "leave": "Leave",
+  "typing": "Typing...",
   "messageType": {
     "create_chat": "You are now connected, You can chat now.",
     "create_group": "A group was created by",
@@ -26,6 +33,18 @@
   "search": {
     "all": "Search in chats and groups...",
     "chats": "Search in chats...",
-    "groups": "Search in groups..."
+    "groups": "Search in groups...",
+    "users": "Search in users..."
+  },
+  "new_group": {
+    "name": "Group Name",
+    "create": "Create",
+    "add": "Add",
+    "added": "Added"
+  },
+  "actions": {
+    "make_admin": "Make Group Admin",
+    "dismiss_admin": "Dismiss Group Admin",
+    "remove_user": "Remove From Group"
   }
 }

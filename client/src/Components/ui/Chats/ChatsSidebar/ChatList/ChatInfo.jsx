@@ -54,16 +54,20 @@ export default function ChatInfo({ chat }) {
       <div className="h-full flex flex-col items-start justify-between">
         <div>{title}</div>
         <div className="w-[222px] text-paragraph/80 text-sm flex gap-1 truncate">
-          {chat.isGroupChat && usersTyping.length > 0
-            ? usersTyping[0].name.split(" ")[0]
-            : chat.isGroupChat &&
-              chat.latestMessage.messageType === "text" && (
-                <div className="text-paragraph">
-                  {getSenderName(chat.latestMessage.sender._id)}:
-                </div>
-              )}
+          {chat.isGroupChat && usersTyping.length > 0 ? (
+            <div className="text-paragraph">
+              {usersTyping[0].name.split(" ")[0]}:
+            </div>
+          ) : (
+            chat.isGroupChat &&
+            chat.latestMessage.messageType === "text" && (
+              <div className="text-paragraph">
+                {getSenderName(chat.latestMessage.sender._id)}:
+              </div>
+            )
+          )}
           <div>
-            {usersTyping.length > 0 ? "typing..." : getLatestMessageContent()}
+            {usersTyping.length > 0 ? t("typing") : getLatestMessageContent()}
           </div>
         </div>
       </div>

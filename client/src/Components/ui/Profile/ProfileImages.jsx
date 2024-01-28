@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import AvatarEditor from "react-avatar-editor";
 import { changeProfilePic } from "../../../slices/auth";
+import { useTranslation } from "react-i18next";
 
 export default function ProfileImages() {
   const { user, profilePic } = useSelector((state) => state.auth);
@@ -15,6 +16,7 @@ export default function ProfileImages() {
   const [slideValue, setSlideValue] = useState(10);
   const dispatch = useDispatch();
   const cropRef = useRef(null);
+  const { t } = useTranslation("users");
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -76,14 +78,14 @@ export default function ProfileImages() {
             <div className="text-3xl text-paragraph font-semibold">
               {user.name}
             </div>
-            <div>1.4k followers</div>
+            <div>{t("followers", {num: 1.6})}</div>
           </div>
           <Link
             to="/settings/editProfile"
             className="w-fit px-3 py-2 bg-message rounded-md flex gap-2 items-center"
           >
             <FontAwesomeIcon icon={faEdit} />
-            <div>Edit Profile</div>
+            <div>{t("edit_profile")}</div>
           </Link>
         </div>
       </div>
@@ -131,13 +133,13 @@ export default function ProfileImages() {
                 }}
                 className="w-20 py-1 bg-message rounded-lg"
               >
-                Cancel
+                {t("cancel")}
               </button>
               <button
                 onClick={handleSave}
                 className="w-20 py-1 bg-message rounded-lg"
               >
-                Save
+                {t("save")}
               </button>
             </div>
           </div>

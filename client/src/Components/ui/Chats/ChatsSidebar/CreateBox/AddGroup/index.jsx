@@ -1,22 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchUsersService } from "../../../../../services/user.service";
-import { setMessage } from "../../../../../slices/message";
-import userPic from "../../../../../assets/images/users/avatar.png";
+import { fetchUsersService } from "../../../../../../services/user.service";
+import { setMessage } from "../../../../../../slices/message";
+import userPic from "../../../../../../assets/images/users/avatar.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { createChat } from "../../../../../slices/chat";
+import { createChat } from "../../../../../../slices/chat";
 import { useNavigate } from "react-router-dom";
-import { socket } from "../../../../../socket";
+import { useTranslation } from "react-i18next";
+import { socket } from "../../../../../../socket";
+import UserListItem from "./UserListItem";
+import SelectedUserListItem from "./SelectedUserListItem";
 
 export default function AddGroup({ setShowBox }) {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const getUsers = (keyword) => {
+  const getUsers = (keyword = "") => {
     fetchUsersService({ keyword, limit: 10 })
       .then((data) => {
         setUsers(data.data);
@@ -66,13 +70,17 @@ export default function AddGroup({ setShowBox }) {
     }
   };
 
+  useEffect(() => {
+    getUsers();
+  }, []);
+
   return (
     <div className="w-full h-full flex flex-col gap-3">
       <div className="w-full h-10 bg-active p-2 text-base font-medium rounded-md">
         <input
           type="text"
           name="search"
-          placeholder="Name of group"
+          placeholder={t("new_group.name")}
           className="w-full bg-transparent outline-none"
           value={name}
           onChange={(event) => setName(event.target.value)}
@@ -83,7 +91,7 @@ export default function AddGroup({ setShowBox }) {
         <input
           type="text"
           name="search"
-          placeholder="Search for users... (At least two users with you)"
+          placeholder={t("search.users")}
           className="w-full bg-transparent outline-none"
           onChange={(event) => getUsers(event.target.value)}
         />
@@ -92,53 +100,23 @@ export default function AddGroup({ setShowBox }) {
       {selectedUsers.length > 0 && (
         <div className="h-14 flex gap-3 whitespace-nowrap overflow-auto hidden-scrollbar text-sm">
           {selectedUsers.map((selectedUser, index) => (
-            <div className="px-3 py-1 bg-primary rounded-full flex justify-between items-center gap-6">
-              <div className="flex items-center gap-2">
-                <img
-                  src={userPic}
-                  alt="user"
-                  width={20}
-                  height={20}
-                  className="rounded-full"
-                />
-                <div>{selectedUser.name}</div>
-              </div>
-              <button
-                className="w-2"
-                onClick={() => {
-                  removeFromSelectedUsers(index);
-                }}
-              >
-                <FontAwesomeIcon icon={faClose} />
-              </button>
-            </div>
+            <SelectedUserListItem
+              key={index}
+              index={index}
+              selectedUser={selectedUser}
+              removeFromSelectedUsers={removeFromSelectedUsers}
+            />
           ))}
         </div>
       )}
 
       <div className="w-full h-full bg-active p-3 text-base font-medium rounded-md overflow-auto whitespace-nowrap scrollbar">
         {users.map((user, index) => (
-          <div
+          <UserListItem
             key={index}
-            className="w-full py-3 px-2 flex justify-between items-center hover:bg-sidebar rounded-xl"
-          >
-            <div className="flex items-center gap-3">
-              <img
-                src={userPic}
-                alt="user"
-                width={38}
-                height={38}
-                className="rounded-full"
-              />
-              <div className="font-semibold text-paragraph/90">{user.name}</div>
-            </div>
-            <button
-              onClick={() => addToSelectedUsers(user)}
-              className="px-3 py-1 bg-message rounded-md font-normal"
-            >
-              Add
-            </button>
-          </div>
+            user={user}
+            addToSelectedUsers={addToSelectedUsers}
+          />
         ))}
       </div>
       <div className="flex justify-center items-center">
@@ -146,7 +124,7 @@ export default function AddGroup({ setShowBox }) {
           onClick={() => createGroup()}
           className="bg-message py-2 px-3 rounded-md"
         >
-          Create
+          {t("new_group.create")}
         </button>
       </div>
     </div>

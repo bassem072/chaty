@@ -2,16 +2,23 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
 import AvatarEditor from "react-avatar-editor";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { changeChatPic } from "../../../../../slices/chatMessages";
+import { useTranslation } from "react-i18next";
 
 export default function SetChatImage({ chatId, setShowEditChatPic, image, setImage }) {
   const [slideValue, setSlideValue] = useState(10);
   const dispatch = useDispatch();
   const cropRef = useRef(null);
+  const { t, i18n } = useTranslation("users");
 
   const getBackgroundSize = () => {
-    return { backgroundSize: `${((slideValue - 10) * 100) / 90}% 100%` };
+    return {
+      backgroundSize:
+        i18n.dir() === "rtl"
+          ? `${100 - ((slideValue - 10) * 100) / 90}% 100%`
+          : `${((slideValue - 10) * 100) / 90}% 100%`,
+    };
   };
 
   const handleSave = () => {
@@ -52,7 +59,7 @@ export default function SetChatImage({ chatId, setShowEditChatPic, image, setIma
             onChange={(e) => setSlideValue(e.target.value)}
             style={getBackgroundSize()}
             value={slideValue}
-            className="w-full"
+            className={"w-full" + (i18n.dir() === "rtl" ? " in-range:bg-message bg-gray-500" : "")}
           />
         </div>
         <div className="flex gap-5 justify-center">
@@ -64,13 +71,13 @@ export default function SetChatImage({ chatId, setShowEditChatPic, image, setIma
             }}
             className="w-20 py-1 bg-message rounded-lg"
           >
-            Cancel
+            {t("cancel")}
           </button>
           <button
             onClick={handleSave}
             className="w-20 py-1 bg-message rounded-lg"
           >
-            Save
+            {t("save")}
           </button>
         </div>
       </div>

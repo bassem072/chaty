@@ -5,6 +5,7 @@ import { getUserImageService } from "../../../../services/user.service";
 
 export default function UserSearchItem({ user }) {
   const [profilePicture, setProfilePicture] = useState(userPic);
+
   useEffect(() => {
     if (user.profileImage !== "default") {
       getUserImageService(user.id)
@@ -17,6 +18,7 @@ export default function UserSearchItem({ user }) {
         });
     }
   }, [user]);
+  
   return (
     <Link
       to={`/users/${user.id}`}

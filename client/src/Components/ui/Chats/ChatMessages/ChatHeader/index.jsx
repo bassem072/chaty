@@ -22,6 +22,7 @@ import { getUserImageService } from "../../../../../services/user.service";
 export default function ChatHeader() {
   const { i18n } = useTranslation();
   const { chat } = useSelector((state) => state.chatMessages);
+  const { onlineUsers } = useSelector((state) => state.onlineUsers);
   const [showMembers, setShowMembers] = useState(false);
   const [chatPicture, setChatPicture] = useState(
     chat.isGroupChat ? groupPic : userPic
@@ -31,6 +32,10 @@ export default function ChatHeader() {
   const [image, setImage] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const isActive = chat.isGroupChat
+    ? false
+    : onlineUsers.includes(chat.user._id);
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -93,7 +98,7 @@ export default function ChatHeader() {
           <div className="font-medium sm:font-semibold text-sm w-20 min-[350px]:w-auto truncate">
             {title.substring(0, 15)}
           </div>
-          <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-green-500 rounded-full"></div>
+          {isActive && <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-green-500 rounded-full"></div>}
         </div>
       </div>
       <div className="flex items-center gap-4 sm:gap-10 text-paragraph/70">

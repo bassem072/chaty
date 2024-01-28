@@ -1,7 +1,21 @@
 {
   "title": "Chaty | People",
   "contacts": "People",
-  "sidebar": {
-    "searchPlaceholder": "Search Contacts..."
+  "add_friend": "Add Friend",
+  "followers": "{{num}}k Followers",
+  "message": "Message",
+  "no_posts": "No posts available now",
+  "bio": "Bio",
+  "birthday": "Birthday",
+  "gender": "Gender",
+  "male": "Male",
+  "female": "Female",
+  "edit_profile": "Edit Profile",
+  "cancel": "Cancel",
+  "save": "Save",
+  "user_not_found": "User not found",
+  "not_found_message": "We're sorry, but we couldn't find the user you were looking for.",
+  "navbar": {
+    "searchPlaceholder": "Search Users..."
   }
 }

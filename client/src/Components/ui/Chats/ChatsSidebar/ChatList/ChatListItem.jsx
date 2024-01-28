@@ -10,16 +10,21 @@ export default function ChatListItem({ chat, ref }) {
   let { id } = useParams();
   const dispatch = useDispatch();
 
-  return (
+  return selectedChat?.id === chat.id ? (
+    <div
+      ref={ref}
+      className="w-full py-5 hover:bg-sidebar px-3 flex gap-3 items-center rounded-md cursor-pointer bg-sidebar"
+    >
+      <ProfilePic chat={chat} />
+      <ChatInfo chat={chat} />
+    </div>
+  ) : (
     <Link
       to={"/chats/" + chat.id}
       onClick={() => dispatch(clearMessagesHistory())}
       replace={id ? true : false}
       ref={ref}
-      className={
-        "w-full py-5 hover:bg-sidebar px-3 flex gap-3 items-center rounded-md cursor-pointer" +
-        (chat.id === selectedChat?.id ? " bg-sidebar" : "")
-      }
+      className="w-full py-5 hover:bg-sidebar px-3 flex gap-3 items-center rounded-md cursor-pointer"
     >
       <ProfilePic chat={chat} />
       <ChatInfo chat={chat} />

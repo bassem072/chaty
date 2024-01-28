@@ -59,10 +59,10 @@ export default function ProfileMenu() {
       {show && (
         <div className="absolute w-40 left-5 rtl:right-6 bottom-10 z-10 p-1 bg-[#303841] rounded-md transition-all duration-700">
           <MenuItem to="/profile" icon={faUser}>
-            Profile
+            {t("profile")}
           </MenuItem>
           <MenuItem to="/settings" icon={faGear}>
-            Setting
+            {t("settings")}
           </MenuItem>
           <div className="h-0.5 bg-paragraph/30"></div>
           <button

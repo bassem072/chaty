@@ -13,7 +13,6 @@ export default function Auth() {
   const { isRegister } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation("auth");
-  const dir = i18n.language === "ar" ? "rtl" : "ltr";
 
   return (
     <div dir="ltr" className="w-screen h-screen text-start">
@@ -28,12 +27,12 @@ export default function Auth() {
           (isRegister ? "sign-up" : "")
         }
       >
-        <div dir={dir} className="absolute w-full h-full top-0 right-0">
+        <div dir={i18n.dir()} className="absolute w-full h-full top-0 right-0">
           <div
             className={
               "absolute w-full lg:w-1/2 top-[95%] lg:top-1/2 left-1/2 lg:left-3/4 -translate-x-1/2 -translate-y-[70%] lg:-translate-y-1/2 grid grid-cols-1 z-[5] transition-all delay-1000 duration-700 ease-in-out " +
               (isRegister
-                ? "left-1/2 lg:left-1/4 -translate-x-1/2 lg:-translate-x-[150%] -translate-y-[110%] lg:-translate-y-1/2"
+                ? "left-1/2 lg:left-1/4 -translate-x-1/2 lg:-translate-x-[150%] -translate-y-[135%] md:-translate-y-[120%] lg:-translate-y-1/2"
                 : "")
             }
           >
@@ -52,7 +51,7 @@ export default function Auth() {
             buttonText={t("panel.login.buttonText")}
             trans={
               isRegister
-                ? "-translate-x-[1000px] -translate-y-[300px] lg:translate-y-0"
+                ? "-translate-x-[1000px] -translate-y-[400px] lg:translate-y-0"
                 : "translate-x-0"
             }
             image={login}

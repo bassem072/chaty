@@ -29,7 +29,7 @@ export default function MembersListItem({
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const menuRef = useRef();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const isMe = user._id === me?.id;
 
   useEffect(() => {
@@ -104,7 +104,9 @@ export default function MembersListItem({
       </div>
       <div className="flex items-center gap-3">
         {!isMe && (
-          <button className="bg-message py-1 px-2 rounded-lg">message</button>
+          <button className="bg-message py-1.5 px-3 rounded-lg">
+            {t("message")}
+          </button>
         )}
         {haveAccess && !isMe && (
           <div
@@ -127,7 +129,7 @@ export default function MembersListItem({
                   className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar"
                 >
                   <div>
-                    {!isAdmin ? "Make group admin" : "Dismiss as admin"}
+                    {!isAdmin ? t("actions.make_admin") : t("actions.dismiss_admin")}
                   </div>
                   <FontAwesomeIcon icon={faShieldHalved} />
                 </button>
@@ -137,7 +139,7 @@ export default function MembersListItem({
                   }}
                   className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar"
                 >
-                  <div>Remove From Group</div>
+                  <div>{t("actions.remove_user")}</div>
                   <FontAwesomeIcon icon={faUserXmark} />
                 </button>
               </div>

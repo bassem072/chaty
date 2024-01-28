@@ -6,7 +6,7 @@ import { fetchUsersService } from "../../../../services/user.service";
 import UserSearchItem from "./UserSearchItem";
 
 export default function UsersSearch({ searchText = "", setSearchText }) {
-  const { i18n } = useTranslation("users");
+  const { i18n, t } = useTranslation("users");
   const [users, setUsers] = useState([]);
   const [isActive, setIsActive] = useState(false);
 
@@ -28,7 +28,7 @@ export default function UsersSearch({ searchText = "", setSearchText }) {
         <div className="relative w-full h-full flex items-center">
           <input
             type="text"
-            placeholder="Search Users"
+            placeholder={t("navbar.searchPlaceholder")}
             value={searchText}
             onChange={(event) => {
               getUsers(event.target.value);

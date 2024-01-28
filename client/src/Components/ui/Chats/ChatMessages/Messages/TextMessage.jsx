@@ -34,7 +34,7 @@ export default function TextMessage({
 
   useEffect(() => {
     if (
-      user.id !== message.sender.id &&
+      user?.id !== message.sender.id &&
       message.sender.profileImage !== "default"
     ) {
       getUserImageService(message.sender.id)
@@ -75,13 +75,28 @@ export default function TextMessage({
         )}
         <div
           className={
-            isMe
-              ? "message-bubble-right bg-sidebar" +
+            "relative w-auto max-w-xs min-w-[150px] p-2 text-white after:absolute after:w-0 after:h-0 after:border-t-[8px] after:border-t-transparent " +
+            (isMe
+              ? "bg-sidebar  " +
+                (i18n.dir() === "rtl"
+                  ? "rounded-tl-lg rounded-br-lg"
+                  : "rounded-tr-lg rounded-bl-lg") +
                 (checkShow
-                  ? " after:message-bubble-right-after ltr:after:border-l-sidebar rtl:after:border-r-sidebar"
+                  ? " after:border-r-[8px] after:border-l-[8px] after:bottom-0" +
+                    (i18n.dir() === "rtl"
+                      ? " after:border-l-transparent after:-left-4 after:border-r-sidebar"
+                      : " after:border-r-transparent after:-right-4 after:border-l-sidebar")
                   : "")
-              : "message-bubble-left" +
-                (checkShow ? " after:message-bubble-left-after" : "")
+              : "bg-message " +
+                (i18n.dir() === "rtl"
+                  ? "rounded-tr-lg rounded-bl-lg"
+                  : "rounded-tl-lg rounded-br-lg") +
+                (checkShow
+                  ? " after:border-l-[8px] after:border-r-[8px] after:bottom-0" +
+                    (i18n.dir() === "rtl"
+                      ? " after:border-l-message after:border-r-transparent after:-right-4"
+                      : " after:border-l-transparent after:border-r-message after:-left-4")
+                  : ""))
           }
         >
           <div className="flex flex-col gap-1">

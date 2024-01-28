@@ -3,12 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import MembersListItem from "./MembersListItem";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 export default function MembersList({ setIsAddUser  }) {
   const { chat } = useSelector((state) => state.chatMessages);
   const { user } = useSelector((state) => state.auth);
-
-  console.log(chat);
+  const { t } = useTranslation();
 
   const sortMembers = () => {
     return chat.users.filter(
@@ -23,7 +23,7 @@ export default function MembersList({ setIsAddUser  }) {
   return (
     <div className="w-full h-full flex flex-col whitespace-nowrap overflow-hidden scrollbar">
       <div className="relative py-3">
-        <div className="text-2xl font-semibold">Members</div>
+        <div className="text-2xl font-semibold">{t("members")}</div>
         <button
           onClick={() => setIsAddUser(true)}
           className="absolute w-10 h-10 top-1/2 -translate-y-1/2 right-2"

@@ -32,7 +32,7 @@ export default function AddMember({ setIsAddUser }) {
   return (
     <div className="w-full h-full flex flex-col gap-4 justify-center items-center whitespace-nowrap overflow-auto scrollbar">
       <div className="w-full relative py-3">
-        <div className="text-2xl font-semibold">Members</div>
+        <div className="text-2xl font-semibold">{t("members")}</div>
         <button
           onClick={() => setIsAddUser(false)}
           className="absolute w-10 h-10 top-1/2 -translate-y-1/2 left-0"
@@ -44,7 +44,7 @@ export default function AddMember({ setIsAddUser }) {
         <input
           type="text"
           name="search"
-          placeholder="Search for users..."
+          placeholder={t("search.users")}
           className="w-full bg-transparent outline-none"
           onChange={(event) => getUsers(event.target.value)}
         />

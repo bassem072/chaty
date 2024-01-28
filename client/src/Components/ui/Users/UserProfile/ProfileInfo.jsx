@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import moment from "moment";
 
 export default function ProfileInfo({ user }) {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation("users");
   moment.locale(i18n.language);
   const day = moment(user.birthdate).format(
     i18n.language === "ar" ? "yyyy MMM DD" : "DD MMM yyyy"
@@ -26,7 +26,7 @@ export default function ProfileInfo({ user }) {
               className="text-paragraph/70"
             />
             <div className="flex items-center gap-2">
-              <div>Birthday</div>
+              <div>{t("birthday")}</div>
               <div className="font-bold">{day}</div>
             </div>
           </div>
@@ -36,15 +36,15 @@ export default function ProfileInfo({ user }) {
               className="text-paragraph/70"
             />
             <div className="flex items-center gap-2">
-              <div>Gender</div>
-              <div className="font-bold">{user.gender}</div>
+              <div>{t("gender")}</div>
+              <div className="font-bold">{t(user.gender)}</div>
             </div>
           </div>
         </div>
       </div>
       <div className="lg:w-2/3">
         <div className="text-2xl font-bold py-3 text-paragraph/70">
-          No posts available now
+          {t("no_posts")}
         </div>
       </div>
     </div>

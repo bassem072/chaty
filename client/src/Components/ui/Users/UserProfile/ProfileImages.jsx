@@ -9,10 +9,12 @@ import { fetchChatService } from "../../../../services/chat.service";
 import { socket } from "../../../../socket";
 import { setMessage } from "../../../../slices/message";
 import { getUserImageService } from "../../../../services/user.service";
+import { useTranslation } from "react-i18next";
 
 export default function ProfileImages({ user }) {
   const { chats } = useSelector((state) => state.chat);
   const [profilePicture, setProfilePicture] = useState(userPic);
+  const { t } = useTranslation("users");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -59,26 +61,26 @@ export default function ProfileImages({ user }) {
         <img
           src={profilePicture}
           alt="User"
-          className="w-60 h-60 bg-sidebar rounded-full border-[5px] border-paragraph/50"
+          className="w-48 h-48 bg-sidebar rounded-full border-[5px] border-paragraph/50"
         />
         <div className="lg:w-full flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between pt-2 lg:pt-24">
           <div className="flex flex-col items-center lg:items-start gap-2">
             <div className="text-3xl text-paragraph font-semibold">
               {user.name}
             </div>
-            <div>1.4k followers</div>
+            <div>{t("followers", {num: 1.4})}</div>
           </div>
           <div className="flex justify-center gap-3">
             <button className="px-3 py-2 bg-message rounded-md flex gap-2 items-center">
               <FontAwesomeIcon icon={faUserPlus} />
-              <div>Add Friend</div>
+              <div>{t("add_friend")}</div>
             </button>
             <button
               onClick={() => fetchThisChat(user.id)}
               className="px-3 py-2 bg-message rounded-md flex gap-2 items-center"
             >
               <FontAwesomeIcon icon={faComment} />
-              <div>Message</div>
+              <div>{t("message")}</div>
             </button>
           </div>
         </div>

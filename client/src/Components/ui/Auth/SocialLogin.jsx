@@ -42,7 +42,7 @@ export default function SocialLogin() {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="hidden md:flex flex-col items-center">
       <p className="py-3 text-base">{t("social")}</p>
       <div className="flex gap-4">
         <SocialButton

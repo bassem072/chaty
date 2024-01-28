@@ -142,6 +142,15 @@ export default function EditProfileItem({
           >
             {t("save")}
           </button>
+          <button
+            onClick={() => {
+              setIsEdit(false);
+              setVal(user[title]);
+            }}
+            className="bg-message px-4 py-1 rounded-lg"
+          >
+            {t("cancel")}
+          </button>
         </div>
       )}
     </div>

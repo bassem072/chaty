@@ -5,10 +5,12 @@ import { addUserToGroup } from "../../../../../../../slices/chat";
 import { actionMessage } from "../../../../../../../slices/chatMessages";
 import { socket } from "../../../../../../../socket";
 import { getUserImageService } from "../../../../../../../services/user.service";
+import { useTranslation } from "react-i18next";
 
 export default function UserListItem({ user, chatId }) {
   const [isAdded, setIsAdded] = useState(false);
   const [profilePicture, setProfilePicture] = useState(userPic);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const addUser = () => {
@@ -58,7 +60,7 @@ export default function UserListItem({ user, chatId }) {
           (isAdded ? "bg-primary" : "bg-message")
         }
       >
-        {isAdded ? "Added" : "Add"}
+        {isAdded ? t("new_group.added") : t("new_group.add")}
       </button>
     </div>
   );

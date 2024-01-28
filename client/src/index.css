@@ -16,19 +16,19 @@
   }
 
   .message-bubble-left {
-    @apply relative w-auto max-w-xs min-w-[150px] bg-message ltr:rounded-tl-lg ltr:rounded-br-lg rtl:rounded-tr-lg rtl:rounded-bl-lg p-2 text-white;
+    @apply ltr:rounded-tl-lg ltr:rounded-br-lg rtl:rounded-tr-lg rtl:rounded-bl-lg;
   }
 
   .message-bubble-left-after {
-    @apply absolute w-0 h-0 border-t-[8px] border-t-transparent border-l-[8px] ltr:border-l-transparent rtl:border-l-message border-r-[8px] ltr:border-r-message rtl:border-r-transparent bottom-0 ltr:-left-4 rtl:-right-4;
+    @apply border-l-[8px] ltr:border-l-transparent rtl:border-l-message border-r-[8px] ltr:border-r-message rtl:border-r-transparent bottom-0 ltr:-left-4 rtl:-right-4;
   }
 
   .message-bubble-right {
-    @apply relative w-auto max-w-xs min-w-[150px] bg-message rtl:rounded-tl-lg rtl:rounded-br-lg ltr:rounded-tr-lg ltr:rounded-bl-lg p-2 text-white;
+    @apply rtl:rounded-tl-lg rtl:rounded-br-lg ltr:rounded-tr-lg ltr:rounded-bl-lg;
   }
 
   .message-bubble-right-after {
-    @apply absolute w-0 h-0 border-t-[8px] border-t-transparent border-r-[8px] ltr:border-r-transparent rtl:border-r-message border-l-[8px] ltr:border-l-message rtl:border-l-transparent bottom-0 ltr:-right-4 rtl:-left-4;
+    @apply border-r-[8px] ltr:border-r-transparent rtl:border-r-message border-l-[8px] ltr:border-l-message rtl:border-l-transparent bottom-0 ltr:-right-4 rtl:-left-4;
   }
 }
 
