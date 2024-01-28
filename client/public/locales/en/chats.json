@@ -10,7 +10,18 @@
   "newGroup": "New Group",
   "messageType": {
     "create_chat": "You are now connected, You can chat now.",
-    "create_group": "A group was created by "
+    "create_group": "A group was created by",
+    "create_group_me": "You have created a group",
+    "you_added": "You added",
+    "added_you": "added you",
+    "added": "added",
+    "you_removed": "You removed",
+    "removed_you": "removed you",
+    "removed": "removed",
+    "to_group": "to group",
+    "from_group": "from group",
+    "to_group_admins": "to group admins",
+    "from_group_admins": "from group admins"
   },
   "search": {
     "all": "Search in chats and groups...",

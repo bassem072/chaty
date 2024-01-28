@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { fetchUsersService } from "../../../../../services/user.service";
 import { useDispatch, useSelector } from "react-redux";
 import { setMessage } from "../../../../../slices/message";
-import userPic from "../../../../../assets/images/users/user_5.png";
+import userPic from "../../../../../assets/images/users/avatar.png";
 import { fetchChat, selectChat } from "../../../../../slices/chat";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../../../../../socket";

@@ -1,12 +1,12 @@
-import {
-  faComments,
-  faUser,
-} from "@fortawesome/free-regular-svg-icons";
+import { faComments, faUser } from "@fortawesome/free-regular-svg-icons";
 import React, { useEffect, useRef, useState } from "react";
 import PageListItem from "./PageListItem";
-import { faGear, faRightFromBracket, faUsers } from "@fortawesome/free-solid-svg-icons";
+import {
+  faGear,
+  faRightFromBracket,
+  faUsers,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import user from "../../../../assets/images/users/user_1.avif";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { logout } from "../../../../slices/auth";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +16,7 @@ import { clearChats } from "../../../../slices/chat";
 export default function PagesList() {
   const location = useLocation().pathname;
   const current = location.substring(1, location.length).split("/")[0];
-  const { profilePic } = useSelector(state => state.auth);
+  const { profilePic } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pages = [

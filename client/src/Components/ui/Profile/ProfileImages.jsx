@@ -56,8 +56,8 @@ export default function ProfileImages() {
               className="bg-sidebar rounded-full border-[5px] border-paragraph/50 object-cover"
             />
           </button>
-          <button className="absolute w-8 h-8 rounded-full flex justify-center items-center bg-sidebar text-paragraph bottom-[10%] right-[5%] lg:bottom-[15%] lg:right-[10%]">
-            <label htmlFor="file">
+          <div className="absolute w-8 h-8 rounded-full flex justify-center items-center bg-sidebar text-paragraph bottom-[10%] right-[5%] lg:bottom-[15%] lg:right-[10%]">
+            <label htmlFor="file" className="cursor-pointer">
               <FontAwesomeIcon icon={faCamera} />
             </label>
             <input
@@ -69,7 +69,7 @@ export default function ProfileImages() {
                 event.target.value = null;
               }}
             />
-          </button>
+          </div>
         </div>
         <div className="lg:w-full flex flex-col gap-3 lg:flex-row items-center lg:justify-between pt-2 lg:pt-24">
           <div className="flex flex-col items-center lg:items-start gap-2">

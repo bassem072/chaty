@@ -1,6 +1,6 @@
-import React from 'react';
-import user from "../../../../../assets/images/users/user_5.png";
-import { Link, useLocation, useParams } from 'react-router-dom';
+import React from "react";
+import user from "../../../../../assets/images/users/avatar.png";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 export default function ContactPic({ contact }) {
   let { id } = useParams();

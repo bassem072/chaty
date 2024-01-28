@@ -39,7 +39,6 @@ export default function SendMessage() {
       dispatch(createMessage({ chatId: chat.id, messageData: body }))
         .unwrap()
         .then((payload) => {
-          console.log("from send", payload, chat);
           setMessage("");
           setFile("");
           setMessageType("text");

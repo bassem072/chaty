@@ -1,28 +1,45 @@
-import React, { useState } from "react";
-import userPic from "../../../../../../../assets/images/users/user_1.png";
+import React, { useEffect, useState } from "react";
+import userPic from "../../../../../../../assets/images/users/avatar.png";
 import { useDispatch } from "react-redux";
 import { addUserToGroup } from "../../../../../../../slices/chat";
 import { actionMessage } from "../../../../../../../slices/chatMessages";
 import { socket } from "../../../../../../../socket";
+import { getUserImageService } from "../../../../../../../services/user.service";
 
 export default function UserListItem({ user, chatId }) {
   const [isAdded, setIsAdded] = useState(false);
+  const [profilePicture, setProfilePicture] = useState(userPic);
   const dispatch = useDispatch();
-  
+
   const addUser = () => {
     dispatch(addUserToGroup({ groupId: chatId, userId: user.id }))
       .unwrap()
       .then((payload) => {
         dispatch(actionMessage(payload.chat));
         socket.emit("new_user", payload.chat);
+        setIsAdded(true);
       })
       .catch((err) => {});
   };
+
+  useEffect(() => {
+    if (user.profileImage !== "default") {
+      getUserImageService(user.id)
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          setProfilePicture(url);
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+        });
+    }
+  }, [user]);
+
   return (
     <div className="w-full py-5 px-3 flex justify-between items-center hover:bg-sidebar rounded-xl">
       <div className="flex items-center gap-3">
         <img
-          src={userPic}
+          src={profilePicture}
           alt="user"
           width={38}
           height={38}

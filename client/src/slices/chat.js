@@ -306,6 +306,38 @@ const chat = createSlice({
 
       state.isLoading = false;
     },
+    startTyping: (state, action) => {
+      const index = state.chats.findIndex(
+        (chat) => chat.id === action.payload.chatId
+      );
+
+      if (index !== -1) {
+        if (!state.chats[index].typing) {
+          state.chats[index].typing = {};
+        }
+        if (state.chats[index].isGroupChat) {
+          state.chats[index].typing[action.payload.userId] = state.chats[
+            index
+          ].users.find((user) => user._id === action.payload.userId);
+        } else {
+          state.chats[index].typing[action.payload.userId] =
+            state.chats[index].user;
+        }
+      }
+    },
+    stopTyping: (state, action) => {
+      const index = state.chats.findIndex(
+        (chat) => chat.id === action.payload.chatId
+      );
+      if (index !== -1) {
+        if (
+          state.chats[index].typing &&
+          state.chats[index].typing[action.payload.userId]
+        ) {
+          delete state.chats[index].typing[action.payload.userId];
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -402,22 +434,22 @@ const chat = createSlice({
         state.isLoading = false;
       })
       .addCase(removeAdminFromGroup.fulfilled, (state, action) => {
-         const index = state.chats.findIndex(
-           (chat) => chat.id === action.payload.chat.id
-         );
+        const index = state.chats.findIndex(
+          (chat) => chat.id === action.payload.chat.id
+        );
 
-         if (index !== -1) {
-           state.chats[index] = action.payload.chat;
-         } else {
-           state.chats = state.chats.push(action.payload.chat);
-         }
+        if (index !== -1) {
+          state.chats[index] = action.payload.chat;
+        } else {
+          state.chats = state.chats.push(action.payload.chat);
+        }
 
-         state.chats.sort((a, b) => {
-           const date1 = new Date(a.latestMessage.createdAt);
-           const date2 = new Date(b.latestMessage.createdAt);
+        state.chats.sort((a, b) => {
+          const date1 = new Date(a.latestMessage.createdAt);
+          const date2 = new Date(b.latestMessage.createdAt);
 
-           return date2 - date1;
-         });
+          return date2 - date1;
+        });
         state.isLoading = false;
       })
       .addCase(addUserToGroup.pending, (state) => {
@@ -427,22 +459,22 @@ const chat = createSlice({
         state.isLoading = false;
       })
       .addCase(addUserToGroup.fulfilled, (state, action) => {
-         const index = state.chats.findIndex(
-           (chat) => chat.id === action.payload.chat.id
-         );
+        const index = state.chats.findIndex(
+          (chat) => chat.id === action.payload.chat.id
+        );
 
-         if (index !== -1) {
-           state.chats[index] = action.payload.chat;
-         } else {
-           state.chats = state.chats.push(action.payload.chat);
-         }
+        if (index !== -1) {
+          state.chats[index] = action.payload.chat;
+        } else {
+          state.chats = state.chats.push(action.payload.chat);
+        }
 
-         state.chats.sort((a, b) => {
-           const date1 = new Date(a.latestMessage.createdAt);
-           const date2 = new Date(b.latestMessage.createdAt);
+        state.chats.sort((a, b) => {
+          const date1 = new Date(a.latestMessage.createdAt);
+          const date2 = new Date(b.latestMessage.createdAt);
 
-           return date2 - date1;
-         });
+          return date2 - date1;
+        });
         state.isLoading = false;
       })
       .addCase(removeUserFromGroup.pending, (state) => {
@@ -452,22 +484,22 @@ const chat = createSlice({
         state.isLoading = false;
       })
       .addCase(removeUserFromGroup.fulfilled, (state, action) => {
-         const index = state.chats.findIndex(
-           (chat) => chat.id === action.payload.chat.id
-         );
+        const index = state.chats.findIndex(
+          (chat) => chat.id === action.payload.chat.id
+        );
 
-         if (index !== -1) {
-           state.chats[index] = action.payload.chat;
-         } else {
-           state.chats = state.chats.push(action.payload.chat);
-         }
+        if (index !== -1) {
+          state.chats[index] = action.payload.chat;
+        } else {
+          state.chats = state.chats.push(action.payload.chat);
+        }
 
-         state.chats.sort((a, b) => {
-           const date1 = new Date(a.latestMessage.createdAt);
-           const date2 = new Date(b.latestMessage.createdAt);
+        state.chats.sort((a, b) => {
+          const date1 = new Date(a.latestMessage.createdAt);
+          const date2 = new Date(b.latestMessage.createdAt);
 
-           return date2 - date1;
-         });
+          return date2 - date1;
+        });
         state.isLoading = false;
       });
   },
@@ -481,6 +513,8 @@ export const {
   newChat,
   clearChats,
   newGroupAction,
+  startTyping,
+  stopTyping,
 } = chat.actions;
 
 export default chat.reducer;

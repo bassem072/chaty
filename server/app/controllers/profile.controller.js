@@ -36,17 +36,21 @@ export const destroy = asyncHandler(async (req, res, next) => {
 });
 
 export const uploadProfileImage = async (req, res, next) => {
-  const user = await User.findByIdAndUpdate(
-    req.user.id,
-    { profileImage: req.file.filename },
-    { new: true }
-  );
+  if (req.file) {
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { profileImage: req.file.filename },
+      { new: true }
+    );
 
-  if (!user) {
-    return next(new ApiError("User not found"), 404);
+    if (!user) {
+      return next(new ApiError("User not found"), 404);
+    }
+
+    res.status(200).json({ data: userResponse(user) });
+  } else {
+    return next(new ApiError("profileImage is required"), 400);
   }
-
-  res.status(200).json({ data: userResponse(user) });
 };
 
 export const getProfileImage = async (req, res, next) => {

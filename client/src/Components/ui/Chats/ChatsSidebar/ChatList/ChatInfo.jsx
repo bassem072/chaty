@@ -1,19 +1,18 @@
 import moment from "moment";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import ActionMessage from "./ActionMessage";
 
 export default function ChatInfo({ chat }) {
   const { t, i18n } = useTranslation();
   moment.locale(i18n.language);
 
   const title = chat.isGroupChat ? chat.name : chat.user.name;
+  const usersTyping = chat.typing ? Object.values(chat.typing) : [];
 
   const getSenderName = (id) => {
-    // Ensure id is a string or object of user
-    const userId = typeof id === "string" ? id : id.id;
-
     // Find the user in the chat users
-    const user = chat.users.find((user) => user._id === userId);
+    const user = chat.users.find((user) => user._id === id);
 
     // If the user is found, return the first part of their name
     // If not, return an empty string or a default value
@@ -42,7 +41,7 @@ export default function ChatInfo({ chat }) {
         latestMessageContent = chat.latestMessage.content;
         break;
       default:
-        latestMessageContent = "";
+        latestMessageContent = <ActionMessage chat={chat} />;
     }
 
     return latestMessageContent;
@@ -55,10 +54,17 @@ export default function ChatInfo({ chat }) {
       <div className="h-full flex flex-col items-start justify-between">
         <div>{title}</div>
         <div className="w-[222px] text-paragraph/80 text-sm flex gap-1 truncate">
-          {chat.isGroupChat && chat.latestMessage.messageType === "text" && (
-            <div className="text-paragraph">{getSenderName(chat.latestMessage.sender)}:</div>
-          )}
-          <div>{getLatestMessageContent()}</div>
+          {chat.isGroupChat && usersTyping.length > 0
+            ? usersTyping[0].name.split(" ")[0]
+            : chat.isGroupChat &&
+              chat.latestMessage.messageType === "text" && (
+                <div className="text-paragraph">
+                  {getSenderName(chat.latestMessage.sender._id)}:
+                </div>
+              )}
+          <div>
+            {usersTyping.length > 0 ? "typing..." : getLatestMessageContent()}
+          </div>
         </div>
       </div>
       <div className="h-full flex flex-col items-end justify-between">

@@ -1,6 +1,3 @@
-import express from "express";
-import path from "path";
-import { fileURLToPath } from "url";
 import { Router } from "express";
 import { verifyEmail, verifyToken } from "../middlewares/auth.middleware.js";
 import { updateUserValidator } from "../utils/validation/profile.validator.js";

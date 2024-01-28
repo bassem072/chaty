@@ -15,7 +15,7 @@ import {
   logoutService,
   profileService,
 } from "../services/profile.service";
-import avatar from '../assets/images/users/user_1.png';
+import avatar from "../assets/images/users/avatar.png";
 
 export const register = createAsyncThunk(
   "/register",
@@ -317,7 +317,7 @@ const auth = createSlice({
         state.isLoading = false;
       })
       .addCase(getProfileImage.fulfilled, (state, action) => {
-        state.profilePic = URL.createObjectURL(action.payload.image);
+        state.profilePic = action.payload.image;
         state.isLoading = false;
       });
   },

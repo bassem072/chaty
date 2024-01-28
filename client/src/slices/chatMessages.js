@@ -7,7 +7,7 @@ import {
   updateMessageService,
 } from "../services/message.service";
 import { setMessage } from "./message";
-import { getChatService } from "../services/chat.service";
+import { changeChatPicService, getChatService } from "../services/chat.service";
 
 export const getChat = createAsyncThunk(
   "/messages/chat/get",
@@ -115,10 +115,28 @@ export const deleteMessage = createAsyncThunk(
   }
 );
 
+export const changeChatPic = createAsyncThunk(
+  "/chat/changeChatPic",
+  async ({groupId, chatData}, thunkAPI) => {
+    try {
+      const { data } = await changeChatPicService(groupId, chatData);
+      return { chat: data };
+    } catch (error) {
+      let message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const initialState = {
   chat: null,
   messages: [],
   isLoading: false,
+  typing: {},
 };
 
 const chatMessages = createSlice({
@@ -126,11 +144,11 @@ const chatMessages = createSlice({
   initialState,
   reducers: {
     actionMessage: (state, action) => {
+      console.log(action.payload);
       state.messages.push(action.payload.latestMessage);
       state.chat = action.payload;
     },
     addMessage: (state, action) => {
-      console.log(action.payload, state.messages);
       if (state.messages[state.messages.length - 1].id !== action.payload.id) {
         state.messages.push(action.payload);
         state.chat.latestMessage = action.payload;
@@ -142,7 +160,22 @@ const chatMessages = createSlice({
     clearMessagesHistory: (state, action) => {
       state.chat = null;
       state.messages = [];
-      console.log(state.messages);
+    },
+    startTyping: (state, action) => {
+      if (state.chat.isGroupChat) {
+        state.typing[action.payload] = state.chat.users.find(
+          (user) => user._id === action.payload
+        );
+      } else {
+        state.typing[action.payload] = state.chat.user;
+      }
+    },
+    stopTyping: (state, action) => {
+      if (
+        state.typing[action.payload]
+      ) {
+        delete state.typing[action.payload];
+      }
     },
   },
   extraReducers: (builder) => {
@@ -187,10 +220,27 @@ const chatMessages = createSlice({
         state.isLoading = false;
         state.messages = [...state.messages, action.payload.message];
         state.chat.latestMessage = action.payload.message;
+      })
+      .addCase(changeChatPic.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(changeChatPic.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(changeChatPic.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.chat = action.payload.chat;
       });
   },
 });
 
-export const { updateChat, addMessage, clearMessagesHistory, actionMessage } = chatMessages.actions;
+export const {
+  updateChat,
+  addMessage,
+  clearMessagesHistory,
+  actionMessage,
+  startTyping,
+  stopTyping,
+} = chatMessages.actions;
 
 export default chatMessages.reducer;

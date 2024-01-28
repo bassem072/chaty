@@ -1,13 +1,22 @@
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
 import moment from "moment";
 import "moment/locale/ar";
-import { useTranslation } from 'react-i18next';
-import user from "../../../../../assets/images/users/user_2.png";
-import { checkDir } from '../../../../../helpers/messages';
+import { useTranslation } from "react-i18next";
+import user from "../../../../../assets/images/users/avatar.png";
+import { checkDir } from "../../../../../helpers/messages";
 
-export default function Message({ id, userId, seen, show, content, date, newDay, index }) {
+export default function Message({
+  id,
+  userId,
+  seen,
+  show,
+  content,
+  date,
+  newDay,
+  index,
+}) {
   const { i18n } = useTranslation();
   moment.locale(i18n.language);
   const isMe = userId === 1;
@@ -51,7 +60,11 @@ export default function Message({ id, userId, seen, show, content, date, newDay,
           }
         >
           <div className="flex flex-col gap-0.5">
-            {!isMe && <div className="text-start text-[10px] text-paragraph/70">Bassem Elsayed</div>}
+            {!isMe && (
+              <div className="text-start text-[10px] text-paragraph/70">
+                Bassem Elsayed
+              </div>
+            )}
             <div className="flex flex-col gap-1">
               <div
                 className="text-start text-[15px]"

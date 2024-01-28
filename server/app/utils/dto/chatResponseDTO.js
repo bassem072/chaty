@@ -15,6 +15,7 @@ export const GroupResponse = (chat) => {
     users: chat.users,
     status: "user",
     groupAdmins: chat.groupAdmins,
+    chatImage: chat.chatImage,
     latestMessage: chat.latestMessage,
     createdAt: chat.createdAt,
   };
@@ -36,6 +37,7 @@ export const GroupWaitingResponse = (chat) => {
     status: "waiting",
     users: chat.users,
     groupAdmins: chat.groupAdmins,
+    chatImage: chat.chatImage,
   };
 };
 
@@ -47,6 +49,7 @@ export const GroupGuestResponse = (chat) => {
     status: "guest",
     users: chat.users,
     groupAdmins: chat.groupAdmins,
+    chatImage: chat.chatImage,
   };
 };
 

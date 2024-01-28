@@ -3,10 +3,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { changeFilter } from "../../../../slices/chat";
 
-export default function FilterMessages() {
+export default function FilterMessages({ chats }) {
   const { t } = useTranslation("chats");
   const dispatch = useDispatch();
-  const { chats, filter } = useSelector((state) => state.chat);
+  const { filter } = useSelector((state) => state.chat);
 
   const numberOfGroups = chats.reduce((totalGroups, chat) => {
     if(chat.isGroupChat) {

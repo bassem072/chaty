@@ -33,6 +33,10 @@ const schema = new Schema(
         ref: "User",
       },
     ],
+    chatImage: {
+      type: String,
+      default: "default",
+    },
   },
   {
     timestamps: true,

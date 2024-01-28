@@ -24,13 +24,17 @@ export const fetchChatsService = async ({
   return response.data;
 };
 
-export const createChatService = async ({ users, isGroupChat = false, name = "" }) => {
+export const createChatService = async ({
+  users,
+  isGroupChat = false,
+  name = "",
+}) => {
   const body = {
     isGroupChat,
     users,
   };
 
-  if(isGroupChat) {
+  if (isGroupChat) {
     body.name = name;
   }
 
@@ -104,6 +108,29 @@ export const removeAdminFromGroupService = async (groupId, { user }) => {
   const response = await apiInstance.post(`chats/${groupId}/admins/remove`, {
     user,
   });
+
+  return response.data;
+};
+
+export const getChatPicService = async (groupId) => {
+  const response = await apiInstance.get(`chats/${groupId}/chatImage`, {
+    responseType: "blob",
+    timeout: 30000,
+  });
+
+  return response.data;
+};
+
+export const changeChatPicService = async (groupId, chatData) => {
+  const response = await apiInstance.post(
+    `chats/${groupId}/changeChatPic`,
+    chatData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 
   return response.data;
 };

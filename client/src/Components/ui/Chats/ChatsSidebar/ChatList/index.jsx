@@ -3,19 +3,27 @@ import ChatListItem from "./ChatListItem";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../../../../../socket";
-import { newChat, newGroupAction, updateMessage } from "../../../../../slices/chat";
+import {
+  newChat,
+  newGroupAction,
+  startTyping,
+  stopTyping,
+  updateMessage,
+} from "../../../../../slices/chat";
 
-export default function ChatList() {
+export default function ChatList({ chatList, search }) {
   const dispatch = useDispatch();
-  const { chats, filter } = useSelector((state) => state.chat);
+  const { filter } = useSelector((state) => state.chat);
   const chatRef = useRef(null);
   let { id } = useParams();
   const types = ["chats", "groups"];
 
+  
+
   const filteredChats =
     filter === "all"
-      ? chats
-      : chats.filter((chat) => {
+      ? chatList
+      : chatList.filter((chat) => {
           const type = types[chat.isGroupChat ? 1 : 0];
           console.log(type);
           return type === filter;
@@ -47,8 +55,17 @@ export default function ChatList() {
     };
 
     const handleNewGroupAction = (data) => {
-      console.log(data);
       dispatch(newGroupAction(data));
+    };
+
+    const handleStartTypingAction = (chatId, userId) => {
+      console.log(chatId, userId);
+      dispatch(startTyping({ chatId, userId }));
+    };
+
+    const handleStopTypingAction = (chatId, userId) => {
+      console.log(chatId, userId);
+      dispatch(stopTyping({ chatId, userId }));
     };
 
     // Use the helper function to handle the events
@@ -75,6 +92,16 @@ export default function ChatList() {
       "remove_admin",
       handleNewGroupAction
     );
+    
+    const cleanupStartTypingAction = handleSocketEvent(
+      "start_type",
+      handleStartTypingAction
+    );
+
+    const cleanupStopTypingAction = handleSocketEvent(
+      "stop_type",
+      handleStopTypingAction
+    );
 
     // Return a cleanup function to remove all event listeners
     return () => {
@@ -84,6 +111,8 @@ export default function ChatList() {
       cleanupAddAdminAction();
       cleanupRemoveUserAction();
       cleanupRemoveAdminAction();
+      cleanupStartTypingAction();
+      cleanupStopTypingAction();
     };
   }, [dispatch]);
 

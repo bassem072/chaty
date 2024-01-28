@@ -13,16 +13,14 @@ export default function CreateGroupMessage({ content }) {
     return res.name;
   };
 
-  return (
+  return user?.id === content ? (
+    t("messageType.create_group_me")
+  ) : (
     <div className="flex gap-1">
       {t("messageType.create_group")}
-      {user?.id === content ? (
-        <div>You</div>
-      ) : (
-        <Link to={`/users/${content}`} className="text-message">
-          {getUser(chat.groupAdmins, content)}
-        </Link>
-      )}
+      <Link to={`/users/${content}`} className="text-message">
+        {getUser(chat.groupAdmins, content)}
+      </Link>
     </div>
   );
 }

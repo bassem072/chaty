@@ -7,6 +7,7 @@ import {
   create,
   destroy,
   fetch,
+  getChatImage,
   index,
   joinGroup,
   leaveAdminGroup,
@@ -15,6 +16,7 @@ import {
   removeUserFromGroup,
   show,
   update,
+  uploadChatImage,
 } from "../controllers/chat.controller.js";
 
 import {
@@ -31,13 +33,13 @@ import {
 
 import {
   verifyDeleteChat,
+  verifyGetChat,
   verifyManegeAdmins,
   verifyManegeUsers,
   verifyUpdateChat,
 } from "../middlewares/chat.middleware.js";
-
-import messageRouter from "./message.routes.js";
 import { verifyEmail, verifyToken } from "../middlewares/auth.middleware.js";
+import { upload } from "../middlewares/uploadChatImage.middleware.js";
 
 const chatRouter = Router();
 
@@ -57,6 +59,20 @@ chatRouter.post(
   [...deleteChatValidator, verifyDeleteChat],
   clear
 );
+
+chatRouter.post(
+  "/:id/changeChatPic",
+  [
+    verifyGetChat,
+    upload.single("chatImage", (req, res, next) => {
+      console.log(req.chat);
+      next();
+    }),
+  ],
+  uploadChatImage
+);
+
+chatRouter.get("/:id/chatImage", showChatValidator, getChatImage);
 
 chatRouter.post("/fetch", [...fetchChatValidator], fetch);
 

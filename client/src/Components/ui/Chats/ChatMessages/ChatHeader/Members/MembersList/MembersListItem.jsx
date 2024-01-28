@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import userPic from "../../../../../../../assets/images/users/user_1.png";
+import userPic from "../../../../../../../assets/images/users/avatar.png";
 import { getUserImageService } from "../../../../../../../services/user.service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

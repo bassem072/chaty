@@ -8,6 +8,8 @@ export default function MembersList({ setIsAddUser  }) {
   const { chat } = useSelector((state) => state.chatMessages);
   const { user } = useSelector((state) => state.auth);
 
+  console.log(chat);
+
   const sortMembers = () => {
     return chat.users.filter(
       (chatUser) =>
@@ -19,17 +21,20 @@ export default function MembersList({ setIsAddUser  }) {
     chat.groupAdmins.findIndex((admin) => admin._id === user.id) !== -1;
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full flex flex-col whitespace-nowrap overflow-hidden scrollbar">
       <div className="relative py-3">
         <div className="text-2xl font-semibold">Members</div>
-        <button onClick={() => setIsAddUser(true)} className="absolute w-10 h-10 top-1/2 -translate-y-1/2 right-2">
+        <button
+          onClick={() => setIsAddUser(true)}
+          className="absolute w-10 h-10 top-1/2 -translate-y-1/2 right-2"
+        >
           <FontAwesomeIcon icon={faUserPlus} />
         </button>
       </div>
       <div className="w-full p-3 ">
         <div className="w-full h-[1px] bg-paragraph/50"></div>
       </div>
-      <div className="w-full max-h-[70%] flex flex-col gap-3 whitespace-nowrap overflow-hidden scrollbar">
+      <div className="w-full flex flex-col gap-3 whitespace-nowrap overflow-auto scrollbar">
         {chat.groupAdmins.map((user, index) => (
           <MembersListItem
             key={index}

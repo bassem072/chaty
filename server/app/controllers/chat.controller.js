@@ -11,6 +11,9 @@ import {
   GroupWaitingResponse,
 } from "../utils/dto/chatResponseDTO.js";
 import User from "../models/user.model.js";
+import { fileURLToPath } from "url";
+import path from "path";
+import fs from "fs";
 
 export const index = asyncHandler(async (req, res) => {
   const limit = req.query.limit ?? 100;
@@ -43,7 +46,15 @@ export const index = asyncHandler(async (req, res) => {
     .limit(limit)
     .populate("users", "-password")
     .populate("groupAdmins", "-password")
-    .populate("latestMessage");
+    .populate({
+      path: "latestMessage",
+      populate: [
+        {
+          path: "sender",
+          select: "-password",
+        },
+      ],
+    });
 
   res.status(200).json({
     data: ChatsResponse(chats, req.user.id),
@@ -77,7 +88,15 @@ export const create = asyncHandler(async (req, res, next) => {
   )
     .populate("users", "-password")
     .populate("groupAdmins", "-password")
-    .populate("latestMessage");
+    .populate({
+      path: "latestMessage",
+      populate: [
+        {
+          path: "sender",
+          select: "-password",
+        },
+      ],
+    });
 
   if (!chat) {
     return next(new ApiError("Can't create this chat", 404));
@@ -94,7 +113,15 @@ export const show = asyncHandler(async (req, res, next) => {
   const chat = await Chat.findById(req.params.id)
     .populate("users", "-password")
     .populate("groupAdmins", "-password")
-    .populate("latestMessage");
+    .populate({
+      path: "latestMessage",
+      populate: [
+        {
+          path: "sender",
+          select: "-password",
+        },
+      ],
+    });
 
   if (!chat) {
     return next(new ApiError("Chat not found for id " + req.params.id, 404));
@@ -132,7 +159,15 @@ export const fetch = asyncHandler(async (req, res, next) => {
   })
     .populate("users", "-password")
     .populate("groupAdmins", "-password")
-    .populate("latestMessage");
+    .populate({
+      path: "latestMessage",
+      populate: [
+        {
+          path: "sender",
+          select: "-password",
+        },
+      ],
+    });
 
   if (!chat) {
     const chatObj = new Chat({
@@ -159,7 +194,15 @@ export const fetch = asyncHandler(async (req, res, next) => {
     )
       .populate("users", "-password")
       .populate("groupAdmins", "-password")
-      .populate("latestMessage");
+      .populate({
+        path: "latestMessage",
+        populate: [
+          {
+            path: "sender",
+            select: "-password",
+          },
+        ],
+      });
 
     if (!chat) {
       return next(new ApiError("Can't create this chat", 404));
@@ -176,7 +219,15 @@ export const update = asyncHandler(async (req, res, next) => {
   })
     .populate("users", "-password")
     .populate("groupAdmins", "-password")
-    .populate("latestMessage");
+    .populate({
+      path: "latestMessage",
+      populate: [
+        {
+          path: "sender",
+          select: "-password",
+        },
+      ],
+    });
 
   if (!chat) {
     return next(new ApiError("Chat not found for id " + req.params.id, 404));
@@ -470,10 +521,8 @@ export const approveUserGroup = asyncHandler(async (req, res, next) => {
     );
   }
 
-  if(!oldChat.waitingList.includes(user.id)) {
-    return next(
-      new ApiError("User not request to join this group", 404)
-    );
+  if (!oldChat.waitingList.includes(user.id)) {
+    return next(new ApiError("User not request to join this group", 404));
   }
 
   const updatedChat = await Chat.findByIdAndUpdate(
@@ -622,3 +671,52 @@ export const leaveAdminGroup = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({ data: GroupResponse(userChat) });
 });
+
+export const uploadChatImage = async (req, res, next) => {
+  console.log(req.file);
+  if (req.file) {
+    const chat = await Chat.findByIdAndUpdate(
+      req.chat.id,
+      { chatImage: req.file.filename },
+      { new: true }
+    )
+      .populate("users", "-password")
+      .populate("groupAdmins", "-password")
+      .populate("latestMessage");
+
+    if (!chat) {
+      return next(new ApiError("Chat not found"), 404);
+    }
+
+    res.status(200).json({ data: GroupResponse(chat) });
+  } else {
+    return next(new ApiError("chatImage is required"), 400);
+  }
+};
+
+export const getChatImage = async (req, res, next) => {
+  const { id } = req.params;
+  let chat = await Chat.findById(id);
+
+  if (!chat) {
+    return next(new ApiError("User not found for id: " + id, 404));
+  }
+
+  //console.log(chat.chatImage);
+  if (chat.chatImage === "default") {
+    return next(new ApiError("No profile image here!"), 404);
+  }
+
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  //console.log(__dirname);
+  const filePath = path.join(
+    __dirname,
+    "..",
+    "uploads",
+    "chatImages",
+    chat.chatImage
+  );
+
+  const r = fs.createReadStream(filePath);
+  r.pipe(res);
+};

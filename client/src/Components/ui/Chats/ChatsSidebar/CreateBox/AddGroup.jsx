@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchUsersService } from "../../../../../services/user.service";
 import { setMessage } from "../../../../../slices/message";
-import userPic from "../../../../../assets/images/users/user_5.png";
+import userPic from "../../../../../assets/images/users/avatar.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { createChat } from "../../../../../slices/chat";

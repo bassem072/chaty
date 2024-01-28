@@ -9,32 +9,30 @@ export default function MessageTextArea({ message, setMessage, send }) {
   const { t, i18n } = useTranslation();
   const [dir, setDir] = useState(i18n.language === "ar" ? "rtl" : "ltr");
   const [typing, setTyping] = useState(false);
-  const [timeoutVal, setTimeoutVal] = useState(false);
-  const { user } = useSelector(state => state.auth);
-  const { chat } = useSelector(state => state.chatMessages);
+  const [timeoutVal, setTimeoutVal] = useState(null);
+  const { user } = useSelector((state) => state.auth);
+  const { chat } = useSelector((state) => state.chatMessages);
 
   useAutoSizeTextArea(textAreaRef.current, message);
 
   function timeoutFunction() {
-    if(typing) {
-      setTyping(false);
-      socket.emit("stop_typing", chat, user.id);
-    }
+    setTyping(false);
+    socket.emit("stop_typing", chat, user.id);
   }
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
-      socket.emit("start_typing", chat, user.id);
+      socket.emit("stop_typing", chat, user.id);
       send();
     } else {
       if (typing === false) {
         setTyping(true);
         socket.emit("start_typing", chat, user.id);
-        setTimeoutVal(setTimeout(timeoutFunction, 5000));
+        setTimeoutVal(setTimeout(timeoutFunction, 2000));
       } else {
         clearTimeout(timeoutVal);
-        setTimeoutVal(setTimeout(timeoutFunction, 5000));
+        setTimeoutVal(setTimeout(timeoutFunction, 2000));
       }
     }
   };

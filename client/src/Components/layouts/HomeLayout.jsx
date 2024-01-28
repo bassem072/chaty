@@ -20,7 +20,6 @@ export default function HomeLayout({ children }) {
       socket.on("online_users", function (onlineUsers) {
         // Update your UI with the new user list
         dispatch(updateUsers(onlineUsers));
-        console.log(onlineUsers);
       });
     }
   }, [dispatch, user]);

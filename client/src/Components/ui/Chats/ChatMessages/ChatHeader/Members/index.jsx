@@ -20,12 +20,16 @@ export default function Members({ setShowMembers }) {
     };
   }, [setShowMembers]);
   return (
-    <div className="fixed w-screen h-screen bg-black/10 top-0 right-0 flex justify-center items-center">
+    <div className="fixed w-screen h-screen bg-black/10 top-0 right-0 flex justify-center items-center z-30">
       <div
         ref={membersRef}
-        className="w-[320px] md:w-[500px] h-full max-h-[80%] p-3 bg-sidebar rounded-xl"
+        className="w-[350px] sm:w-[500px] h-full max-h-[80%] py-3 px-1 bg-sidebar rounded-xl"
       >
-        {isAddUser ? <AddMember setIsAddUser={setIsAddUser} /> : <MembersList setIsAddUser={setIsAddUser} />}
+        {isAddUser ? (
+          <AddMember setIsAddUser={setIsAddUser} />
+        ) : (
+          <MembersList setIsAddUser={setIsAddUser} />
+        )}
       </div>
     </div>
   );

@@ -4,7 +4,12 @@ import Messages from "./Messages";
 import SendMessage from "./SendMessage";
 import { socket } from "../../../../socket";
 import { useDispatch, useSelector } from "react-redux";
-import { actionMessage, addMessage } from "../../../../slices/chatMessages";
+import {
+  actionMessage,
+  addMessage,
+  startTyping,
+  stopTyping,
+} from "../../../../slices/chatMessages";
 
 export default function ChatMessages() {
   const { chat } = useSelector((state) => state.chatMessages);
@@ -19,9 +24,21 @@ export default function ChatMessages() {
     };
 
     const handleNewGroupAction = (data) => {
-      console.log(chat);
+      console.log(data);
       if (chat && chat.id === data.id) {
         dispatch(actionMessage(data));
+      }
+    };
+
+    const handleStartTypingAction = (chatId, userId) => {
+      if (chat && chat.id === chatId) {
+        dispatch(startTyping(userId));
+      }
+    };
+
+    const handleStopTypingAction = (chatId, userId) => {
+      if (chat && chat.id === chatId) {
+        dispatch(stopTyping(userId));
       }
     };
 
@@ -31,6 +48,8 @@ export default function ChatMessages() {
     socket.on("remove_user", handleNewGroupAction);
     socket.on("add_admin", handleNewGroupAction);
     socket.on("remove_admin", handleNewGroupAction);
+    socket.on("start_type", handleStartTypingAction);
+    socket.on("stop_type", handleStopTypingAction);
 
     // Return a cleanup function to remove the event listener
     return () => {
@@ -39,9 +58,11 @@ export default function ChatMessages() {
       socket.off("remove_user", handleNewGroupAction);
       socket.off("add_admin", handleNewGroupAction);
       socket.off("remove_admin", handleNewGroupAction);
+      socket.off("start_type", handleStartTypingAction);
+      socket.off("stop_type", handleStopTypingAction);
     };
   }, [chat, dispatch]);
-  
+
   return (
     <div className={"w-full h-full flex flex-col justify-start"}>
       <ChatHeader />

@@ -1,47 +1,46 @@
-import { faComment, faUserPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
-import userPic from "../../../../assets/images/users/user_1.png";
+import { faComment, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
+import userPic from "../../../../assets/images/users/avatar.png";
 import cover from "../../../../assets/images/home/cover.webp";
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { fetchChatService } from '../../../../services/chat.service';
-import { socket } from '../../../../socket';
-import { setMessage } from '../../../../slices/message';
-import { getUserImageService } from '../../../../services/user.service';
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { fetchChatService } from "../../../../services/chat.service";
+import { socket } from "../../../../socket";
+import { setMessage } from "../../../../slices/message";
+import { getUserImageService } from "../../../../services/user.service";
 
 export default function ProfileImages({ user }) {
-    const { chats } = useSelector((state) => state.chat);
-    const [profilePicture, setProfilePicture] = useState(userPic);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const { chats } = useSelector((state) => state.chat);
+  const [profilePicture, setProfilePicture] = useState(userPic);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const fetchThisChat = (userId) => {
-      let index = -1;
-      for (let i = 0; i < chats.length; i++) {
-        if (!chats[i].isGroupChat && chats[i].user._id === userId) {
-          index = i;
-          break;
-        }
+  const fetchThisChat = (userId) => {
+    let index = -1;
+    for (let i = 0; i < chats.length; i++) {
+      if (!chats[i].isGroupChat && chats[i].user._id === userId) {
+        index = i;
+        break;
       }
+    }
 
-      if (index !== -1) {
-        navigate(`/chats/${chats[index].id}`);
-      } else {
-        fetchChatService({ userId: user.id })
-          .then((payload) => {
-            socket.emit("create_chat", payload.data);
-            navigate("/chats/" + payload.data.id);
-          })
-          .catch((error) => {
-            dispatch(setMessage("Can't fetch this chat"));
-          });
-      }
-    };
-    
+    if (index !== -1) {
+      navigate(`/chats/${chats[index].id}`);
+    } else {
+      fetchChatService({ userId: user.id })
+        .then((payload) => {
+          socket.emit("create_chat", payload.data);
+          navigate("/chats/" + payload.data.id);
+        })
+        .catch((error) => {
+          dispatch(setMessage("Can't fetch this chat"));
+        });
+    }
+  };
 
   useEffect(() => {
-    if(user.ProfileImage !== "default") {
+    if (user.profileImage !== "default") {
       getUserImageService(user.id)
         .then((blob) => {
           const url = URL.createObjectURL(blob);

@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import "moment/locale/ar";
-import user from "../../../../../assets/images/users/user_2.png";
+import user from "../../../../../assets/images/users/avatar.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";

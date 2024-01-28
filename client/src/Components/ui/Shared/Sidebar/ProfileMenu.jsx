@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faGear, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import user from "../../../../assets/images/users/user_1.avif";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,7 +16,7 @@ export default function ProfileMenu() {
   const menuRef = useRef();
   const { t } = useTranslation("sidebar");
   const navigate = useNavigate();
-  const { profilePic } = useSelector(state => state.auth);
+  const { profilePic } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const handleClickOutside = (event) => {

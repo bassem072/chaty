@@ -1,8 +1,12 @@
 import React from "react";
-import user from "../../../../assets/images/users/user_5.png";
+import user from "../../../../assets/images/users/avatar.png";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faAngleRight, faComment } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleLeft,
+  faAngleRight,
+  faComment,
+} from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 
 export default function ContactInfo() {

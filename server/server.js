@@ -111,8 +111,8 @@ const broadcastTypingMessage = (socket, chatContent, userId, event) => {
     : [chatContent.user._id, userId];
 
   // Broadcast the action to each user
-  users.forEach((userId) => {
-    socket.broadcast.to(userId).emit(event, chatContent, userId);
+  users.forEach((user) => {
+    socket.broadcast.to(user).emit(event, chatContent.id, userId);
   });
 };
 

@@ -7,11 +7,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Members from "./Members";
+import ChangeChatImage from "./ChengeChatImage";
+import { useSelector } from "react-redux";
 
-export default function OptionsMenu({ chat, setShowMembers }) {
+export default function OptionsMenu({ chat, setShowMembers, onImageChange }) {
   const [show, setShow] = useState(false);
+  const { user } = useSelector((state) => state.auth);
   const menuRef = useRef();
   const { i18n } = useTranslation();
+
+  const isAdmin = () =>
+    chat.groupAdmins.findIndex((admin) => admin._id === user.id) !== -1;
+
+  const handleOnImageChange = (event) => {
+    onImageChange(event);
+    setShow(false);
+  }
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -30,9 +42,10 @@ export default function OptionsMenu({ chat, setShowMembers }) {
     <div
       ref={menuRef}
       className="relative hover:text-paragraph transition-all duration-300 cursor-pointer"
-      onClick={() => setShow(!show)}
     >
-      <FontAwesomeIcon icon={faEllipsis} size="lg" />
+      <button onClick={() => setShow(!show)}>
+        <FontAwesomeIcon icon={faEllipsis} size="lg" />
+      </button>
       {show && (
         <div
           className={
@@ -40,7 +53,16 @@ export default function OptionsMenu({ chat, setShowMembers }) {
             (i18n.dir() === "rtl" ? "left-0" : "right-0")
           }
         >
-          {chat.isGroupChat && <Members chat={chat} setShowMembers={setShowMembers} setShow={setShow} />}
+          {chat.isGroupChat && (
+            <Members
+              chat={chat}
+              setShowMembers={setShowMembers}
+              setShow={setShow}
+            />
+          )}
+          {isAdmin() && chat.isGroupChat && (
+            <ChangeChatImage onImageChange={handleOnImageChange} />
+          )}
           <button
             onClick={() => {}}
             className="w-full flex justify-between items-center text-paragraph/70 my-1 py-1.5 px-2 rounded-md hover:bg-sidebar"

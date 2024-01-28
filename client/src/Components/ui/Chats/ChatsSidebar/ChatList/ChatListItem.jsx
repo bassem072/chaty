@@ -9,7 +9,7 @@ export default function ChatListItem({ chat, ref }) {
   const { chat: selectedChat } = useSelector((state) => state.chatMessages);
   let { id } = useParams();
   const dispatch = useDispatch();
-  
+
   return (
     <Link
       to={"/chats/" + chat.id}

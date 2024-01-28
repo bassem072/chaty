@@ -15,7 +15,7 @@ export default function SearchBox({ placeholder, val, onChange }) {
           placeholder={placeholder}
           value={val}
           className="w-full bg-transparent outline-none placeholder:text-paragraph/50 placeholder:font-thin placeholder:text-sm"
-          onChange={onChange}
+          onChange={(e) => onChange(e.target.value)}
         />
       </div>
     </div>

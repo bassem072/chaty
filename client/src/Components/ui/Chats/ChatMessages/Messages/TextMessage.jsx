@@ -1,12 +1,19 @@
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import userPic from "../../../../../assets/images/users/user_2.png";
+import userPic from "../../../../../assets/images/users/avatar.png";
+import { getUserImageService } from "../../../../../services/user.service";
 
-export default function TextMessage({ message, checkShow, isNewDay, seen = true }) {
+export default function TextMessage({
+  message,
+  checkShow,
+  isNewDay,
+  seen = true,
+}) {
+  const [profilePicture, setProfilePicture] = useState(userPic);
   const { user } = useSelector((state) => state.auth);
   const { i18n } = useTranslation();
   moment.locale(i18n.language);
@@ -24,7 +31,23 @@ export default function TextMessage({ message, checkShow, isNewDay, seen = true 
       return "ltr";
     }
   };
-  
+
+  useEffect(() => {
+    if (
+      user.id !== message.sender.id &&
+      message.sender.profileImage !== "default"
+    ) {
+      getUserImageService(message.sender.id)
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          setProfilePicture(url);
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+        });
+    }
+  }, [user, message]);
+
   return (
     <>
       {isNewDay && (
@@ -46,7 +69,7 @@ export default function TextMessage({ message, checkShow, isNewDay, seen = true 
         {!isMe && (
           <div className={"w-7"}>
             {checkShow && (
-              <img src={userPic} alt="user" className="rounded-full" />
+              <img src={profilePicture} alt="user" className="rounded-full" />
             )}
           </div>
         )}

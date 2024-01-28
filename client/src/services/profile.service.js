@@ -18,7 +18,7 @@ export const getProfilePicService = async () => {
       timeout: 30000,
     });
 
-    return response.data;
+    return URL.createObjectURL(response.data);
 };
 
 export const changeProfilePicService = async (userData) => {
