@@ -17,7 +17,7 @@ export default function OptionsMenu({ chat, setShowMembers, onImageChange }) {
   const { i18n, t } = useTranslation();
 
   const isAdmin = () =>
-    chat.groupAdmins.findIndex((admin) => admin._id === user.id) !== -1;
+    chat?.groupAdmins.findIndex((admin) => admin._id === user.id) !== -1;
 
   const handleOnImageChange = (event) => {
     onImageChange(event);
@@ -60,7 +60,7 @@ export default function OptionsMenu({ chat, setShowMembers, onImageChange }) {
               setShow={setShow}
             />
           )}
-          {isAdmin() && chat.isGroupChat && (
+          {chat.isGroupChat && isAdmin() && chat.isGroupChat && (
             <ChangeChatImage onImageChange={handleOnImageChange} />
           )}
           <button

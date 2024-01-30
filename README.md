@@ -51,7 +51,7 @@ git clone https://github.com/bassem072/chaty.git
   ```
 #### Client Server
 - ##### Open the project in terminal
-- ##### Navigate to the server directory
+- ##### Navigate to the client directory
   ```bash
   cd client
   ```
@@ -66,6 +66,35 @@ npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 ```
 
 ## Usage <a name="usage"></a>
+#### Login
+![login](./readme_images/login.gif)
+
+#### Register
+![register](./readme_images/register.gif)
+
+#### Profile
+![profile](./readme_images/profile.gif)
+
+#### Edit Profile Picture
+![Edit Profile Image](./readme_images/editProfileImage.gif)
+
+#### Search Users
+![Search Users](./readme_images/searchUsers.gif)
+
+#### Message User
+![Message User](./readme_images/userProfile.gif)
+
+#### Chats Search And Filters
+![Chats Search And Filters](./readme_images/chatsSearchAndFilters.gif)
+
+#### Online Users
+![Online Users](./readme_images/onlineUsers.gif)
+
+#### Typing Message
+![Typing Message](./readme_images/typingMessage.gif)
+
+#### Send Message
+![Send Message](./readme_images/messaging.gif)
 
 ## Features <a name="features"></a>
 A detailed description of all the features of the project.
