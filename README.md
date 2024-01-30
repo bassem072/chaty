@@ -1,4 +1,4 @@
-# Project Name
+# Chaty (Chat Website)
 
 ## Table of Contents
 1. Introduction
