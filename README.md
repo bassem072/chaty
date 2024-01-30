@@ -10,100 +10,9 @@ Chaty is a real-time, multi-language chat website that offers both one-on-one an
   3. Setup
 </details>
 
-## Technologies <a name="Technologies"></a>
+## Technologies <a name="technologies"></a>
 5 
-6 
-3 
-6 
-6
-6
-6
-6
-6
-6
-6
-5 
-6 
-3 
-6 
-6
-6
-6
-6
-6
-6
-6
-5 
-6 
-3 
-6 
-6
-6
-6
-6
-6
-6
-6
-5 
-6 
-3 
-6 
-6
-6
-6
-6
-6
-6
-6
-5 
-6 
-3 
-6 
-6
-6
-6
-6
-6
-6
-6
-5 
-6 
-3 
-6 
-6
-6
-6
-6
-6
-6
-6
-5 
-6 
-3 
-6 
-6
-6
-6
-6
-6
-6
-6
-5 
-6 
-3 
-6 
-6
-6
-6
-6
-6
-6
-6
-5 
-6 
-3 
-6 
-6
+6 3 6 6
 6
 6
 6
@@ -117,5 +26,5 @@ Chaty is a real-time, multi-language chat website that offers both one-on-one an
 6
 6
 6
-## Features <a name="Features"></a>
-## Setup <a name="Setup"></a>
+## Features <a name="features"></a>
+## Setup <a name="setup"></a>
