@@ -2,9 +2,11 @@ import moment from "moment";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import ActionMessage from "./ActionMessage";
+import { useSelector } from "react-redux";
 
 export default function ChatInfo({ chat }) {
   const { t, i18n } = useTranslation();
+  const { user: me } = useSelector(state => state.auth);
   moment.locale(i18n.language);
 
   const title = chat.isGroupChat ? chat.name : chat.user.name;
@@ -12,7 +14,7 @@ export default function ChatInfo({ chat }) {
 
   const getSenderName = (id) => {
     // Find the user in the chat users
-    const user = chat.users.find((user) => user._id === id);
+    const user = chat.latestMessage.sender._id === me?.id ? me : chat.users.find((user) => user._id === id);
 
     // If the user is found, return the first part of their name
     // If not, return an empty string or a default value

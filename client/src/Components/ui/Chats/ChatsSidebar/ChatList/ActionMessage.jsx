@@ -8,8 +8,10 @@ export default function ActionMessage({ chat }) {
     const content = chat.latestMessage.content;
     const messageType = chat.latestMessage.messageType;
     const senderId = chat.latestMessage.sender._id;
+    console.log(chat);
 
     const getUser = (id) => {
+      console.log(chat.latestMessage);
       const res = chat.users.find((user) => user._id === id) ?? "";
       return res.name.split(" ")[0];
     };

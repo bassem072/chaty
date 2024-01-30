@@ -76,7 +76,7 @@ export default function ProfileImages() {
         <div className="lg:w-full flex flex-col gap-3 lg:flex-row items-center lg:justify-between pt-2 lg:pt-24">
           <div className="flex flex-col items-center lg:items-start gap-2">
             <div className="text-3xl text-paragraph font-semibold">
-              {user.name}
+              {user?.name}
             </div>
             <div>{t("followers", {num: 1.6})}</div>
           </div>

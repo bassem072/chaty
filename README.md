@@ -96,6 +96,21 @@ npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 #### Send Message
 ![Send Message](./readme_images/messaging.gif)
 
+#### Emoji And Multiline Message
+![Emoji And Multiline Message](./readme_images/emojiAndMultilineMessage.gif)
+
+#### Create Group
+![Create Group](./readme_images/createGroup.gif)
+
+#### Add And Remove Admins In Group
+![Add And Remove Admins In Group](./readme_images/addAndRemoveAdmins.gif)
+
+#### Add User
+![Add User](./readme_images/addUser.gif)
+
+#### RTL
+![RTL](./readme_images/rtl.gif)
+
 ## Features <a name="features"></a>
 A detailed description of all the features of the project.
 

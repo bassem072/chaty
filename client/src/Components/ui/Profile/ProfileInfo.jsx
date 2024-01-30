@@ -20,7 +20,7 @@ export default function ProfileInfo() {
   return (
     <div className="w-full flex flex-col lg:flex-row gap-5 px-20 pb-20">
       <div className="lg:w-1/4 p-4 bg-active rounded-lg flex flex-col gap-4">
-        <div>{user.bio}</div>
+        <div>{user?.bio}</div>
         <div className="w-full h-[1px] bg-paragraph/30 rounded"></div>
         <div className="w-full flex flex-col gap-2">
           <div className="w-full flex gap-3 items-center">
@@ -35,12 +35,12 @@ export default function ProfileInfo() {
           </div>
           <div className="w-full flex gap-3 items-center">
             <FontAwesomeIcon
-              icon={user.gender === "male" ? faMars : faVenus}
+              icon={user?.gender === "male" ? faMars : faVenus}
               className="text-paragraph/70"
             />
             <div className="flex items-center gap-2">
               <div>{t("gender")}</div>
-              <div className="font-bold">{t(user.gender)}</div>
+              <div className="font-bold">{t(user?.gender)}</div>
             </div>
           </div>  
         </div>

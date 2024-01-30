@@ -601,7 +601,15 @@ export const cancelJoinGroup = asyncHandler(async (req, res, next) => {
   )
     .populate("users", "-password")
     .populate("groupAdmins", "-password")
-    .populate("latestMessage");
+    .populate({
+      path: "latestMessage",
+      populate: [
+        {
+          path: "sender",
+          select: "-password",
+        },
+      ],
+    });
 
   res.status(200).json({ data: GroupWaitingResponse(canceledGroup) });
 });
@@ -682,7 +690,15 @@ export const uploadChatImage = async (req, res, next) => {
     )
       .populate("users", "-password")
       .populate("groupAdmins", "-password")
-      .populate("latestMessage");
+      .populate({
+        path: "latestMessage",
+        populate: [
+          {
+            path: "sender",
+            select: "-password",
+          },
+        ],
+      });
 
     if (!chat) {
       return next(new ApiError("Chat not found"), 404);

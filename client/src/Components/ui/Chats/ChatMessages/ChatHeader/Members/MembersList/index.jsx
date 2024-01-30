@@ -24,12 +24,14 @@ export default function MembersList({ setIsAddUser  }) {
     <div className="w-full h-full flex flex-col whitespace-nowrap overflow-hidden scrollbar">
       <div className="relative py-3">
         <div className="text-2xl font-semibold">{t("members")}</div>
-        <button
-          onClick={() => setIsAddUser(true)}
-          className="absolute w-10 h-10 top-1/2 -translate-y-1/2 right-2"
-        >
-          <FontAwesomeIcon icon={faUserPlus} />
-        </button>
+        {isAdmin() && (
+          <button
+            onClick={() => setIsAddUser(true)}
+            className="absolute w-10 h-10 top-1/2 -translate-y-1/2 right-2"
+          >
+            <FontAwesomeIcon icon={faUserPlus} />
+          </button>
+        )}
       </div>
       <div className="w-full p-3 ">
         <div className="w-full h-[1px] bg-paragraph/50"></div>
