@@ -9,10 +9,16 @@
 6. License
 
 ## Introduction <a name="introduction"></a>
-A brief description of your project.
+Chaty is a real-time, multi-language chat website that offers both one-on-one and group chat functionalities. It ensures instant message delivery and supports multiple languages, catering to a diverse user base. Whether you're having a private conversation or engaging in group discussions, Chaty provides a seamless and efficient platform for all your communication needs. Experience the world of real-time, multi-language communication with Chaty!
 
 ## Installation <a name="installation"></a>
-Detailed instructions on how to install, setup, and get the project running.
+
+### Clone Repo
+To get started with the project, first, you need to clone the repository. Open your terminal and run the following command:
+
+```bash
+git clone https://github.com/username/repository.git
+```
 
 ## Usage <a name="usage"></a>
 Instructions on how to use the project after installation, with examples.
