@@ -117,6 +117,8 @@ Chaty website plans to implement the following features to enhance the user expe
 - **Image Messages**: Users will be able to send image messages, enriching the ways they can communicate.
 - **Voice Note Messages**: Users will be able to send voice note messages, providing a more personal and expressive way of communication.
 - **Message Reply**: Users will be able to reply to specific messages, making conversations more contextual and organized.
+- **Voice Call**: Users will be able to make voice calls, providing a more personal and immediate way of communication.
+- **Video Call**: Users will be able to make video calls, enhancing the ways users can communicate and interact.
 - **Join and Leave Group Chat**: Users will be able to join and leave group chats as they wish, giving them more control over their group chat memberships.
 - **Improved Group Chat Controls**: Group chat controls will be improved, providing admins with more options to manage their groups effectively.
 - **Group Chat Media Section**: A media section will be added to group chats, allowing users to share and view media files within the group.
@@ -223,6 +225,9 @@ git clone https://github.com/bassem072/chaty.git
 
 #### Create Group
 ![Create Group](./readme_images/createGroup.gif)
+
+#### Change Group Image
+![Change Group Image](./readme_images/changeChatImage.gif)
 
 #### Add And Remove Admins In Group
 ![Add And Remove Admins In Group](./readme_images/addAndRemoveAdmins.gif)
