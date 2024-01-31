@@ -13,7 +13,7 @@ export default function ProfileInfo() {
   const { user } = useSelector((state) => state.auth);
   const { i18n, t } = useTranslation("users");
   moment.locale(i18n.language);
-  const day = moment(user.birthdate).format(
+  const day = moment(user?.birthdate).format(
     i18n.language === "ar" ? "yyyy MMM DD" : "DD MMM yyyy"
   );
   
