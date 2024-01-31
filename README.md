@@ -104,6 +104,8 @@ Chaty is a real-time, multi-language chat website that offers both one-on-one an
 - **Group Chat Image Change**: Group admins can change the group chat image, helping to set the tone for the group.
 - **Search**: Users can search for specific chats and groups, making it easier to navigate through the application.
 
+Each feature is designed with the user in mind, aiming to provide a smooth, engaging, and enjoyable chatting experience.
+
 ## Future Features
 
 Chaty website plans to implement the following features to enhance the user experience:
@@ -128,8 +130,6 @@ Chaty website plans to implement the following features to enhance the user expe
 - **Full Control for Group and Page Admins**: Admins will have full control over their groups and pages, including settings, memberships, and content.
 - **Video Support**: The website will support video messages, enhancing the ways users can communicate.
 - **Improved Website Design**: The website design will be improved to provide a more user-friendly and aesthetically pleasing interface.
-
-Each future feature is designed with the user in mind, aiming to provide a smooth, engaging, and enjoyable chatting experience.
 
 
 ## Setup
