@@ -2,14 +2,59 @@
 
 ## Table of Contents
 1. [Introduction](#introduction)
-2. [Technologies](#technologies)
-3. [Features](#features)
-4. [Future Features](#future-features)
+2. [Features](#features)
+3. [Future Features](#future-features)
+4. [Technologies](#technologies)
 5. [Setup](#setup)
 6. [Usage](#usage)
 
 ## Introduction
 Chaty is a real-time, multi-language chat website that offers both one-on-one and group chat functionalities. It ensures instant message delivery and supports multiple languages, catering to a diverse user base. Whether you're having a private conversation or engaging in group discussions, Chaty provides a seamless and efficient platform for all your communication needs. Experience the world of real-time, multi-language communication with Chaty!
+
+## Features
+##### Chaty offers a variety of features to enhance the user experience:
+
+- **One-to-One Chat**: Users can engage in private, one-on-one conversations.
+- **Group Chat Creation**: Users can create a group chat with at least two other users, facilitating communication among multiple users simultaneously.
+- **Real-Time Messaging**: Messages are sent and received in real time, ensuring seamless communication.
+- **LTR and RTL Support**: The website supports both Left-to-Right (LTR) and Right-to-Left (RTL) text directions, accommodating users of different languages.
+- **Security**: Conversations are secure, with measures in place to protect user data and privacy.
+- **Error Handling**: The website has robust error handling in both the front end and the backend, ensuring a smooth user experience.
+- **User Profiles**: Users can create and customize their own profiles, adding a personal touch to their interactions.
+- **Typing Indicator**: Users can see when their conversation partner is typing, making the chat more interactive.
+- **Online User Indicator**: Users can see who is online, making it easier to start conversations.
+- **Emoji Support**: Users can express themselves with a wide range of emojis.
+- **Admin Functionalities**: Group admins have special privileges and controls to manage their groups effectively. 
+- **Profile Image Change**: Users can change their profile images, allowing them to personalize their online presence.
+- **Group Chat Image Change**: Group admins can change the group chat image, helping to set the tone for the group.
+- **Search**: Users can search for specific chats and groups, making it easier to navigate through the application.
+
+Each feature is designed with the user in mind, aiming to provide a smooth, engaging, and enjoyable chatting experience.
+
+## Future Features
+
+Chaty website plans to implement the following features to enhance the user experience:
+
+- **Friend Requests**: Users will be able to send, accept, and remove friend requests, enhancing their social networking experience.
+- **Block User**: Users will be able to block other users, improving their privacy and security.
+- **Improved Profile Information**: The website will offer enhanced profile information features, allowing users to provide more details about themselves and customize their profiles to their liking.
+- **Posts, Comments, and Replies**: Users will be able to make posts, comments, and replies, fostering more interactive communication.
+- **Reactions**: Users will be able to react to posts, comments, and replies, making the chat more engaging.
+- **Message Reactions**: Users will be able to react to messages, adding another layer of interaction in chats.
+- **Image Messages**: Users will be able to send image messages, enriching the ways they can communicate.
+- **Voice Note Messages**: Users will be able to send voice note messages, providing a more personal and expressive way of communication.
+- **Message Reply**: Users will be able to reply to specific messages, making conversations more contextual and organized.
+- **Voice Call**: Users will be able to make voice calls, providing a more personal and immediate way of communication.
+- **Video Call**: Users will be able to make video calls, enhancing the ways users can communicate and interact.
+- **Join and Leave Group Chat**: Users will be able to join and leave group chats as they wish, giving them more control over their group chat memberships.
+- **Improved Group Chat Controls**: Group chat controls will be improved, providing admins with more options to manage their groups effectively.
+- **Group Chat Media Section**: A media section will be added to group chats, allowing users to share and view media files within the group.
+- **Notification System**: A notification system will be implemented to keep users updated on new messages, friend requests, and more.
+- **Improved Search System**: The search system will be improved to make finding chats, groups, and users easier and more efficient.
+- **Groups and Pages**: Users will be able to create and manage groups and pages, providing a platform for larger communities.
+- **Full Control for Group and Page Admins**: Admins will have full control over their groups and pages, including settings, memberships, and content.
+- **Video Support**: The website will support video messages, enhancing the ways users can communicate.
+- **Improved Website Design**: The website design will be improved to provide a more user-friendly and aesthetically pleasing interface.
 
 ## Technologies
 - #### Database
@@ -85,51 +130,6 @@ Chaty is a real-time, multi-language chat website that offers both one-on-one an
     30. ###### react-toastify: "^9.1.3",
     31. ###### socket.io-client: "^4.7.3",
     32. ###### web-vitals: "^2.1.4"
-
-## Features
-##### Chaty offers a variety of features to enhance the user experience:
-
-- **One-to-One Chat**: Users can engage in private, one-on-one conversations.
-- **Group Chat Creation**: Users can create a group chat with at least two other users, facilitating communication among multiple users simultaneously.
-- **Real-Time Messaging**: Messages are sent and received in real time, ensuring seamless communication.
-- **LTR and RTL Support**: The website supports both Left-to-Right (LTR) and Right-to-Left (RTL) text directions, accommodating users of different languages.
-- **Security**: Conversations are secure, with measures in place to protect user data and privacy.
-- **Error Handling**: The website has robust error handling in both the front end and the backend, ensuring a smooth user experience.
-- **User Profiles**: Users can create and customize their own profiles, adding a personal touch to their interactions.
-- **Typing Indicator**: Users can see when their conversation partner is typing, making the chat more interactive.
-- **Online User Indicator**: Users can see who is online, making it easier to start conversations.
-- **Emoji Support**: Users can express themselves with a wide range of emojis.
-- **Admin Functionalities**: Group admins have special privileges and controls to manage their groups effectively. 
-- **Profile Image Change**: Users can change their profile images, allowing them to personalize their online presence.
-- **Group Chat Image Change**: Group admins can change the group chat image, helping to set the tone for the group.
-- **Search**: Users can search for specific chats and groups, making it easier to navigate through the application.
-
-Each feature is designed with the user in mind, aiming to provide a smooth, engaging, and enjoyable chatting experience.
-
-## Future Features
-
-Chaty website plans to implement the following features to enhance the user experience:
-
-- **Friend Requests**: Users will be able to send, accept, and remove friend requests, enhancing their social networking experience.
-- **Block User**: Users will be able to block other users, improving their privacy and security.
-- **Improved Profile Information**: The website will offer enhanced profile information features, allowing users to provide more details about themselves and customize their profiles to their liking.
-- **Posts, Comments, and Replies**: Users will be able to make posts, comments, and replies, fostering more interactive communication.
-- **Reactions**: Users will be able to react to posts, comments, and replies, making the chat more engaging.
-- **Message Reactions**: Users will be able to react to messages, adding another layer of interaction in chats.
-- **Image Messages**: Users will be able to send image messages, enriching the ways they can communicate.
-- **Voice Note Messages**: Users will be able to send voice note messages, providing a more personal and expressive way of communication.
-- **Message Reply**: Users will be able to reply to specific messages, making conversations more contextual and organized.
-- **Voice Call**: Users will be able to make voice calls, providing a more personal and immediate way of communication.
-- **Video Call**: Users will be able to make video calls, enhancing the ways users can communicate and interact.
-- **Join and Leave Group Chat**: Users will be able to join and leave group chats as they wish, giving them more control over their group chat memberships.
-- **Improved Group Chat Controls**: Group chat controls will be improved, providing admins with more options to manage their groups effectively.
-- **Group Chat Media Section**: A media section will be added to group chats, allowing users to share and view media files within the group.
-- **Notification System**: A notification system will be implemented to keep users updated on new messages, friend requests, and more.
-- **Improved Search System**: The search system will be improved to make finding chats, groups, and users easier and more efficient.
-- **Groups and Pages**: Users will be able to create and manage groups and pages, providing a platform for larger communities.
-- **Full Control for Group and Page Admins**: Admins will have full control over their groups and pages, including settings, memberships, and content.
-- **Video Support**: The website will support video messages, enhancing the ways users can communicate.
-- **Improved Website Design**: The website design will be improved to provide a more user-friendly and aesthetically pleasing interface.
 
 
 ## Setup
